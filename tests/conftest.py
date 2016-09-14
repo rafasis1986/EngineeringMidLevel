@@ -6,7 +6,10 @@ from webtest import TestApp
 
 from flaskiwsapp.app import create_app
 from flaskiwsapp.database import db as _db
+from flaskiwsapp.extensions import bcrypt
 from flaskiwsapp.settings import TestConfig
+from flaskiwsapp.snippets.mails import make_ramdom_email
+from flaskiwsapp.users.models import User
 
 from .factories import UserFactory
 

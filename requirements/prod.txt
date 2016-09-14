@@ -35,3 +35,7 @@ WTForms==2.1
 
 # Python shell
 bpython==0.15
+
+# API
+Flask-RESTful==0.3.5
+

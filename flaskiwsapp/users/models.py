@@ -34,8 +34,7 @@ class User(UserMixin, SurrogatePK, Model):
     email = Column(db.String(80), unique=True, nullable=False)
     #: The hashed password
     password = Column(db.String(256), nullable=True)
-    created_at = Column(db.DateTime, nullable=False,
-                        default=datetime.datetime.utcnow)
+    created_at = Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     first_name = Column(db.String(30), nullable=True)
     last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=False)
@@ -44,6 +43,7 @@ class User(UserMixin, SurrogatePK, Model):
     def __init__(self, username="", email="", password=None, **kwargs):
         """Create instance."""
         db.Model.__init__(self, username=username, email=email, **kwargs)
+        assert '@' in email, "Invalid email format"
         if password:
             self.set_password(password)
         else:
