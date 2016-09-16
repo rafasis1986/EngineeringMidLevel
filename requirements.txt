@@ -1,0 +1,4 @@
+# Just here because many Paas's require a requirements.txt inside the project root
+# Simply installs the production requirements
+
+-r requirements/prod.txt
