@@ -11,11 +11,12 @@ MarkupSafe==0.23
 # App management
 Flask-Script==2.0.5
 
-# Security
+# Securitycookiecutter https://github.com/on3iro/cookiecutter-flask.git
 Flask-Bcrypt==0.7.1
 bcrypt==3.1.0
 cffi==1.7.0
 Flask-Login==0.3.2
+Flask-JWT==0.2.0
 
 # Database
 SQLAlchemy==1.0.14
@@ -35,3 +36,9 @@ WTForms==2.1
 
 # Python shell
 bpython==0.15
+
+# API
+Flask-RESTful==0.3.5
+
+# Send Email
+sendgrid==3.4.0

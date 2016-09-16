@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
+
+
 from flask import Flask, render_template
 from flask_admin import Admin
-
+from flaskiwsapp.api.v1.views.user import user_blueprint
 from flaskiwsapp.settings import ProdConfig
-from flaskiwsapp.extensions import bcrypt, csrf_protect, db, migrate, \
-    login_manager
-from flaskiwsapp.main.views import main_blueprint
+from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, jwt, ma
 from flaskiwsapp.admin.views import MyModelView, MyAdminIndexView, UserView
-from flaskiwsapp.users.views import users_blueprint
+
 from flaskiwsapp.users.models import User, Role
+from flaskiwsapp.api.auth.jwt import set_jwt_handlers
 
 
 def create_app(config_object=ProdConfig):
@@ -23,7 +24,8 @@ def create_app(config_object=ProdConfig):
     app.config.from_object(config_object)
     register_extensions(app)
     register_blueprints(app)
-    register_errorhandlers(app)
+    set_jwt_handlers(jwt)
+    # register_errorhandlers(app)
     init_admin(app)
     return app
 
@@ -33,15 +35,16 @@ def register_extensions(app):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     db.init_app(app)
-    csrf_protect.init_app(app)
     migrate.init_app(app, db)
+    jwt.init_app(app)
+    ma.init_app(app)
     return None
 
 
 def register_blueprints(app):
     """Register Flask blueprints."""
-    app.register_blueprint(users_blueprint)
-    app.register_blueprint(main_blueprint)
+    version_api = app.config['API_VERSION']
+    app.register_blueprint(user_blueprint, url_prefix='/api/{version}/users/'.format(version=version_api))
     return None
 
 

@@ -2,26 +2,25 @@
 """Extensions module. Each extension is initialized in the app factory located
 in app.py"""
 from flask_bcrypt import Bcrypt
-#from flask_debugtoolbar import DebugToolbarExtension
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf.csrf import CsrfProtect
+from flask_jwt import JWT
+from flask_marshmallow import Marshmallow
 
 
 # Brypt
 bcrypt = Bcrypt()
 
-# CSRF protection
-csrf_protect = CsrfProtect()
-
 # Database/SQLAlchemy/Migrations
 db = SQLAlchemy()
 migrate = Migrate()
 
-# Debug toolbar
-#debug_tb = DebugToolbarExtension()
+# JWT
+jwt = JWT()
 
+# Marshmallow
+ma = Marshmallow()
 
 ###############################
 # Login manager configuration #
