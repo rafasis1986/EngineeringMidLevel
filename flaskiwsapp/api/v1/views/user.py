@@ -1,65 +1,99 @@
-from flaskiwsapp.api.v1.controllers import user as UserController
-from flaskiwsapp.snippets import helpers
-from flaskiwsapp.users.models import User
 from flask.blueprints import Blueprint
-from flask_restful import Api, Resource
-from flask_restful import reqparse, fields, marshal_with
-
-API_VERSION = '1.0'
-
-user_blueprint = Blueprint('user_blueprint', __name__, url_prefix='/api')
-user_api = Api(user_blueprint)
-
-user_parser = reqparse.RequestParser(bundle_errors=True)
-user_parser.add_argument('username', type=str, required=True, help="Choose a username. It needs to be unique.")
-user_parser.add_argument('email', type=str, required=True, help="Choose a email. It needs to be unique.")
-user_parser.add_argument('password', type=str, required=True, help="Choose a password")
-
-# This will be used to marshal output for users
-user_fields = {
-    'id': fields.Integer,
-    'email': fields.String,
-    'username': fields.String
-}
+from flask_restful import Resource, reqparse
+from flaskiwsapp.users.controllers import get_all_users, create_user, update_user, delete_user
+from flask_jwt import jwt_required
+from flaskiwsapp.snippets.customApi import CustomApi
+from flaskiwsapp.users.schema import UserJsonSchema
 
 
-@user_blueprint.after_request
-def additional_info(response):
-    response.headers['API-Version'] = API_VERSION
-    return response
-
-
-class UserListResource(Resource):
+def post_put_parser():
     """
-    This is API endpoint resource for `users` as collection.
-    All operations performed here will be for the `users collection`.
-    """
+    Request parser for HTTP POST or PUT.
 
-    @marshal_with(user_fields)
+    :returns: flask.ext.restful.reqparse.RequestParser object
+    """
+    parse = reqparse.RequestParser()
+    parse.add_argument('username', type=str, location='json', required=True)
+    parse.add_argument('password', type=str, location='json', required=True)
+
+    return parse
+
+
+class UsersAPI(Resource):
+    """An API to get or create users."""
+
+    def _post_put_parser(self):
+        """
+        Request parser for HTTP POST or PUT.
+        :returns: flask.ext.restful.reqparse.RequestParser object
+        """
+        parse = reqparse.RequestParser()
+        parse.add_argument('username', type=str, location='json', required=True)
+        parse.add_argument('password', type=str, location='json', required=True)
+
+        return parse
+
+    @jwt_required()
     def get(self, username=None):
-        return UserController.get_users(username)
+        """HTTP GET. Get one or all users.
 
-    @marshal_with(user_fields)
+        :username: a string valid as object id.
+        :returns: One or all available users.
+
+        """
+
+        users = get_all_users()
+        user_schema = UserJsonSchema(many=True)
+
+        return user_schema.dump(users).data
+
+    @jwt_required()
     def post(self):
-        args = user_parser.parse_args()
-        user = User(username=args.username, email=args.email, password=args.password).save()
-        user_url = fields.Url('user_blueprint.user_detail', absolute=True)
-        user_url = user_url.output(user_url.endpoint, {"username": user.username})
-        return user, 201, {"Location": user_url}
+        """
+        HTTP POST. Create an user.
+
+        :username: The user username
+        :password: The user password (plaintext)
+        :returns: The user id
+
+        """
+
+        parse = post_put_parser()
+        args = parse.parse_args()
+        username, password, email = args['username'], args['password'], args['email']
+
+        return create_user(username, password, email)
 
 
-class UserDetailResource(Resource):
+class UserAPI(Resource):
+    """An API to update or delete an user. """
 
-    @marshal_with(user_fields)
-    def get(self, username=None):
-        if username:
-            return User.query.filter_by(username=username).first()
+    @jwt_required()
+    def put(self, user_id):
+        """
+        HTTP PUT. Update an user.
+        :returns:
+        """
 
-    def patch(self, id):
-        user = User.query.get(id)
-        if not user:
-            abort(404, message="User does not exist")
-        return {"patch": "Implementation pending"}, 501
+        parse = post_put_parser()
+        parse.add_argument('user_id', type=str, location='json', required=True)
+        args = parse.parse_args()
 
-user_api.add_resource(UserListResource, '/', endpoint='user_list')
-user_api.add_resource(UserDetailResource, '<username>', endpoint='user_detail')
+        user_id = args['user_id']
+
+        return update_user(user_id)
+
+    @jwt_required()
+    def delete(self, user_id):
+        """
+        HTTP DELETE. Delete an user.
+        :returns:
+        """
+        return delete_user(user_id)
+
+
+user_blueprint = Blueprint('user_blueprint', __name__)
+user_api = CustomApi(user_blueprint)
+
+user_api.add_resource(UsersAPI, '/', endpoint='user_list')
+user_api.add_resource(UserAPI, '<user_id>', endpoint='user_detail')

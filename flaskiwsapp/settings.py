@@ -2,6 +2,8 @@
 """Application configuration"""
 import os
 
+import datetime
+
 
 class Config(object):
     """Base configuration"""
@@ -14,6 +16,9 @@ class Config(object):
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     BCRYPT_LOG_ROUNDS = 13
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_AUTH_URL_RULE = '/api/auth'
+    JWT_EXPIRATION_DELTA = datetime.timedelta(days=1)
+    API_VERSION = 'v1.0'
 
 
 class ProdConfig(Config):

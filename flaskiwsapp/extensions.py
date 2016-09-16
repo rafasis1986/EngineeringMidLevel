@@ -5,6 +5,8 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt import JWT
+from flask_marshmallow import Marshmallow
 
 
 # Brypt
@@ -13,6 +15,12 @@ bcrypt = Bcrypt()
 # Database/SQLAlchemy/Migrations
 db = SQLAlchemy()
 migrate = Migrate()
+
+# JWT
+jwt = JWT()
+
+# Marshmallow
+ma = Marshmallow()
 
 ###############################
 # Login manager configuration #
