@@ -4,13 +4,15 @@
 
 from flask import Flask, render_template
 from flask_admin import Admin
-from flaskiwsapp.api.v1.views.user import user_blueprint
-from flaskiwsapp.settings import ProdConfig
-from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, jwt, ma
-from flaskiwsapp.admin.views import MyModelView, MyAdminIndexView, UserView
+from flask_cors.extension import CORS
 
+from flaskiwsapp.admin.views import MyModelView, MyAdminIndexView, UserView
+from flaskiwsapp.api.auth.jwt import authenticate, identity, error_handler
+from flaskiwsapp.api.v1.views.user import user_blueprint
+from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
+from flaskiwsapp.settings import ProdConfig
 from flaskiwsapp.users.models import User, Role
-from flaskiwsapp.api.auth.jwt import set_jwt_handlers
+from flask_jwt import JWT
 
 
 def create_app(config_object=ProdConfig):
@@ -24,8 +26,6 @@ def create_app(config_object=ProdConfig):
     app.config.from_object(config_object)
     register_extensions(app)
     register_blueprints(app)
-    set_jwt_handlers(jwt)
-    # register_errorhandlers(app)
     init_admin(app)
     return app
 
@@ -36,8 +36,8 @@ def register_extensions(app):
     login_manager.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
-    jwt.init_app(app)
     ma.init_app(app)
+    CORS(app)
     return None
 
 
@@ -97,3 +97,9 @@ def parse_401_to_404(error_code):
         error_code = 404
 
     return error_code
+
+
+def register_token_auth(app):
+    token_auth = JWT(app, authenticate, identity)
+    token_auth.jwt_error_callback = error_handler
+    return token_auth

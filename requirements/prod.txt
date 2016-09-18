@@ -16,7 +16,7 @@ Flask-Bcrypt==0.7.1
 bcrypt==3.1.0
 cffi==1.7.0
 Flask-Login==0.3.2
-Flask-JWT==0.2.0
+Flask-JWT==0.3.2
 
 # Database
 SQLAlchemy==1.0.14

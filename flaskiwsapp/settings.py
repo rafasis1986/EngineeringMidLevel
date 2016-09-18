@@ -18,6 +18,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_AUTH_URL_RULE = '/api/auth'
     JWT_EXPIRATION_DELTA = datetime.timedelta(days=1)
+    JWT_AUTH_HEADER_PREFIX = 'Bearer'
     API_VERSION = 'v1.0'
 
 
