@@ -17,6 +17,7 @@ bcrypt==3.1.0
 cffi==1.7.0
 Flask-Login==0.3.2
 Flask-JWT==0.3.2
+Flask-Cors==3.0.2
 
 # Database
 SQLAlchemy==1.0.14
@@ -39,6 +40,12 @@ bpython==0.15
 
 # API
 Flask-RESTful==0.3.5
+Flask-Api==0.6.7
 
 # Send Email
 sendgrid==3.4.0
+
+# Serializer
+Flask-Marshmallow==0.7.0
+marshmallow-jsonapi==0.8.0
+inflection==0.3.1
