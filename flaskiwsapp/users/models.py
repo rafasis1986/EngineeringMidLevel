@@ -43,7 +43,6 @@ class User(UserMixin, SurrogatePK, Model):
     def __init__(self, username="", email="", password=None, **kwargs):
         """Create instance."""
         db.Model.__init__(self, username=username, email=email, **kwargs)
-        assert '@' in email, "Invalid email format"
         if password:
             self.set_password(password)
         else:

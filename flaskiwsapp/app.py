@@ -13,6 +13,7 @@ from flaskiwsapp.users.models import User, Role
 from flaskiwsapp.users.views import users_blueprint
 from flaskiwsapp.main.views import main_blueprint
 from flaskiwsapp.settings.prodConfig import ProdConfig
+from flaskiwsapp.auth.views import auth_blueprint
 
 
 def create_app(config_object=ProdConfig):
@@ -47,6 +48,7 @@ def register_blueprints(app):
     app.register_blueprint(user_blueprint, url_prefix='/api/{version}/users/'.format(version=version_api))
     app.register_blueprint(users_blueprint)
     app.register_blueprint(main_blueprint)
+    app.register_blueprint(auth_blueprint, subdomain='auth')
     return None
 
 

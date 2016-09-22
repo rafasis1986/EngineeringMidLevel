@@ -51,6 +51,7 @@ class UserView(MyModelView):
 
     def on_model_change(self, form, User, is_created):
         # Set password if password_dummy is set
+        # TODO: if_created send ccount to Auth0 else edit fields form.password_dummy.data form.password_dummy.email
         if (form.password_dummy.data != ''
                 and form.password_dummy.data is not None):
             User.set_password(form.password_dummy.data)

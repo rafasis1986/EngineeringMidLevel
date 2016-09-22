@@ -7,7 +7,7 @@ from flask_restful import Api
 from flask_jwt import JWTError
 from flask import jsonify
 import collections
-from flask_api.status import HTTP_500_INTERNAL_SERVER_ERROR
+
 
 
 class CustomApi(Api):
@@ -25,7 +25,7 @@ class CustomApi(Api):
         elif isinstance(e, Exception):
             return jsonify(
                 collections.OrderedDict([
-                    ('status_code', HTTP_500_INTERNAL_SERVER_ERROR),
+                    ('status_code', HTTP_500),
                     ('error', str(type(e))),
                     ('description', e.args[0]),
                 ])

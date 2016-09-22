@@ -17,3 +17,10 @@ class DevConfig(BaseConfig):
     # Put the db file in project root
     DB_PATH = os.path.join(BaseConfig.PROJECT_ROOT, DB_NAME)
     SQLALCHEMY_DATABASE_URI = 'sqlite:///{0}'.format(DB_PATH)
+    AUTH0_CALLBACK_URL = 'http://auth.test:5000/callback'
+    AUTH0_CLIENT_ID = 'zGHCpFfHqzObUpR006g3RvD4AOu0wJqF'
+    AUTH0_CLIENT_SECRET = '8oKf3JBCFExlt8eJzUpWdH_4B3kbfQx8tC_o0UcuwSTr6PbkfUr5QZOVYGz0LcHx'
+    AUTH0_DOMAIN = 'rtorres.auth0.com'
+    APP_URL = 'http://localhost:3000'
+    SERVER_NAME = 'test:5000'
+
