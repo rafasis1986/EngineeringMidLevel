@@ -7,14 +7,12 @@ from flask_admin import Admin
 from flask_cors.extension import CORS
 
 from flaskiwsapp.admin.views import MyModelView, MyAdminIndexView, UserView
-from flaskiwsapp.api.auth.jwt import authenticate, identity, error_handler
 from flaskiwsapp.api.v1.views.user import user_blueprint
 from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
-from flaskiwsapp.settings import ProdConfig
 from flaskiwsapp.users.models import User, Role
-from flask_jwt import JWT
 from flaskiwsapp.users.views import users_blueprint
 from flaskiwsapp.main.views import main_blueprint
+from flaskiwsapp.settings.prodConfig import ProdConfig
 
 
 def create_app(config_object=ProdConfig):

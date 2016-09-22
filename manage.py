@@ -9,13 +9,13 @@ from flask_script.commands import Clean, ShowUrls
 
 from flaskiwsapp.app import create_app
 from flaskiwsapp.database import db
-from flaskiwsapp.extensions import jwt
-from flaskiwsapp.settings import DevConfig, ProdConfig
 from flaskiwsapp.users.models import User
 from flaskiwsapp.snippets.helpers import register_token_auth
+from flaskiwsapp.settings.prodConfig import ProdConfig
+from flaskiwsapp.settings.devConfig import DevConfig
 
 
-CONFIG = ProdConfig if os.environ.get('ONEINOTE_ENV') == 'prod' else DevConfig
+CONFIG = ProdConfig if os.environ.get('IWS_BE') == 'prod' else DevConfig
 HERE = os.path.abspath(os.path.dirname(__file__))
 TEST_PATH = os.path.join(HERE, 'tests')
 
