@@ -13,6 +13,8 @@ from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
 from flaskiwsapp.settings import ProdConfig
 from flaskiwsapp.users.models import User, Role
 from flask_jwt import JWT
+from flaskiwsapp.users.views import users_blueprint
+from flaskiwsapp.main.views import main_blueprint
 
 
 def create_app(config_object=ProdConfig):
@@ -45,6 +47,8 @@ def register_blueprints(app):
     """Register Flask blueprints."""
     version_api = app.config['API_VERSION']
     app.register_blueprint(user_blueprint, url_prefix='/api/{version}/users/'.format(version=version_api))
+    app.register_blueprint(users_blueprint)
+    app.register_blueprint(main_blueprint)
     return None
 
 
@@ -97,9 +101,3 @@ def parse_401_to_404(error_code):
         error_code = 404
 
     return error_code
-
-
-def register_token_auth(app):
-    token_auth = JWT(app, authenticate, identity)
-    token_auth.jwt_error_callback = error_handler
-    return token_auth

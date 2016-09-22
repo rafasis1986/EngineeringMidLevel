@@ -7,11 +7,12 @@ from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Server, Shell
 from flask_script.commands import Clean, ShowUrls
 
-from flaskiwsapp.app import create_app, register_token_auth
+from flaskiwsapp.app import create_app
 from flaskiwsapp.database import db
+from flaskiwsapp.extensions import jwt
 from flaskiwsapp.settings import DevConfig, ProdConfig
 from flaskiwsapp.users.models import User
-from flaskiwsapp.extensions import jwt
+from flaskiwsapp.snippets.helpers import register_token_auth
 
 
 CONFIG = ProdConfig if os.environ.get('ONEINOTE_ENV') == 'prod' else DevConfig
