@@ -6,7 +6,7 @@ Contains basic routes and helper functions
 from flask import Blueprint
 
 from flaskiwsapp.extensions import login_manager
-from flaskiwsapp.users.models import User
+from flaskiwsapp.users.controllers import get_user_by_id
 
 
 main_blueprint = Blueprint('main', __name__, url_prefix='',
@@ -15,4 +15,4 @@ main_blueprint = Blueprint('main', __name__, url_prefix='',
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get_by_id(int(user_id))
+    return get_user_by_id(int(user_id))
