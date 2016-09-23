@@ -20,13 +20,12 @@ def is_an_available_email(email):
 
 def get_all_users():
     """
-    Get all users info. Accepts specify an username.
-
-    :username: a string object
+    Get all users info
+    
     :returns: a dict with the operation result
 
     """
-    # filter(User.username.like('%rafa%')).all()
+    # filter(User.email.like('%rafa%')).all()
     return User.query.all()
 
 
@@ -52,7 +51,7 @@ def get_user_by_id(user_id=None):
     :returns: a user object
     """
     try:
-        user = User.query.get(user_id).one()
+        user = User.query.get(user_id)
     except NoResultFound:
         raise UserDoesnotExistsException(user_id)
     return user
@@ -84,7 +83,8 @@ def update_user(user_id, kwargs):
 
     """
     try:
-        user = User.query.filter(User.id == user_id).update(**kwargs)
+        user = User.query.get(user_id)
+        user.update(**kwargs)
     except NoResultFound:
         raise UserDoesnotExistsException(user_id)
     except Exception as e:
@@ -110,7 +110,6 @@ def update_user_password(user_id, password):
     except Exception as e:
         raise BaseIWSExceptions()
     return user
-
 
 
 def delete_user(user_id):

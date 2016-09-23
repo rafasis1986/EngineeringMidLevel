@@ -11,7 +11,6 @@ from flaskiwsapp.settings.baseConfig import BaseConfig
 class UserJsonSchema(Schema):
     """A Schema for user model."""
     id = fields.Int()
-    username = fields.Str()
     email = fields.Str()
 
     class Meta:

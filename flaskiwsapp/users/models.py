@@ -34,11 +34,12 @@ class User(UserMixin, SurrogatePK, Model):
     email = Column(db.String(80), unique=True, nullable=False)
     password = Column(db.String(256), nullable=True)
     created_at = Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
-    first_name = Column(db.String(30), nullable=True)
-    last_name = Column(db.String(30), nullable=True)
+    first_name = Column(db.String(80), nullable=True)
+    last_name = Column(db.String(80), nullable=True)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
-    social = Column(db.String(30), default=BaseConfig.APP_NAME)
+    social = Column(db.String(80), default=BaseConfig.APP_NAME)
+    social_id = Column(db.String(80), default=BaseConfig.APP_NAME)
 
     def __init__(self, email="", password=None, **kwargs):
         """Create instance."""

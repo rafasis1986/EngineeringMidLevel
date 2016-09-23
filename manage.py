@@ -49,7 +49,7 @@ def create_admin():
         update_user(user.id, {'is_admin': True, 'active': True})
     except UserExistsException:
         print('Admin user already exists. Try to login with: \n',
-              'username: admin \n',
+              'email: admin \n',
               'password: admin')
 
 manager.add_command('server', Server())

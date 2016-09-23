@@ -41,7 +41,7 @@ class TestUser:
         user = UserFactory(password='myprecious')
         db.session.commit()
         assert bool(user.username)
-        assert bool(user.email)
+        assert bool(user.username)
         assert bool(user.created_at)
         assert user.is_admin is False
         assert user.active is True
