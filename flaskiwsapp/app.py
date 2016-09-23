@@ -7,10 +7,9 @@ from flask_admin import Admin
 from flask_cors.extension import CORS
 
 from flaskiwsapp.admin.views import MyModelView, MyAdminIndexView, UserView
-from flaskiwsapp.api.v1.views.user import user_blueprint
+from flaskiwsapp.api.v1.views.user import users_api_blueprint
 from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
 from flaskiwsapp.users.models import User, Role
-from flaskiwsapp.users.views import users_blueprint
 from flaskiwsapp.main.views import main_blueprint
 from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.auth.views import auth_blueprint
@@ -45,8 +44,7 @@ def register_extensions(app):
 def register_blueprints(app):
     """Register Flask blueprints."""
     version_api = app.config['API_VERSION']
-    app.register_blueprint(user_blueprint, url_prefix='/api/{version}/users/'.format(version=version_api))
-    app.register_blueprint(users_blueprint)
+    app.register_blueprint(users_api_blueprint, url_prefix='/api/{version}/users/'.format(version=version_api))
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint, subdomain='auth')
     return None

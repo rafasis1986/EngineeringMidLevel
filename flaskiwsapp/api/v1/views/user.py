@@ -13,7 +13,7 @@ def post_put_parser():
     :returns: flask.ext.restful.reqparse.RequestParser object
     """
     parse = reqparse.RequestParser()
-    parse.add_argument('username', type=str, location='json', required=True)
+    parse.add_argument('email', type=str, location='json', required=True)
     parse.add_argument('password', type=str, location='json', required=True)
 
     return parse
@@ -21,17 +21,6 @@ def post_put_parser():
 
 class UsersAPI(Resource):
     """An API to get or create users."""
-
-    def _post_put_parser(self):
-        """
-        Request parser for HTTP POST or PUT.
-        :returns: flask.ext.restful.reqparse.RequestParser object
-        """
-        parse = reqparse.RequestParser()
-        parse.add_argument('username', type=str, location='json', required=True)
-        parse.add_argument('password', type=str, location='json', required=True)
-
-        return parse
 
     @jwt_required()
     def get(self, username=None):
@@ -60,9 +49,9 @@ class UsersAPI(Resource):
 
         parse = post_put_parser()
         args = parse.parse_args()
-        username, password, email = args['username'], args['password'], args['email']
+        password, email = args['password'], args['email']
 
-        return create_user(username, password, email)
+        return create_user(password, email)
 
 
 class UserAPI(Resource):
@@ -92,8 +81,8 @@ class UserAPI(Resource):
         return delete_user(user_id)
 
 
-user_blueprint = Blueprint('user_blueprint', __name__)
-user_api = CustomApi(user_blueprint)
+users_api_blueprint = Blueprint('users_api_blueprint', __name__)
+user_api = CustomApi(users_api_blueprint)
 
 user_api.add_resource(UsersAPI, '/', endpoint='user_list')
 user_api.add_resource(UserAPI, '<user_id>', endpoint='user_detail')
