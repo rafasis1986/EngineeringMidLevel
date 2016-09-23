@@ -7,6 +7,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 from flaskiwsapp.database import Column, Model, SurrogatePK, db, \
     reference_col, relationship
 from flaskiwsapp.extensions import bcrypt
+from flaskiwsapp.settings.baseConfig import BaseConfig
 
 
 class Role(SurrogatePK, Model):
@@ -30,19 +31,18 @@ class User(UserMixin, SurrogatePK, Model):
     """A user of the app."""
 
     __tablename__ = 'users'
-    username = Column(db.String(80), unique=True, nullable=False)
     email = Column(db.String(80), unique=True, nullable=False)
-    #: The hashed password
     password = Column(db.String(256), nullable=True)
     created_at = Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     first_name = Column(db.String(30), nullable=True)
     last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
+    social = Column(db.String(30), default=BaseConfig.APP_NAME)
 
-    def __init__(self, username="", email="", password=None, **kwargs):
+    def __init__(self, email="", password=None, **kwargs):
         """Create instance."""
-        db.Model.__init__(self, username=username, email=email, **kwargs)
+        db.Model.__init__(self, email=email, **kwargs)
         if password:
             self.set_password(password)
         else:
