@@ -5,7 +5,6 @@ from flask.blueprints import Blueprint
 import requests
 
 import json
-from flask_admin.base import BaseView
 from flask.globals import current_app
 import datetime
 

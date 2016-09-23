@@ -13,6 +13,8 @@ from flaskiwsapp.users.models import User
 from flaskiwsapp.snippets.helpers import register_token_auth
 from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.settings.devConfig import DevConfig
+from flaskiwsapp.users.controllers import update_user, create_user
+from flaskiwsapp.snippets.exceptions.userExceptions import UserExistsException
 
 
 CONFIG = ProdConfig if os.environ.get('IWS_BE') == 'prod' else DevConfig
@@ -42,17 +44,13 @@ def test():
 @manager.command
 def create_admin():
     """Create a default admin user to get access to the admin panel."""
-    if (db.session.query(User) .filter(User.username == 'admin')
-            .first()) is None:
-        admin = User.create(username='admin', email="admin@example.com",
-                            is_admin=True, active=True)
-        admin.set_password('admin')
-        admin.save()
-    else:
+    try:
+        user = create_user('admin@example.com', 'admin')
+        update_user(user.id, {'is_admin': True, 'active': True})
+    except UserExistsException:
         print('Admin user already exists. Try to login with: \n',
               'username: admin \n',
               'password: admin')
-  
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))

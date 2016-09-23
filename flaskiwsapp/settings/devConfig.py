@@ -23,4 +23,3 @@ class DevConfig(BaseConfig):
     AUTH0_DOMAIN = 'rtorres.auth0.com'
     APP_URL = 'http://localhost:3000'
     SERVER_NAME = 'test:5000'
-

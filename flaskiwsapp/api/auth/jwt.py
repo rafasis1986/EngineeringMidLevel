@@ -1,13 +1,8 @@
-from functools import wraps
-
-from flask.helpers import make_response
-from flask_jwt import jwt_required, current_identity
-
-from flaskiwsapp.users.controllers import get_user_by_username, get_user_by_id
+from flaskiwsapp.users.controllers import get_user_by_id, get_user_by_email
 
 
-def authenticate(username, password):
-    user = get_user_by_username(username)
+def authenticate(email, password):
+    user = get_user_by_email(email)
     if user and user.check_password(password) and user.is_active:
         return user
 
