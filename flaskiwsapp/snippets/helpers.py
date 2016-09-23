@@ -5,7 +5,7 @@ Created on Sep 22, 2016
 '''
 from flask_jwt import JWT
 
-from flaskiwsapp.api.auth.jwt import authenticate, identity, error_handler
+from flaskiwsapp.auth.jwt import authenticate, identity, error_handler
 
 
 def register_token_auth(app):
