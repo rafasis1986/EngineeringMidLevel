@@ -3,7 +3,7 @@
 from flask import url_for, render_template
 
 from flaskiwsapp.users.forms import LoginForm
-from flaskiwsapp.users.models import User
+from flaskiwsapp.users.models.users import User
 
 
 class TestMain:

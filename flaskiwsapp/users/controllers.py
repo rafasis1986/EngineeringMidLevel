@@ -1,6 +1,6 @@
 from sqlalchemy.orm.exc import NoResultFound
 
-from flaskiwsapp.users.models import User
+from flaskiwsapp.users.models.users import User
 from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesnotExistsException,\
     UserExistsException
 from sqlalchemy.exc import IntegrityError

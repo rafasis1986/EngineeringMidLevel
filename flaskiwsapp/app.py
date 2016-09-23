@@ -6,10 +6,10 @@ from flask import Flask, render_template
 from flask_admin import Admin
 from flask_cors.extension import CORS
 
-from flaskiwsapp.admin.views import MyModelView, MyAdminIndexView, UserView
+from flaskiwsapp.admin.views import MyAdminIndexView, UserView
 from flaskiwsapp.api.v1.views.user import users_api_blueprint
 from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
-from flaskiwsapp.users.models import User, Role
+from flaskiwsapp.users.models.users import User
 from flaskiwsapp.main.views import main_blueprint
 from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.auth.views import auth_blueprint
@@ -68,7 +68,6 @@ def init_admin(app):
         base_template='my_master.html',
         endpoint="admin"
     )
-    admin.add_view(MyModelView(Role, db.session))
     admin.add_view(UserView(User, db.session))
 
     return None

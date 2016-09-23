@@ -1,30 +1,15 @@
-# -*- coding: utf-8 -*-
-"""User models."""
+'''
+Created on Sep 23, 2016
+
+@author: rtorres
+'''
 import datetime
 
 from flask_login import UserMixin, AnonymousUserMixin
 
-from flaskiwsapp.database import Column, Model, SurrogatePK, db, \
-    reference_col, relationship
+from flaskiwsapp.database import Column, Model, SurrogatePK, db
 from flaskiwsapp.extensions import bcrypt
 from flaskiwsapp.settings.baseConfig import BaseConfig
-
-
-class Role(SurrogatePK, Model):
-    """A role for a user."""
-
-    __tablename__ = 'roles'
-    name = Column(db.String(80), unique=True, nullable=False)
-    user_id = reference_col('users', nullable=True)
-    user = relationship('User', backref='roles')
-
-    def __init__(self, name="", **kwargs):
-        """Create instance."""
-        db.Model.__init__(self, name=name, **kwargs)
-
-    def __repr__(self):
-        """Represent instsance as a unique string."""
-        return '<Role({name})>'.format(name=self.name)
 
 
 class User(UserMixin, SurrogatePK, Model):
