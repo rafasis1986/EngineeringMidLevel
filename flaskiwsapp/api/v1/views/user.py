@@ -1,6 +1,6 @@
 from flask.blueprints import Blueprint
 from flask_restful import Resource, reqparse
-from flaskiwsapp.users.controllers import get_all_users, create_user, update_user, delete_user
+from flaskiwsapp.users.controllers import get_all_users, update_user, delete_user
 from flask_jwt import jwt_required
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.users.schema import UserJsonSchema
@@ -23,10 +23,10 @@ class UsersAPI(Resource):
     """An API to get or create users."""
 
     @jwt_required()
-    def get(self, username=None):
+    def get(self, email=None):
         """HTTP GET. Get one or all users.
 
-        :username: a string valid as object id.
+        :email: a string valid as object id.
         :returns: One or all available users.
 
         """
@@ -35,23 +35,6 @@ class UsersAPI(Resource):
         user_schema = UserJsonSchema(many=True)
 
         return user_schema.dump(users).data
-
-    @jwt_required()
-    def post(self):
-        """
-        HTTP POST. Create an user.
-
-        :username: The user username
-        :password: The user password (plaintext)
-        :returns: The user id
-
-        """
-
-        parse = post_put_parser()
-        args = parse.parse_args()
-        password, email = args['password'], args['email']
-
-        return create_user(password, email)
 
 
 class UserAPI(Resource):

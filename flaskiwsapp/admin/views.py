@@ -1,19 +1,18 @@
 """Admin views."""
 from flask import redirect, url_for, abort
-from flask_admin import expose
+from flask_admin import expose, helpers
 from flask_admin.contrib import sqla
 from wtforms import PasswordField
 
 import flask_admin as admin
 import flask_login as login
-from flaskiwsapp.auth.snippets.dbconections import auth0_user_signup,\
+from flaskiwsapp.admin.forms import AdminLoginForm
+from flaskiwsapp.auth.snippets.authExceptions import AuthBaseException
+from flaskiwsapp.auth.snippets.dbconections import auth0_user_signup, \
     auth0_user_change_password
-from flaskiwsapp.auth.snippets.authExceptions import AuthSignUpException,\
-    AuthUpdateException
-from flaskiwsapp.users.controllers import update_user_password
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
-from flask.helpers import flash
-from _locale import gettext
+from flaskiwsapp.users.validators import get_user
+from flask.globals import request
 
 
 # Create customized model view class
@@ -60,45 +59,21 @@ class UserView(MyModelView):
         # Set password if password_dummy is set
         try:
             if (form.password_dummy.data != '' and form.password_dummy.data is not None):
-                user = update_user_password(User.id, form.password_dummy.data)
-        except BaseIWSExceptions as e:
-            return False
-
-    def create_model(self, form):
-        """
-            Create model from form.
- 
-            :param form:
-                Form instance
-        """
-        try:
-            auth0_user_signup(form.email.data, form.password_dummy.data)
-        except AuthSignUpException:
+                User.set_password(form.password_dummy.data)
+                if is_created:
+                    auth0_user_signup(form.email.data, form.password_dummy.data)
+                else:
+                    auth0_user_change_password(form.email.data, form.password_dummy.data)
+        except (BaseIWSExceptions, AuthBaseException):
             self.session.rollback()
-            return False
-        return MyModelView.create_model(self, form)
- 
-    def update_model(self, form, model):
-        """
-            Update model from form.
- 
-            :param form:
-                Form instance
-            :param model:
-                Model instance
-        """
-        try:
-            auth0_user_change_password(form.email.data, form.password_dummy.data)
-        except AuthUpdateException:
-            self.session.rollback()
-            return False
-        return MyModelView.update_model(self, form, model)
 
 
 # Create customized index view class taht handles login & registration
 class MyAdminIndexView(admin.AdminIndexView):
-    """Flask Admin view. Only Users with the 'is_admin' flag
-    have access."""
+    """
+    Flask Admin view. Only Users with the 'is_admin' flag
+    have access.
+    """
 
     @expose('/')
     def index(self):
@@ -110,12 +85,11 @@ class MyAdminIndexView(admin.AdminIndexView):
     def login_view(self):
         # handle user login
         form = AdminLoginForm(request.form)
-
         if helpers.validate_form_on_submit(form):
             user = get_user(form)
             login.login_user(user)
-
         if login.current_user.is_authenticated:
+
             return redirect(url_for('.index'))
 
         self._template_args['form'] = form
