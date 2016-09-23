@@ -1,18 +1,21 @@
 from sqlalchemy.orm.exc import NoResultFound
 
 from flaskiwsapp.users.models import User
+from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesnotExistsException,\
+    UserExistsException
+from sqlalchemy.exc import IntegrityError
+from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 
 
-def is_an_available_username(username):
+def is_an_available_email(email):
     """
-    Verify if an username is available.
+    Verify if an email is available.
 
-    :username: a string object
+    :email: a string object
     :returns: True or False
 
     """
-
-    return True if User.query.filter(User.username == username).count() else False
+    return True if User.query.filter(User.email == email).count() else False
 
 
 def get_all_users():
@@ -24,25 +27,20 @@ def get_all_users():
 
     """
     # filter(User.username.like('%rafa%')).all()
-    users = User.query.all()
-
-    return users
+    return User.query.all()
 
 
-def get_user_by_username(username=None):
+def get_user_by_email(email=None):
     """
-    Get user info by username
+    Get user info by email
 
-    :username: a string object
+    :email: a string object
     :returns: a user object
     """
-    user = None
     try:
-        user = User.query.filter(User.username == username).one()
+        user = User.query.filter(User.email == email).one()
     except NoResultFound:
-        # TODO: log exceptions
-        pass
-
+        raise UserDoesnotExistsException(email)
     return user
 
 
@@ -50,60 +48,69 @@ def get_user_by_id(user_id=None):
     """
     Get user info by id
 
-    :username: a string object
+    :user_id: a integer object
     :returns: a user object
     """
-    user = None
     try:
-        user = User.query.filter(User.id == user_id).one()
+        user = User.query.get(user_id).one()
     except NoResultFound:
-        # TODO: log exceptions
-        pass
-
+        raise UserDoesnotExistsException(user_id)
     return user
 
 
-def create_user(username, password, email):
+def create_user(email, password):
     """
     Creates an user.
 
-    :username: a string object
+    :email: a str object. Indicates an update.
     :password: a string object (plaintext)
-    :user_id: a str object. Indicates an update.
     :returns: a dict with the operation result
-
     """
-
-    if is_an_available_username(username) is False:
-        # TODO: create custom exceptions
-        return {'error': 'The user {!r} already exists.'.format(username)}
-
+    user = None
     try:
-        User(username=username, password=password, email=email).save()
-    except Exception as e:
-        return {'error': 'Error during the operation: {}'.format(e)}
+        user = User(password=password, email=email).save()
+    except IntegrityError:
+        raise UserExistsException(email)
+    return user
 
-    return {'created': 'Created the user {!r}.'.format(username)}
 
-
-def update_user(user_id):
+def update_user(user_id, kwargs):
     """
     Creates an user.
 
-    :username: a string object
-    :password: a string object (plaintext)
-    :user_id: a str object. Indicates an update.
-    :returns: a dict with the operation result
+    :user_id: a integer object. Indicates an update.
+    :kwargs: dictionary with the fields keys and values
+    :returns: user updated
 
     """
-
     try:
-        # TOTO: create update user function
-        pass
+        user = User.query.filter(User.id == user_id).update(**kwargs)
+    except NoResultFound:
+        raise UserDoesnotExistsException(user_id)
     except Exception as e:
-        return {'error': 'Error during the operation: {}'.format(e)}
+        raise BaseIWSExceptions()
+    return user
 
-    return {'created': 'Update the user {!r}.'.format(user_id)}
+
+def update_user_password(user_id, password):
+    """
+    Creates an user.
+
+    :user_id: a integer object. Indicates an update.
+    :password: string object
+    :returns: user updated
+
+    """
+    try:
+        user = User.query.get(user_id)
+        user.set_password(password)
+        user.save()
+    except NoResultFound:
+        raise UserDoesnotExistsException(user_id)
+    except Exception as e:
+        raise BaseIWSExceptions()
+    return user
+
 
 
 def delete_user(user_id):
@@ -111,12 +118,24 @@ def delete_user(user_id):
     Delete an user by user id.
 
     :user_id: a int object
-    :returns: a dict with the operation result
-
+    :returns: boolean
     """
     try:
-        user = User.query.get(user_id)
-        user.delete()
+        User.query.get(user_id).delete()
     except NoResultFound:
-        return {'error': 'Invalid user id.'}
-    return {'deleted': 'User deleted'}
+        raise UserDoesnotExistsException(user_id)
+    return True
+
+
+def delete_user_by_email(email):
+    """
+    Delete an user by email.
+
+    :email: a string object
+    :returns: boolean
+    """
+    try:
+        User.query.filter(User.email == email).one().delete()
+    except NoResultFound:
+        raise UserDoesnotExistsException(user_id)
+    return True
