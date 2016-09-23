@@ -7,7 +7,7 @@ from flask_api.status import HTTP_500_INTERNAL_SERVER_ERROR,\
     HTTP_503_SERVICE_UNAVAILABLE
 
 
-class BaseExceptions(Exception):
+class BaseIWSExceptions(Exception):
     status_code = HTTP_500_INTERNAL_SERVER_ERROR
     message = 'Base exception to iws be'
 
@@ -22,6 +22,6 @@ class TechnicalException(BaseException):
 class LogicalException(BaseException):
 
     def __init__(self):
-        super(TechnicalException, self).__init__()
+        super(LogicalException, self).__init__()
         self.message = 'Logical exception to iws be'
         self.status_code = HTTP_503_SERVICE_UNAVAILABLE
