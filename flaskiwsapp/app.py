@@ -6,7 +6,7 @@ from flask import Flask, render_template
 from flask_admin import Admin
 from flask_cors.extension import CORS
 
-from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView
+from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, MyModelView
 from flaskiwsapp.api.v1.views.user import users_api_blueprint
 from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
 from flaskiwsapp.users.models.user import User
@@ -14,6 +14,7 @@ from flaskiwsapp.main.views import main_blueprint
 from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.auth.views import auth_blueprint
 from flaskiwsapp.users.models.client import Client
+from flaskiwsapp.projects.models.target import Target
 
 
 def create_app(config_object=ProdConfig):
@@ -71,6 +72,7 @@ def init_admin(app):
     )
     admin.add_view(UserView(User, db.session))
     admin.add_view(ClientView(Client, db.session))
+    admin.add_view(MyModelView(Target, db.session))
     return None
 
 
