@@ -1,6 +1,6 @@
 from flask.blueprints import Blueprint
 from flask_restful import Resource, reqparse
-from flaskiwsapp.users.controllers import get_all_users, update_user, delete_user
+from flaskiwsapp.users.controllers.userControllers import get_all_users, update_user, delete_user
 from flask_jwt import jwt_required
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.users.schema import UserJsonSchema

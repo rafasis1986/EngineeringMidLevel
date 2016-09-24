@@ -4,7 +4,7 @@ Created on Sep 22, 2016
 @author: rtorres
 '''
 from wtforms import validators
-from flaskiwsapp.users.controllers import get_user_by_email
+from flaskiwsapp.users.controllers.userControllers import get_user_by_email
 from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesnotExistsException
 
 

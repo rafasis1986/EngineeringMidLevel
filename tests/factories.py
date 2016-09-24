@@ -5,6 +5,7 @@ from factory.alchemy import SQLAlchemyModelFactory
 
 from flaskiwsapp.database import db
 from flaskiwsapp.users.models.user import User
+from flaskiwsapp.users.models.client import Client
 
 
 class BaseFactory(SQLAlchemyModelFactory):
@@ -28,3 +29,15 @@ class UserFactory(BaseFactory):
     class Meta:
         """Factory configuration"""
         model = User
+
+
+class ClientFactory(BaseFactory):
+    """Client factory."""
+
+    email = Sequence(lambda n: 'user{0}@example.com'.format(n))
+    password = PostGenerationMethodCall('set_password', 'example')
+    active = True
+
+    class Meta:
+        """Factory configuration"""
+        model = Client

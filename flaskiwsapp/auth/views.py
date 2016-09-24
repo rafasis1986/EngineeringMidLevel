@@ -7,12 +7,13 @@ import requests
 import json
 from flask.globals import current_app
 import datetime
-from flaskiwsapp.users.controllers import is_an_available_email, create_user,\
+from flaskiwsapp.users.controllers.userControllers import is_an_available_email, create_user,\
     update_user, get_user_by_email
 from flaskiwsapp.snippets.utils import split_name
 
 
 auth_blueprint = Blueprint('auth',__name__,)
+
 
 @auth_blueprint.route('/')
 def login():

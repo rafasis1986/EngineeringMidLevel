@@ -136,5 +136,5 @@ def delete_user_by_email(email):
     try:
         User.query.filter(User.email == email).one().delete()
     except NoResultFound:
-        raise UserDoesnotExistsException(user_id)
+        raise UserDoesnotExistsException(email)
     return True

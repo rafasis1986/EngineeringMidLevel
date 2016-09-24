@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 """Model unit tests."""
 import datetime
-
 import pytest
-from flask_login import AnonymousUserMixin
 
-from flaskiwsapp.users.models.user import User
 from flaskiwsapp.main.views import load_user
 
 from .factories import UserFactory
-from flaskiwsapp.users.controllers import get_user_by_id, create_user
+from flaskiwsapp.users.controllers.userControllers import get_user_by_id, create_user
 
 
 @pytest.mark.usefixtures('db')
@@ -18,16 +15,14 @@ class TestUser:
 
     def test_get_by_id(self):
         """Get user by ID."""
-        user = User('foo@bar.com')
-        user.save()
+        user = create_user('foo@bar.com')
 
         retrieved = get_user_by_id(user.id)
         assert retrieved == user
 
     def test_created_at_defaults_to_datetime(self):
         """Test creation date."""
-        user = User(email='foo@bar.com')
-        user.save()
+        user = create_user(email='foo@bar.com')
         assert bool(user.created_at)
         assert isinstance(user.created_at, datetime.datetime)
 
@@ -81,20 +76,9 @@ class TestUser:
         user.save()
         assert user.is_authenticated is True
 
-    def test_anon_user_is_authenticated_is_false(self):
-        """Tests if user is instance of AnonymousUserMixin."""
-
-        class AnonUser(User, AnonymousUserMixin):
-            """Anonymous user."""
-
-        anon_user = AnonUser(email="anon@anon.com")
-        anon_user.save()
-        assert anon_user.is_authenticated is False
-
 
 @pytest.mark.usefixtures('db')
 def test_load_user():
     """Test load_user function."""
-    user = User(email="ttester@test.com")
-    user.save()
+    user = create_user(email="ttester@test.com")
     assert user == load_user(user.get_id())

@@ -13,7 +13,7 @@ from flaskiwsapp.users.models.user import User
 from flaskiwsapp.snippets.helpers import register_token_auth
 from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.settings.devConfig import DevConfig
-from flaskiwsapp.users.controllers import update_user, create_user
+from flaskiwsapp.users.controllers.userControllers import update_user, create_user
 from flaskiwsapp.snippets.exceptions.userExceptions import UserExistsException
 
 

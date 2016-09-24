@@ -1,4 +1,4 @@
-from flaskiwsapp.users.controllers import get_user_by_id, get_user_by_email
+from flaskiwsapp.users.controllers.userControllers import get_user_by_id, get_user_by_email
 from flaskiwsapp.snippets.customApi import DUMMY_ERROR_CODE
 from flask_jwt import JWTError
 from flask import jsonify

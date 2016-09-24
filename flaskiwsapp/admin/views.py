@@ -99,3 +99,20 @@ class MyAdminIndexView(admin.AdminIndexView):
     def logout_view(self):
         login.logout_user()
         return redirect(url_for('.login_view'))
+
+
+class ClientView(MyModelView):
+    """Flask client model view."""
+    create_modal = True
+    edit_modal = True
+
+    # Remove password field from form
+    form_excluded_columns = ('password', 'active')
+
+    # Set the form fields to use
+    form_columns = (
+        'email',
+        'first_name',
+        'last_name',
+        'created_at'
+    )
