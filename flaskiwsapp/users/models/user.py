@@ -3,26 +3,19 @@ Created on Sep 23, 2016
 
 @author: rtorres
 '''
-import datetime
-
-from flask_login import UserMixin, AnonymousUserMixin
+from flask_login import AnonymousUserMixin
 
 from flaskiwsapp.database import Column, Model, SurrogatePK, db
 from flaskiwsapp.extensions import bcrypt
 from flaskiwsapp.settings.baseConfig import BaseConfig
+from flaskiwsapp.users.customMixins import UserCustomMixion
 
 
-class User(UserMixin, SurrogatePK, Model):
+class User(UserCustomMixion, SurrogatePK, Model):
     """A user of the app."""
 
     __tablename__ = 'users'
-    email = Column(db.String(80), unique=True, nullable=False)
-    password = Column(db.Binary(60), nullable=True)
-    created_at = Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
-    first_name = Column(db.String(80), nullable=True)
-    last_name = Column(db.String(80), nullable=True)
-    active = Column(db.Boolean(), default=False)
-    is_admin = Column(db.Boolean(), default=False)
+    admin = Column(db.Boolean(), default=False)
     social = Column(db.String(80), default=BaseConfig.APP_NAME)
     social_id = Column(db.String(80), default=BaseConfig.APP_NAME)
 
@@ -72,3 +65,7 @@ class User(UserMixin, SurrogatePK, Model):
     def is_anonymous(self):
         """False, as anonymous users aren't supported."""
         return False
+
+    @property
+    def is_admin(self):
+        return self.admin

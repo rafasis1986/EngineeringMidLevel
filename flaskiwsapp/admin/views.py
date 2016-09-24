@@ -52,7 +52,7 @@ class UserView(MyModelView):
         'password_dummy',
         'created_at',
         'active',
-        'is_admin'
+        'admin'
     )
 
     def on_model_change(self, form, User, is_created):

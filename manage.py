@@ -46,7 +46,7 @@ def create_admin():
     """Create a default admin user to get access to the admin panel."""
     try:
         user = create_user('admin@example.com', 'admin')
-        update_user(user.id, {'is_admin': True, 'active': True})
+        update_user(user.id, {'admin': True, 'active': True})
     except UserExistsException:
         print('Admin user already exists. Try to login with: \n',
               'email: admin \n',
