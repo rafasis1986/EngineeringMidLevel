@@ -5,6 +5,7 @@ Created on Sep 22, 2016
 '''
 from flaskiwsapp.settings.baseConfig import BaseConfig
 
+
 class ProdConfig(BaseConfig):
     """Production configuration"""
     ENV = 'prod'

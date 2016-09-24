@@ -9,7 +9,7 @@ from flask_script.commands import Clean, ShowUrls
 
 from flaskiwsapp.app import create_app
 from flaskiwsapp.database import db
-from flaskiwsapp.users.models.users import User
+from flaskiwsapp.users.models.user import User
 from flaskiwsapp.snippets.helpers import register_token_auth
 from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.settings.devConfig import DevConfig

@@ -5,7 +5,7 @@ import datetime
 import pytest
 from flask_login import AnonymousUserMixin
 
-from flaskiwsapp.users.models.users import Role, User
+from flaskiwsapp.users.models.user import Role, User
 from flaskiwsapp.main.views import load_user
 
 from .factories import UserFactory

@@ -11,6 +11,10 @@ class BaseIWSExceptions(Exception):
     status_code = HTTP_500_INTERNAL_SERVER_ERROR
     message = 'Base exception to iws be'
 
+    def __init__(self, arg=None):
+        if arg:
+            self.message = arg
+
 
 class TechnicalException(BaseException):
 

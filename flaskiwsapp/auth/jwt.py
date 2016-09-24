@@ -9,7 +9,7 @@ from flask_api.status import HTTP_500_INTERNAL_SERVER_ERROR
 def authenticate(email, password):
     try:
         user = get_user_by_email(email)
-        if user and user.check_password(password) and user.is_active:
+        if user and user.check_password(password.encode('utf-8')) and user.is_active:
             return user
     except UserDoesnotExistsException as e:
         raise JWTError(error=str(type(e)), description=e.message)

@@ -9,7 +9,7 @@ from flask_cors.extension import CORS
 from flaskiwsapp.admin.views import MyAdminIndexView, UserView
 from flaskiwsapp.api.v1.views.user import users_api_blueprint
 from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
-from flaskiwsapp.users.models.users import User
+from flaskiwsapp.users.models.user import User
 from flaskiwsapp.main.views import main_blueprint
 from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.auth.views import auth_blueprint

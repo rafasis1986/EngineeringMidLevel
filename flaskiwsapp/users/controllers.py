@@ -1,6 +1,6 @@
 from sqlalchemy.orm.exc import NoResultFound
 
-from flaskiwsapp.users.models.users import User
+from flaskiwsapp.users.models.user import User
 from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesnotExistsException,\
     UserExistsException
 from sqlalchemy.exc import IntegrityError
@@ -21,7 +21,7 @@ def is_an_available_email(email):
 def get_all_users():
     """
     Get all users info
-    
+
     :returns: a dict with the operation result
 
     """
@@ -88,7 +88,7 @@ def update_user(user_id, kwargs):
     except NoResultFound:
         raise UserDoesnotExistsException(user_id)
     except Exception as e:
-        raise BaseIWSExceptions()
+        raise BaseIWSExceptions(arg=e.arg[0])
     return user
 
 

@@ -17,7 +17,7 @@ class User(UserMixin, SurrogatePK, Model):
 
     __tablename__ = 'users'
     email = Column(db.String(80), unique=True, nullable=False)
-    password = Column(db.String(256), nullable=True)
+    password = Column(db.Binary(60), nullable=True)
     created_at = Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     first_name = Column(db.String(80), nullable=True)
     last_name = Column(db.String(80), nullable=True)
