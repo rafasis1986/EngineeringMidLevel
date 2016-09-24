@@ -68,6 +68,34 @@ class UserView(MyModelView):
             self.session.rollback()
 
 
+class ClientView(MyModelView):
+    """Flask client model view."""
+    create_modal = True
+    edit_modal = True
+    form_excluded_columns = ('password', 'active')
+    form_columns = (
+        'email',
+        'first_name',
+        'last_name',
+        'created_at'
+    )
+
+
+class TargetView(MyModelView):
+    """Flask target model view."""
+    create_modal = True
+    edit_modal = True
+    form_columns = (
+        'title',
+        'description',
+        'client',
+        'client_priority',
+        'product_area',
+        'ticket_url',
+        'target_date'
+    )
+
+
 # Create customized index view class taht handles login & registration
 class MyAdminIndexView(admin.AdminIndexView):
     """
@@ -99,20 +127,3 @@ class MyAdminIndexView(admin.AdminIndexView):
     def logout_view(self):
         login.logout_user()
         return redirect(url_for('.login_view'))
-
-
-class ClientView(MyModelView):
-    """Flask client model view."""
-    create_modal = True
-    edit_modal = True
-
-    # Remove password field from form
-    form_excluded_columns = ('password', 'active')
-
-    # Set the form fields to use
-    form_columns = (
-        'email',
-        'first_name',
-        'last_name',
-        'created_at'
-    )
