@@ -5,8 +5,6 @@ Created on Sep 24, 2016
 '''
 from flaskiwsapp.database import SurrogatePK, Model, db, reference_col, relationship, Column
 from sqlalchemy.dialects.postgresql.base import ENUM
-from sqlalchemy_utils.types.url import URLType
-from flask_validator.constraints.internet import ValidateURL
 
 
 AREAS = ('Policies', 'Billing', 'Claims', 'Reports')
