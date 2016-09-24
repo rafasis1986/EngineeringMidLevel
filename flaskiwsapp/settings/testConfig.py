@@ -10,6 +10,6 @@ class TestConfig(BaseConfig):
     """Test configuratin"""
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/iws_test'
     BCRYPT_LOG_ROUNDS = 4  # For faster tests; needs at keast 4 to avoid "Value Error: Invalid rounds"
     WTF_CSRF_ENABLED = False  # Allows form testing
