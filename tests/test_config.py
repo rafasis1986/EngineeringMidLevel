@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """Test configs."""
 from flaskiwsapp.app import create_app
-from flaskiwsapp.settings import DevConfig, ProdConfig
+from flaskiwsapp.settings.devConfig import DevConfig
+from flaskiwsapp.settings.prodConfig import ProdConfig
 
 
 def test_production_config():
