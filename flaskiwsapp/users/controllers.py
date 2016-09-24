@@ -57,7 +57,7 @@ def get_user_by_id(user_id=None):
     return user
 
 
-def create_user(email, password):
+def create_user(email, password=None):
     """
     Creates an user.
 

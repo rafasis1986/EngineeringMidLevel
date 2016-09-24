@@ -5,10 +5,11 @@ import datetime
 import pytest
 from flask_login import AnonymousUserMixin
 
-from flaskiwsapp.users.models.user import Role, User
+from flaskiwsapp.users.models.user import User
 from flaskiwsapp.main.views import load_user
 
 from .factories import UserFactory
+from flaskiwsapp.users.controllers import get_user_by_id, create_user
 
 
 @pytest.mark.usefixtures('db')
@@ -17,31 +18,29 @@ class TestUser:
 
     def test_get_by_id(self):
         """Get user by ID."""
-        user = User('foo', 'foo@bar.com')
+        user = User('foo@bar.com')
         user.save()
 
-        retrieved = User.get_by_id(user.id)
+        retrieved = get_user_by_id(user.id)
         assert retrieved == user
 
     def test_created_at_defaults_to_datetime(self):
         """Test creation date."""
-        user = User(username='foo', email='foo@bar.com')
+        user = User(email='foo@bar.com')
         user.save()
         assert bool(user.created_at)
         assert isinstance(user.created_at, datetime.datetime)
 
     def test_password_is_nullable(self):
         """Test null password."""
-        user = User(username='foo', email='foo@bar.com')
-        user.save()
+        user = create_user(email='foo@bar.com')
         assert user.password is None
 
     def test_factory(self, db):
         """Test user factory."""
         user = UserFactory(password='myprecious')
         db.session.commit()
-        assert bool(user.username)
-        assert bool(user.username)
+        assert bool(user.email)
         assert bool(user.created_at)
         assert user.is_admin is False
         assert user.active is True
@@ -49,8 +48,7 @@ class TestUser:
 
     def test_check_password(self):
         """Test check password."""
-        user = User.create(username='foo', email='foo@bar.com',
-                           password='foobarbaz123')
+        user = create_user(email='foo@bar.com', password='foobarbaz123')
         assert user.check_password('foobarbaz123') is True
         assert user.check_password('lajfd') is False
 
@@ -58,15 +56,6 @@ class TestUser:
         """User full name."""
         user = UserFactory(first_name='Foo', last_name='Bar')
         assert user.full_name == 'Foo Bar'
-
-    def test_roles(self):
-        """Add a role to a user."""
-        role = Role(name='admin')
-        role.save()
-        user = UserFactory()
-        user.roles.append(role)
-        user.save()
-        assert role in user.roles
 
     def test_string_representation(self):
         """Test string representation."""
@@ -98,24 +87,14 @@ class TestUser:
         class AnonUser(User, AnonymousUserMixin):
             """Anonymous user."""
 
-        anon_user = AnonUser(email="anon@anon.com", username="anon")
+        anon_user = AnonUser(email="anon@anon.com")
         anon_user.save()
         assert anon_user.is_authenticated is False
 
 
 @pytest.mark.usefixtures('db')
-class TestRole:
-    """Role tests."""
-
-    def test_role_representation(self):
-        role = Role(name='user')
-        role.save()
-        assert str(role) == '<Role(user)>'
-
-
-@pytest.mark.usefixtures('db')
 def test_load_user():
     """Test load_user function."""
-    user = User(email="ttester@test.com", username="ttester")
+    user = User(email="ttester@test.com")
     user.save()
     assert user == load_user(user.get_id())

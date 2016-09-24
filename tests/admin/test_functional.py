@@ -9,7 +9,7 @@ class TestAuth:
     def test_admin_index_redirects_to_admin_login(self, testapp):
         # Go to /admin/ page
         res = testapp.get(url_for('admin.index')).follow()
-        assert 'Username' in res
+        assert 'Email' in res
         assert 'Password' in res
 
     def test_admins_can_login_to_admin_views(self, testapp, admin):
@@ -21,7 +21,7 @@ class TestAuth:
         form = res.form
 
         # Enter admin data
-        form['username'] = admin.username
+        form['email'] = admin.email
         form['password'] = 'admin'
 
         res = form.submit().follow()
@@ -37,7 +37,7 @@ class TestAuth:
         form = res.form
 
         # Enter user data
-        form['username'] = user.username
+        form['email'] = user.email
         form['password'] = 'myprecious'
 
         res = form.submit()
@@ -61,7 +61,7 @@ class TestAuth:
         form = res.form
 
         # Enter admin data
-        form['username'] = admin.username
+        form['email'] = admin.email
         form['password'] = 'admin'
 
         res = form.submit().follow()
@@ -70,5 +70,5 @@ class TestAuth:
         res = testapp.get(url_for('admin.logout_view')).follow()
         print(res.text)
 
-        assert 'Username' in res
+        assert 'Email' in res
         assert 'Password' in res
