@@ -92,26 +92,6 @@ def update_client(client_id, kwargs):
     return client
 
 
-def update_client_password(client_id, password):
-    """
-    Creates an client.
-
-    :client_id: a integer object. Indicates an update.
-    :password: string object
-    :returns: client updated
-
-    """
-    try:
-        client = Client.query.get(client_id)
-        client.set_password(password)
-        client.save()
-    except NoResultFound:
-        raise ClientDoesnotExistsException(client_id)
-    except Exception as e:
-        raise BaseIWSExceptions(arg=e.arg[0])
-    return client
-
-
 def delete_client(client_id):
     """
     Delete an client by client id.
