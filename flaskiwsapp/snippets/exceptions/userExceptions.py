@@ -18,3 +18,10 @@ class UserDoesnotExistsException(LogicalException):
     def __init__(self, argument=None):
         super(UserDoesnotExistsException, self).__init__()
         self.message = 'The user %s does not exists' % argument
+
+
+class UserInactiveException(LogicalException):
+
+    def __init__(self, argument=None):
+        super(UserInactiveException, self).__init__()
+        self.message = 'The user %s has benn inactive' % argument
