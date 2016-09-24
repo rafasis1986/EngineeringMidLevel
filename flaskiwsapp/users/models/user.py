@@ -6,7 +6,6 @@ Created on Sep 23, 2016
 from flask_login import AnonymousUserMixin
 
 from flaskiwsapp.database import Column, Model, SurrogatePK, db
-from flaskiwsapp.extensions import bcrypt
 from flaskiwsapp.settings.baseConfig import BaseConfig
 from flaskiwsapp.users.customMixins import UserCustomMixion
 
@@ -31,27 +30,9 @@ class User(UserCustomMixion, SurrogatePK, Model):
         """String representation of the user. Shows the users email address."""
         return self.email
 
-    def set_password(self, password):
-        """Set password"""
-        self.password = bcrypt.generate_password_hash(password)
-
-    def check_password(self, value):
-        """Check password."""
-        return bcrypt.check_password_hash(self.password, value)
-
     def get_id(self):
         """Return the email address to satisfy Flask-Login's requirements"""
         return self.id
-
-    @property
-    def full_name(self):
-        """Full user name."""
-        return "{0} {1}".format(self.first_name, self.last_name)
-
-    @property
-    def is_active(self):
-        """Active or non active user (required by flask-login)"""
-        return self.active
 
     @property
     def is_authenticated(self):
@@ -60,11 +41,6 @@ class User(UserCustomMixion, SurrogatePK, Model):
             return False
         else:
             return True
-
-    @property
-    def is_anonymous(self):
-        """False, as anonymous users aren't supported."""
-        return False
 
     @property
     def is_admin(self):
