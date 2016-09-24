@@ -2,16 +2,18 @@ from flaskiwsapp.users.controllers import get_user_by_id, get_user_by_email
 from flaskiwsapp.snippets.customApi import DUMMY_ERROR_CODE
 from flask_jwt import JWTError
 from flask import jsonify
-from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesnotExistsException
+from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesnotExistsException, UserInactiveException
 from flask_api.status import HTTP_500_INTERNAL_SERVER_ERROR
 
 
 def authenticate(email, password):
     try:
         user = get_user_by_email(email)
-        if user and user.check_password(password.encode('utf-8')) and user.is_active:
+        if user and user.check_password(password.encode('utf-8')):
+            if not user.is_active:
+                raise UserInactiveException(email)
             return user
-    except UserDoesnotExistsException as e:
+    except (UserDoesnotExistsException, UserInactiveException) as e:
         raise JWTError(error=str(type(e)), description=e.message)
 
 
