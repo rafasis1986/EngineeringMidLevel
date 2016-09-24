@@ -10,7 +10,7 @@ from flaskiwsapp.users.customMixins import UserCustomMixion
 class Client(UserCustomMixion, SurrogatePK, Model):
     """A user of the app."""
 
-    __tablename__ = 'client'
+    __tablename__ = 'clients'
 
     def __init__(self, email="", password=None, **kwargs):
         """Create instance."""
