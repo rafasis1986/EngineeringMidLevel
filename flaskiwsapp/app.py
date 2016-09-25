@@ -16,6 +16,7 @@ from flaskiwsapp.auth.views import auth_blueprint
 from flaskiwsapp.users.models.client import Client
 from flaskiwsapp.projects.models.target import Target
 from flaskiwsapp.api.v1.views.clientViews import clients_api_blueprint
+from flaskiwsapp.api.v1.views.targetViews import targets_api_blueprint
 
 
 def create_app(config_object=ProdConfig):
@@ -48,13 +49,13 @@ def register_blueprints(app):
     """Register Flask blueprints."""
     version_api = app.config['API_VERSION']
     app.register_blueprint(users_api_blueprint, url_prefix='/{version}/users/'.format(version=version_api),
-                           subdomain='api')
+                           endpoint='api')
     app.register_blueprint(clients_api_blueprint, url_prefix='/{version}/clients/'.format(version=version_api),
-                           subdomain='api')
-    app.register_blueprint(clients_api_blueprint, url_prefix='/{version}/targets/'.format(version=version_api),
-                           subdomain='api')
+                           endpoint='api')
+    app.register_blueprint(targets_api_blueprint, url_prefix='/{version}/targets/'.format(version=version_api),
+                           endpoint='api')
     app.register_blueprint(main_blueprint)
-    app.register_blueprint(auth_blueprint, subdomain='auth')
+    app.register_blueprint(auth_blueprint, url_prefix='/auth/')
     return None
 
 

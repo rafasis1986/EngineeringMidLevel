@@ -24,7 +24,7 @@ def login():
     return render_template('auth/login.html', env=env)
 
 
-@auth_blueprint.route('/callback/')
+@auth_blueprint.route('callback/')
 def call_back():
     code = request.args.get('code')
     json_header = {'content-type': 'application/json'}
@@ -46,8 +46,8 @@ def call_back():
         user = create_user(user_info['email'], None)
     else:
         user = get_user_by_email(user_info.get('email'))
-    social = user_info['identities']['connection']
-    social_id = user_info['identities']['user_id']
+    social = user_info['identities'][0]['connection']
+    social_id = user_info['identities'][0]['user_id']
     if 'google' in social:
         first_name = user_info['given_name']
         last_name = user_info['family_name']

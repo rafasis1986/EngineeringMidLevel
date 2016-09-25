@@ -1,9 +1,13 @@
 from flask.blueprints import Blueprint
 from flask_restful import Resource, reqparse
 from flaskiwsapp.users.controllers.userControllers import get_all_users, update_user, delete_user
-from flask_jwt import jwt_required
+from flask_jwt import jwt_required, current_identity
 from flaskiwsapp.snippets.customApi import CustomApi
-from flaskiwsapp.api.v1.schemas.userSchemas import UserJsonSchema
+from flaskiwsapp.api.v1.schemas.userSchemas import UserJsonSchema, BaseUserJsonSchema
+from flask.json import jsonify
+
+users_api_blueprint = Blueprint('users_api_blueprint', __name__)
+user_api = CustomApi(users_api_blueprint)
 
 
 def post_put_parser():
@@ -32,7 +36,7 @@ class UsersAPI(Resource):
         """
 
         users = get_all_users()
-        user_schema = UserJsonSchema(many=True)
+        user_schema = BaseUserJsonSchema(many=True)
 
         return user_schema.dump(users).data
 
@@ -64,8 +68,14 @@ class UserAPI(Resource):
         return delete_user(user_id)
 
 
-users_api_blueprint = Blueprint('users_api_blueprint', __name__)
-user_api = CustomApi(users_api_blueprint)
+@users_api_blueprint.route('me/')
+@jwt_required()
+def me():
+    user = current_identity
+    user_schema = UserJsonSchema()
+    response = user_schema.dump(user).data
+    return jsonify(response)
+
 
 user_api.add_resource(UsersAPI, '/', endpoint='user_list')
 user_api.add_resource(UserAPI, '<user_id>', endpoint='user_detail')
