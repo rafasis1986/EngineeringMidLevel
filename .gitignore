@@ -416,3 +416,5 @@ migrations/*
 
 # FE branch
 flaskiwsapp
+app/services/
+app/widgets/

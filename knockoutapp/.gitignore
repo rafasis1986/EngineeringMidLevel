@@ -1,0 +1,21 @@
+# Created by https://www.gitignore.io/api/typings,node
+
+### Typings ###
+## Ignore downloaded typings
+typings
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Dependency directories
+node_modules
+
+node_modules/
+coverage/
+bower_components/
+dist/
+typings/
+app/constants/*.js*
+app/services/*.js*
+app/viewmodels/*.js*
+app/interfaces/*.js*

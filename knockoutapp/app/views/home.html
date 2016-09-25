@@ -1,0 +1,37 @@
+<section>
+    <div class="page-header">
+        <h1>
+        Home
+        <small>iws-test</small>
+    </h1>
+    </div>
+
+   <h3>Get Started</h3>
+
+    <div class="container">
+        <!-- Example row of columns -->
+        <div class="row" data-bind="foreach: features">
+            <div class="col-md-5 well" >
+                <h2 data-bind="text: title"></h2>
+                <p data-bind="html: content"></p>
+                <span data-bind="if:$data.arguments && $data.arguments.length > 0">
+                    <hr>
+                    <strong>Arguments</strong>
+                    <ul data-bind="foreach:$data.arguments">
+                    <li data-bind="text:$data"></li>        
+                </ul>
+                </span>
+                <span data-bind="if:$data.options && $data.options.length > 0">
+                    <hr>
+                    <strong>Options</strong>
+                    <ul data-bind="foreach:$data.options">
+                    <li data-bind="text:$data"></li>        
+                </ul>
+                </span>
+
+                    <p data-bind="if:details"><a class="btn btn-default" href="#" role="button" data-bind="click: $root.viewDetail">View details »</a></p>
+            </div>
+        </div>
+    </div>
+    
+</section>
