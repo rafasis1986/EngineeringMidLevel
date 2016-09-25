@@ -15,7 +15,7 @@ def is_an_available_email(email):
     :returns: True or False
 
     """
-    return True if User.query.filter(User.email == email).count() else False
+    return False if User.query.filter(User.email == email).count() else True
 
 
 def get_all_users():
