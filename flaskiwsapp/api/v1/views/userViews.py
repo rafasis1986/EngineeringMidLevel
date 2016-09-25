@@ -1,10 +1,12 @@
 from flask.blueprints import Blueprint
-from flask_restful import Resource, reqparse
-from flaskiwsapp.users.controllers.userControllers import get_all_users, update_user, delete_user
-from flask_jwt import jwt_required, current_identity
-from flaskiwsapp.snippets.customApi import CustomApi
-from flaskiwsapp.api.v1.schemas.userSchemas import UserJsonSchema, BaseUserJsonSchema
 from flask.json import jsonify
+from flask_jwt import jwt_required, current_identity
+from flask_restful import Resource, reqparse
+
+from flaskiwsapp.api.v1.schemas.userSchemas import UserJsonSchema, BaseUserJsonSchema
+from flaskiwsapp.snippets.customApi import CustomApi
+from flaskiwsapp.users.controllers.userControllers import get_all_users, update_user, delete_user
+
 
 users_api_blueprint = Blueprint('users_api_blueprint', __name__)
 user_api = CustomApi(users_api_blueprint)

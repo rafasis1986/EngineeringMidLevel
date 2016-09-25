@@ -1,18 +1,18 @@
-import base64
 
-from flask import request, session, redirect, render_template
-from flask.blueprints import Blueprint
+import datetime
+import json
 import requests
 
-import json
+from flask import request, redirect, render_template
+from flask.blueprints import Blueprint
 from flask.globals import current_app
-import datetime
-from flaskiwsapp.users.controllers.userControllers import is_an_available_email, create_user,\
-    update_user, get_user_by_email
+from flask_jwt import jwt, _default_jwt_payload_handler, _default_jwt_encode_handler
 from flaskiwsapp.snippets.utils import split_name
+from flaskiwsapp.users.controllers.userControllers import is_an_available_email, create_user, \
+    update_user, get_user_by_email
 
 
-auth_blueprint = Blueprint('auth',__name__,)
+auth_blueprint = Blueprint('auth', __name__,)
 
 
 @auth_blueprint.route('/')
@@ -53,12 +53,13 @@ def call_back():
         last_name = user_info['family_name']
     else:
         first_name, last_name = split_name(user_info['name'])
-    update_user(user.id, {'social': social,
-                          'social_id': social_id,
-                          'first_name': first_name,
-                          'last_name': last_name})
+    user = update_user(user.id, {'social': social,
+                                 'social_id': social_id,
+                                 'first_name': first_name,
+                                 'last_name': last_name})
+    token = _default_jwt_encode_handler(user)
     response_url = current_app.config['APP_URL']
     response = redirect(response_url, code=302)
     expire_date = datetime.datetime.now() + current_app.config['JWT_EXPIRATION_DELTA']
-    response.set_cookie('Authorization', value='123', expires=expire_date)
+    response.set_cookie('Authorization', value=token, expires=expire_date)
     return response
