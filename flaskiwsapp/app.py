@@ -4,7 +4,6 @@
 
 from flask import Flask, render_template
 from flask_admin import Admin
-from flask_cors.extension import CORS
 
 from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, TargetView
 from flaskiwsapp.api.v1.views.userViews import users_api_blueprint
@@ -41,20 +40,15 @@ def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
-    CORS(app)
     return None
 
 
 def register_blueprints(app):
     """Register Flask blueprints."""
-    version_api = app.config['API_VERSION']
-    app.register_blueprint(users_api_blueprint, url_prefix='/{version}/users/'.format(version=version_api),
-                           endpoint='api')
-    app.register_blueprint(clients_api_blueprint, url_prefix='/{version}/clients/'.format(version=version_api),
-                           endpoint='api')
-    app.register_blueprint(targets_api_blueprint, url_prefix='/{version}/targets/'.format(version=version_api),
-                           endpoint='api')
-    app.register_blueprint(main_blueprint)
+    url_api = '/api/%s/{api}/' % app.config['API_VERSION']
+    app.register_blueprint(users_api_blueprint, url_prefix=url_api.format(api='users'))
+    app.register_blueprint(clients_api_blueprint, url_prefix=url_api.format(api='clients'))
+    app.register_blueprint(targets_api_blueprint, url_prefix=url_api.format(api='targets'))
     app.register_blueprint(auth_blueprint, url_prefix='/auth/')
     return None
 
