@@ -4,6 +4,7 @@ Created on Sep 22, 2016
 @author: rtorres
 '''
 from flask_api.status import HTTP_500_INTERNAL_SERVER_ERROR
+from flask_jwt import JWTError
 
 
 class AuthBaseException(Exception):
@@ -18,8 +19,12 @@ class AuthSignUpException(AuthBaseException):
         self.message = argument if argument else self.message
 
 
-class AuthUpdateException(Exception):
+class AuthUpdateException(AuthBaseException):
 
     def __init__(self, argument=None):
         super(AuthUpdateException, self).__init__()
         self.message = argument if argument else self.message
+
+
+class AuthDoesNotHavePermissionException(JWTError):
+    pass
