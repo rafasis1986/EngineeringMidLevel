@@ -6,7 +6,6 @@ Created on Sep 16, 2016
 from flask_restful import Api
 from flask_jwt import JWTError
 from flask import jsonify
-import collections
 from flask_api.status import HTTP_501_NOT_IMPLEMENTED
 
 DUMMY_ERROR_CODE = '1000'

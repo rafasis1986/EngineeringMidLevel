@@ -13,10 +13,10 @@ class UserExistsException(LogicalException):
         self.message = 'The user %s already exists' % argument
 
 
-class UserDoesnotExistsException(LogicalException):
+class UserDoesNotExistsException(LogicalException):
 
     def __init__(self, argument=None):
-        super(UserDoesnotExistsException, self).__init__()
+        super(UserDoesNotExistsException, self).__init__()
         self.message = 'The user %s does not exists' % argument
 
 
