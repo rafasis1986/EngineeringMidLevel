@@ -3,7 +3,7 @@ import * as system from 'durandal/system';
 import * as app from 'durandal/app';
 import {IFeature} from 'homeInterfaces';
 import {setAuthToken} from "../services/authServices";
-import {Constant} from "../env/constants";
+import {Constant} from "../constants/enviroment";
 import {getMeInfo} from "../services/userServices";
 import {IUser} from "userInterfaces";
 import {UrlSingleton} from "../singletons/urlSingleton";

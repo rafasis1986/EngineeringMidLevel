@@ -1,7 +1,7 @@
 import * as Q from 'q';
 import {IUser} from 'userInterfaces';
 import {UrlSingleton} from '../singletons/urlSingleton';
-import {Constant} from '../env/constants';
+import {Constant} from '../constants/enviroment';
 import {AuthSingleton} from '../singletons/authSingleton';
 import Deferred = Q.Deferred;
 

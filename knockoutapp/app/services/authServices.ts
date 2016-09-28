@@ -4,7 +4,7 @@
 import {getCookie} from './utils';
 
 import {AuthSingleton} from '../singletons/authSingleton';
-import {Constant} from '../env/constants';
+import {Constant} from '../constants/enviroment';
 
 
 export function setAuthToken (): boolean {

@@ -3,7 +3,7 @@
  */
 import {getCookie} from './utils';
 
-import {Constant} from '../env/constants';
+import {Constant} from '../constants/enviroment';
 
 
 export function getEnv(): string {

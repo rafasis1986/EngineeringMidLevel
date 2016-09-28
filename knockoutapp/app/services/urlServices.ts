@@ -1,6 +1,6 @@
 import {getCookie} from './utils';
 import {UrlSingleton} from '../singletons/urlSingleton';
-import {Constant} from '../env/constants';
+import {Constant} from '../constants/enviroment';
 import {getEnv} from './envServices';
 
 
