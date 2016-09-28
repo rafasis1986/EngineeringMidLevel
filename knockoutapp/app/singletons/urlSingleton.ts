@@ -1,6 +1,4 @@
-/**
- * Created by rtorres on 9/27/16.
- */
+import {Constant} from '../constants/enviroment';
 
 class UrlSingleton {
 
@@ -12,7 +10,7 @@ class UrlSingleton {
 
     private _api_requests: string = null;
 
-    private  _api_base: string = null;
+    private _api_base: string = null;
 
     constructor() {
         if(UrlSingleton._instance){
@@ -31,6 +29,11 @@ class UrlSingleton {
 
     public getApiBase(): string {
         return this._api_base;
+    }
+
+
+    public getAuthUrl(): string {
+        return this._api_base + Constant.AUTH_PATH;
     }
 
     public setApiUsers(value: string): void{

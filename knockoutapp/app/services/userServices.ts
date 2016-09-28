@@ -14,11 +14,14 @@ export function getMeInfo():  Promise<IUser> {
         'headers': {
             'Authorization': AuthSingleton.getInstance().getToken()
         }};
+    console.log('me');
     $.ajax(ajaxSettings)
-        .done((response) => {
+        .then((response: any) => {
+            console.log(response);
             user.email = response.data.attributes.email;
             user.first_name = response.data.attributes.first_name;
             user.last_name = response.data.attributes.last_name;
+            user.full_name = response.data.attributes.full_name;
             deferred.resolve(user);
         })
         .fail((error: Error) => {

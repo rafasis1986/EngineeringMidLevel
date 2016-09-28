@@ -1,23 +1,27 @@
+import * as Q from 'q';
 import {getCookie} from './utils';
 import {UrlSingleton} from '../singletons/urlSingleton';
 import {Constant} from '../constants/enviroment';
 import {getEnv} from './envServices';
+import Deferred = Q.Deferred;
 
-
-export function setApiUrls (): boolean {
-    let url: string,
+export function setApiUrls (): Promise<boolean> {
+    let deferred: Deferred<boolean> = Q.defer<boolean>(),
+        url: string,
         urls: string[],
         response: boolean = false,
         urlObject: any = {},
         singleton: any = UrlSingleton.getInstance();
-    
+
     url = getCookie(Constant.URLS_LABEL);
-    if (getEnv() === Constant.PRODUCTION_ENV) {
-        singleton.setApiBase(Constant.PRODUCTION_BE_URL);
+    if (! url) {
+        deferred.reject('Missed Api Urls');
     } else {
-        singleton.setApiBase(Constant.DEVELOPMENT_BE_URL);
-    }
-    if (url) {
+        if (getEnv() === Constant.PRODUCTION_ENV) {
+            singleton.setApiBase(Constant.PRODUCTION_BE_URL);
+        } else {
+            singleton.setApiBase(Constant.DEVELOPMENT_BE_URL);
+        }
         url = url.replace('\"', '');
         urls = url.replace('"', '').split(Constant.CHARACTER_PARTITION);
         if (urls.length > 0) {
@@ -36,8 +40,11 @@ export function setApiUrls (): boolean {
             if (urlObject[Constant.REQUESTS_API]) {
                 singleton.setApiRequests(urlObject[Constant.REQUESTS_API]);
             }
-            response = true;
+            deferred.resolve(true);
+        } else {
+            deferred.reject('Missed the api Urls.')
         }
     }
-    return response;
+
+    return deferred.promise;
 }

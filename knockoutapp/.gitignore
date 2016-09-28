@@ -14,3 +14,4 @@ app/constants/*.js*
 app/services/*.js*
 app/viewmodels/*.js*
 app/interfaces/*.js*
+app/singletons/*.js*

@@ -4,6 +4,7 @@
 
 export class Constant {
     public static get AUTH_LABEL():string { return 'Authorization'; };
+    public static get AUTH_PATH():string { return '/auth'; };
     public static get CHARACTER_PARTITION():string { return '\\073'; };
     public static get CLIENTS_API():string { return 'client_list'; };
     public static get DEVELOPMENT_ENV():string { return 'dev'; };
