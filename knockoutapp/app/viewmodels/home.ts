@@ -5,8 +5,8 @@ import {IFeature} from 'homeInterfaces';
 import {setAuthToken} from '../services/authServices';
 import {getMeInfo} from '../services/userServices';
 import {IUser} from 'userInterfaces';
-import {UrlSingleton} from '../singletons/urlSingleton';
 import {setApiUrls} from '../services/urlServices';
+import {Constant} from '../constants/enviroment';
 
 
 class Home {
@@ -23,12 +23,12 @@ class Home {
             return getMeInfo();
         }).then((user: IUser) => {
             this.full_name(user.full_name);
+            this.features(this.loadFeatures());
+            this.isLoading(false);
         }).catch((error: Error) => {
             console.log(error);
-            window.location.assign(UrlSingleton.getInstance().getAuthUrl());
+            window.location.assign(Constant.DEFAULT_AUTH_URL);
         });
-        this.features(this.loadFeatures());
-        this.isLoading(false);
     }
 
     public loadFeatures(): IFeature[] {
