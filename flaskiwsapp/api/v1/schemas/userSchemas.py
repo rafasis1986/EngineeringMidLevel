@@ -4,7 +4,7 @@ Created on Sep 16, 2016
 @author: rtorres
 '''
 from marshmallow_jsonapi import Schema, fields
-from inflection import dasherize
+from inflection import underscore
 from flaskiwsapp.settings.baseConfig import BaseConfig
 
 
@@ -17,10 +17,10 @@ class BaseUserJsonSchema(Schema):
     class Meta:
         type_ = 'user'
         strict = True
-        inflect = dasherize
-        self_url = '/api/%s/users/{id}' % BaseConfig.API_VERSION
+        inflect = underscore
+        self_url = '/%s/users/{id}' % BaseConfig.API_VERSION
         self_url_kwargs = {'id': '<id>'}
-        self_url_many = '/api/%s/users/' % BaseConfig.API_VERSION
+        self_url_many = '/%s/users/' % BaseConfig.API_VERSION
 
 
 class UserJsonSchema(BaseUserJsonSchema):
