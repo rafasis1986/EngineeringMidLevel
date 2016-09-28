@@ -1,9 +1,13 @@
 import * as ko from 'knockout';
 import * as system from 'durandal/system';
 import * as app from 'durandal/app';
-import {getAuthToken} from '../services/auth';
-import {getAuthUrl} from '../constants/index';
 import {IFeature} from 'homeInterfaces';
+import {setAuthToken} from "../services/authServices";
+import {Constant} from "../env/constants";
+import {getMeInfo} from "../services/userServices";
+import {IUser} from "userInterfaces";
+import {UrlSingleton} from "../singletons/urlSingleton";
+import {setApiUrls} from "../services/urlServices";
 
 /**
  * Home VM
@@ -14,19 +18,26 @@ import {IFeature} from 'homeInterfaces';
 class Home {
     public features: any = ko.observableArray();
     public isLoading: any = ko.observable();
+    public email: any = ko.observable();
+    public first_name: any = ko.observable();
 
     private messageTitle: string = 'Application Message';
     private message: string = 'Hello from your application';
 
     public activate() {
+        let aux: boolean;
         this.isLoading(true);
-        let token: string = getAuthToken();
-        if (! token) {
-            window.location.assign(getAuthUrl());
+        if(! setApiUrls() || ! setAuthToken()){
+            window.location.assign(UrlSingleton.getInstance().getApiBase());
         }
-        alert(token);
 
+        getMeInfo().then((user:IUser) => {
+            this.email(user.email);
+        }).catch((error: Error) => {
+            console.log(error);
+        });
         return this.loadFeatures().then((data) => {
+
             this.features(data);
             this.isLoading(false);
         });
@@ -41,7 +52,7 @@ class Home {
     }
 
     public loadFeatures(): JQueryDeferred<IFeature[]> {
-        return system.defer(function(dfd) {
+        return system.defer((dfd: any) => {
             setTimeout(function() {
                 dfd.resolve([
                     {
@@ -62,7 +73,6 @@ class Home {
         });
     }
 }
-
 
 
 export = Home;
