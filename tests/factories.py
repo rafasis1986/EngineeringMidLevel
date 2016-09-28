@@ -31,6 +31,11 @@ class UserFactory(BaseFactory):
         model = User
 
 
+class AdminFactory(UserFactory):
+    """Admin factory."""
+    admin = True
+
+
 class ClientFactory(BaseFactory):
     """Client factory."""
 

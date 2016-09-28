@@ -7,9 +7,9 @@ from webtest import TestApp
 from flaskiwsapp.app import create_app
 from flaskiwsapp.database import db as _db
 
-
 from .factories import UserFactory
 from flaskiwsapp.settings.testConfig import TestConfig
+from flaskiwsapp.snippets.helpers import register_token_auth
 
 
 @pytest.yield_fixture(scope='function')
@@ -49,6 +49,14 @@ def db(app):
     # Explicitly close DB connection
     _db.session.close()
     _db.drop_all()
+
+
+@pytest.yield_fixture(scope='function')
+def jwt(app):
+    """A JWT for the tests."""
+    _jwt = register_token_auth(app)
+
+    yield _jwt
 
 
 @pytest.fixture
