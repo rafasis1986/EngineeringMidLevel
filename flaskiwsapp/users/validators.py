@@ -5,14 +5,14 @@ Created on Sep 22, 2016
 '''
 from wtforms import validators
 from flaskiwsapp.users.controllers.userControllers import get_user_by_email
-from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesnotExistsException
+from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesNotExistsException
 
 
 def get_user(form):
     """Wrapper to get user info from a form  by the email of the form.data."""
     try:
         return (get_user_by_email(form.email.data))
-    except UserDoesnotExistsException as e:
+    except UserDoesNotExistsException as e:
         raise validators.ValidationError(e.message)
 
 
