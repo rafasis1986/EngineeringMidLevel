@@ -1,5 +1,9 @@
 $(document).ready(function() {
      var lock = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, {
+    	 	theme: {
+    	 		logo: '/static/images/test-icon.png',
+    	 		primaryColor: ' blue'
+    	 	},
     	    additionalSignUpFields: [{
     	        name: "address",
     	        placeholder: "enter your address",
