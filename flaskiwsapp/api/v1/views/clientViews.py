@@ -1,9 +1,13 @@
 from flask.blueprints import Blueprint
 from flask_restful import Resource
-from flaskiwsapp.users.controllers.clientControllers import get_all_clients, delete_client
+from flaskiwsapp.users.controllers.clientControllers import get_all_clients, delete_client, get_client_by_id
 from flask_jwt import jwt_required
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.api.v1.schemas.clientSchemas import ClientJsonSchema
+
+
+clients_api_blueprint = Blueprint('clients_api_blueprint', __name__)
+client_api = CustomApi(clients_api_blueprint)
 
 
 class ClientsAPI(Resource):
@@ -35,9 +39,15 @@ class ClientAPI(Resource):
         """
         return delete_client(client_id)
 
+    @jwt_required()
+    def get(self, client_id):
+        """
+        HTTP DELETE. Delete an client.
+        :returns:
+        """
+        client = get_client_by_id(client_id)
+        return ClientJsonSchema().dump(client).data
 
-clients_api_blueprint = Blueprint('clients_api_blueprint', __name__)
-client_api = CustomApi(clients_api_blueprint)
 
-client_api.add_resource(ClientsAPI, '/', endpoint='client_list')
-client_api.add_resource(ClientAPI, '<client_id>', endpoint='client_detail')
+client_api.add_resource(ClientsAPI, '/', endpoint='list')
+client_api.add_resource(ClientAPI, '<client_id>', endpoint='detail')

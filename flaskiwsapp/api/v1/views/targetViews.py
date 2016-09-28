@@ -4,19 +4,8 @@ from flask_jwt import jwt_required
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.api.v1.schemas.targetSchemas import TargetJsonSchema
 
-
-def post_put_parser():
-    """
-    Request parser for HTTP POST or PUT.
-
-    :returns: flask.ext.restful.reqparse.RequestParser object
-    """
-    parse = reqparse.RequestParser()
-    parse.add_argument('email', type=str, location='json', required=True)
-    parse.add_argument('password', type=str, location='json', required=True)
-
-    return parse
-
+targets_api_blueprint = Blueprint('targets_api_blueprint', __name__)
+target_api = CustomApi(targets_api_blueprint)
 
 class TargetsAPI(Resource):
     """An API to get or create targets."""
@@ -63,8 +52,5 @@ class TargetAPI(Resource):
         return delete_target(target_id)
 
 
-targets_api_blueprint = Blueprint('targets_api_blueprint', __name__)
-target_api = CustomApi(targets_api_blueprint)
-
-target_api.add_resource(TargetsAPI, '/', endpoint='target_list')
-target_api.add_resource(TargetAPI, '<target_id>', endpoint='target_detail')
+target_api.add_resource(TargetsAPI, '/', endpoint='list')
+target_api.add_resource(TargetAPI, '<target_id>', endpoint='detail')

@@ -1,15 +1,17 @@
 from flask.blueprints import Blueprint
-from flask.json import jsonify
+from flask_cors.extension import CORS
 from flask_jwt import jwt_required, current_identity
 from flask_restful import Resource, reqparse
 
 from flaskiwsapp.api.v1.schemas.userSchemas import UserJsonSchema, BaseUserJsonSchema
 from flaskiwsapp.snippets.customApi import CustomApi
-from flaskiwsapp.users.controllers.userControllers import get_all_users, update_user, delete_user
+from flaskiwsapp.users.controllers.userControllers import get_all_users
 
 
 users_api_blueprint = Blueprint('users_api_blueprint', __name__)
-user_api = CustomApi(users_api_blueprint)
+cors = CORS(users_api_blueprint)
+
+users_api = CustomApi(users_api_blueprint)
 
 
 def post_put_parser():
@@ -36,48 +38,22 @@ class UsersAPI(Resource):
         :returns: One or all available users.
 
         """
-
         users = get_all_users()
         user_schema = BaseUserJsonSchema(many=True)
-
         return user_schema.dump(users).data
 
 
-class UserAPI(Resource):
-    """An API to update or delete an user. """
+class UserMeAPI(Resource):
+    """An API to use me info """
 
     @jwt_required()
-    def put(self, user_id):
+    def get(self):
         """
-        HTTP PUT. Update an user.
+        HTTP GET. show myself info
         :returns:
         """
-
-        parse = post_put_parser()
-        parse.add_argument('user_id', type=str, location='json', required=True)
-        args = parse.parse_args()
-
-        user_id = args['user_id']
-
-        return update_user(user_id)
-
-    @jwt_required()
-    def delete(self, user_id):
-        """
-        HTTP DELETE. Delete an user.
-        :returns:
-        """
-        return delete_user(user_id)
+        return UserJsonSchema().dump(current_identity).data
 
 
-@users_api_blueprint.route('me/')
-@jwt_required()
-def me():
-    user = current_identity
-    user_schema = UserJsonSchema()
-    response = user_schema.dump(user).data
-    return jsonify(response)
-
-
-user_api.add_resource(UsersAPI, '/', endpoint='user_list')
-user_api.add_resource(UserAPI, '<user_id>', endpoint='user_detail')
+users_api.add_resource(UsersAPI, '/', endpoint='list')
+users_api.add_resource(UserMeAPI, 'me', endpoint='me')
