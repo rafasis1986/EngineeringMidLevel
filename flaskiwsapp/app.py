@@ -5,7 +5,7 @@
 from flask import Flask, render_template
 from flask_admin import Admin
 
-from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, TargetView
+from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, RequestView
 from flaskiwsapp.api.v1.views.userViews import users_api_blueprint
 from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
 from flaskiwsapp.users.models.user import User
@@ -13,9 +13,9 @@ from flaskiwsapp.main.views import main_blueprint
 from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.auth.views import auth_blueprint
 from flaskiwsapp.users.models.client import Client
-from flaskiwsapp.projects.models.target import Target
+from flaskiwsapp.projects.models.request import Request
 from flaskiwsapp.api.v1.views.clientViews import clients_api_blueprint
-from flaskiwsapp.api.v1.views.targetViews import targets_api_blueprint
+from flaskiwsapp.api.v1.views.requestViews import requests_api_blueprint
 
 
 def create_app(config_object=ProdConfig):
@@ -48,7 +48,7 @@ def register_blueprints(app):
     url_api = '/api/%s/{api}/' % app.config['API_VERSION']
     app.register_blueprint(users_api_blueprint, url_prefix=url_api.format(api='users'))
     app.register_blueprint(clients_api_blueprint, url_prefix=url_api.format(api='clients'))
-    app.register_blueprint(targets_api_blueprint, url_prefix=url_api.format(api='targets'))
+    app.register_blueprint(requests_api_blueprint, url_prefix=url_api.format(api='requests'))
     app.register_blueprint(auth_blueprint, url_prefix='/auth/')
     return None
 
@@ -73,7 +73,7 @@ def init_admin(app):
     )
     admin.add_view(UserView(User, db.session))
     admin.add_view(ClientView(Client, db.session))
-    admin.add_view(TargetView(Target, db.session))
+    admin.add_view(RequestView(Request, db.session))
     return None
 
 

@@ -3,13 +3,14 @@ Created on Sep 24, 2016
 
 @author: rtorres
 '''
-from marshmallow_jsonapi import Schema, fields
 from inflection import underscore
+from marshmallow_jsonapi import Schema, fields
+
 from flaskiwsapp.settings.baseConfig import BaseConfig
 
 
-class TargetJsonSchema(Schema):
-    """A Schema for target model."""
+class RequestJsonSchema(Schema):
+    """A Schema for request model."""
     id = fields.Int()
     title = fields.Str()
     description = fields.Str()
@@ -18,9 +19,9 @@ class TargetJsonSchema(Schema):
     ticket_url = fields.Str()
 
     class Meta:
-        type_ = 'target'
+        type_ = 'request'
         strict = True
         inflect = underscore
-        self_url = '/api/%s/targets/{id}' % BaseConfig.API_VERSION
+        self_url = '/api/%s/requests/{id}' % BaseConfig.API_VERSION
         self_url_kwargs = {'id': '<id>'}
-        self_url_many = '/api/%s/targets/' % BaseConfig.API_VERSION
+        self_url_many = '/api/%s/requests/' % BaseConfig.API_VERSION

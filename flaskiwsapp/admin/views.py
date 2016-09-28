@@ -55,11 +55,11 @@ class UserView(MyModelView):
         'admin'
     )
 
-    def on_model_change(self, form, User, is_created):
+    def after_model_change(self, form, model, is_created):
         # Set password if password_dummy is set
         try:
             if (form.password_dummy.data != '' and form.password_dummy.data is not None):
-                User.set_password(form.password_dummy.data)
+                model.set_password(form.password_dummy.data)
                 if is_created:
                     auth0_user_signup(form.email.data, form.password_dummy.data)
                 else:
@@ -81,8 +81,8 @@ class ClientView(MyModelView):
     )
 
 
-class TargetView(MyModelView):
-    """Flask target model view."""
+class RequestView(MyModelView):
+    """Flask Request model view."""
     create_modal = True
     edit_modal = True
     form_columns = (
@@ -94,6 +94,11 @@ class TargetView(MyModelView):
         'ticket_url',
         'target_date'
     )
+
+    def after_model_change(self, form, model, is_created):
+        MyModelView.after_model_change(self, form, model, is_created)
+        # @TODO: UPDATE client_priority
+        pass
 
 
 # Create customized index view class taht handles login & registration
