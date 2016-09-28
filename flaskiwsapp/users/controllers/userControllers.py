@@ -1,7 +1,7 @@
 from sqlalchemy.orm.exc import NoResultFound
 
 from flaskiwsapp.users.models.user import User
-from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesnotExistsException,\
+from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesNotExistsException,\
     UserExistsException
 from sqlalchemy.exc import IntegrityError
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
@@ -39,7 +39,7 @@ def get_user_by_email(email=None):
     try:
         user = User.query.filter(User.email == email).one()
     except NoResultFound:
-        raise UserDoesnotExistsException(email)
+        raise UserDoesNotExistsException(email)
     return user
 
 
@@ -53,7 +53,7 @@ def get_user_by_id(user_id=None):
     try:
         user = User.query.get(user_id)
     except NoResultFound:
-        raise UserDoesnotExistsException(user_id)
+        raise UserDoesNotExistsException(user_id)
     return user
 
 
@@ -86,7 +86,7 @@ def update_user(user_id, kwargs):
         user = User.query.get(user_id)
         user.update(**kwargs)
     except NoResultFound:
-        raise UserDoesnotExistsException(user_id)
+        raise UserDoesNotExistsException(user_id)
     except Exception as e:
         raise BaseIWSExceptions(arg=e.arg[0])
     return user
@@ -106,7 +106,7 @@ def update_user_password(user_id, password):
         user.set_password(password)
         user.save()
     except NoResultFound:
-        raise UserDoesnotExistsException(user_id)
+        raise UserDoesNotExistsException(user_id)
     except Exception as e:
         raise BaseIWSExceptions()
     return user
@@ -122,7 +122,7 @@ def delete_user(user_id):
     try:
         User.query.get(user_id).delete()
     except NoResultFound:
-        raise UserDoesnotExistsException(user_id)
+        raise UserDoesNotExistsException(user_id)
     return True
 
 
@@ -136,5 +136,5 @@ def delete_user_by_email(email):
     try:
         User.query.filter(User.email == email).one().delete()
     except NoResultFound:
-        raise UserDoesnotExistsException(email)
+        raise UserDoesNotExistsException(email)
     return True
