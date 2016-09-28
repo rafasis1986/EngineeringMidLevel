@@ -46,15 +46,15 @@ class UrlSingleton {
     }
 
     public getApiClients(): string {
-        return this._api_users;
+        return this._api_clients;
     }
 
     public setApiRequests(value: string): void{
-        this._api_users = this._api_base + value;
+        this._api_requests = this._api_base + value;
     }
 
     public getApiRequests(): string {
-        return this._api_users;
+        return this._api_requests;
     }
 
 }
