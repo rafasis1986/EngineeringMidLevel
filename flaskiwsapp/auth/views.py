@@ -6,8 +6,8 @@ import requests
 from flask import request, redirect, render_template
 from flask.blueprints import Blueprint
 from flask.globals import current_app
-from flask_jwt import jwt, _default_jwt_payload_handler, _default_jwt_encode_handler
-from flaskiwsapp.snippets.utils import split_name
+from flask_jwt import _default_jwt_encode_handler
+from flaskiwsapp.snippets.utils import split_name, get_api_urls
 from flaskiwsapp.users.controllers.userControllers import is_an_available_email, create_user, \
     update_user, get_user_by_email
 
@@ -62,4 +62,5 @@ def call_back():
     response = redirect(response_url, code=302)
     expire_date = datetime.datetime.now() + current_app.config['JWT_EXPIRATION_DELTA']
     response.set_cookie('Authorization', value=token, expires=expire_date)
+    response.set_cookie('urls', value=get_api_urls(current_app), expires=expire_date)
     return response

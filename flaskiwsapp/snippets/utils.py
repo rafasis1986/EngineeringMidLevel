@@ -3,6 +3,7 @@ Created on Sep 23, 2016
 
 @author: rtorres
 '''
+from flask.helpers import url_for
 
 
 def split_name(name):
@@ -15,3 +16,17 @@ def split_name(name):
         first_name = name
         last_name = ''
     return first_name, last_name
+
+
+def get_api_urls(app):
+    res = dict()
+    res.update({'user_list': url_for('users_api_blueprint.list')})
+    res.update({'client_list': url_for('clients_api_blueprint.list')})
+    #===================================================================================================================
+    # res.update({'target_list': url_for('targets_api_blueprint.list')})
+    # res.update({'target_detail': url_for('targets_api_blueprint.detail')})
+    #===================================================================================================================
+    str_resp = ''
+    for k in res.keys():
+        str_resp += k + ':' + res[k] + ';'
+    return str_resp
