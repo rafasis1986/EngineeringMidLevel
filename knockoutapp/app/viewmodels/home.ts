@@ -17,16 +17,14 @@ class Home {
 
     public activate() {
         this.isLoading(true);
-        setAuthToken().then((resp: boolean) => {
-            return setApiUrls();
-        }).then((resp: boolean) => {
+        setApiUrls().then((resp: boolean) => {
             return getMeInfo();
         }).then((user: IUser) => {
             this.full_name(user.full_name);
             this.features(this.loadFeatures());
             this.isLoading(false);
         }).catch((error: Error) => {
-            console.log(error);
+            console.log(error.toString());
             window.location.assign(Constant.DEFAULT_AUTH_URL);
         });
     }
