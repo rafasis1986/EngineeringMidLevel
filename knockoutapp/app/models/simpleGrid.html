@@ -1,0 +1,21 @@
+<table class="table table-striped table-hover ">
+    <thead>
+    <tr data-bind="foreach: columns">
+        <!-- ko if: rowText != 'link' -->
+        <th data-bind="text: headerText"></th>
+        <!-- /ko -->
+    </tr>
+    </thead>
+    <tbody class="table table-hover" data-bind="foreach: itemsOnCurrentPage">
+        <tr data-bind="foreach: $parent.columns">
+            <!-- ko if: rowText != 'link' -->
+            <td data-bind="text: typeof rowText == 'function' ? rowText($parent) : $parent[rowText]"> </td>
+            <!-- /ko -->
+        <tr>
+    </tbody>
+</table>
+<ul class="pagination" data-bind="foreach: ko.utils.range(0, maxPageIndex)">
+    <li>
+        <a href="#" data-bind="text: $data + 1, click: function () { $root.currentPageIndex($data); }"></a>
+    </li>
+</ul>

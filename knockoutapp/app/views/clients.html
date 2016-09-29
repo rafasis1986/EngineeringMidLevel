@@ -1,6 +1,30 @@
 <section id="page-clients" class="page">
     <div class="page-header">
-        <h1>clients</h1>
+        <h1>Clients</h1>
     </div>
-    <p>Your content here</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 well" >
+                <div data-bind="compose: gridViewModel">
+                    <div data-active-view="true" style="" data-view="models/simpleGrid">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 well" >
+                <button class="btn btn-default" data-bind="click: sortById">
+                    Sort by Id
+                </button>
+
+                <button class="btn btn-default" data-bind="click: sortByName">
+                    Sort by Name
+                </button>
+
+                <button disabled="" class="btn btn-default" data-bind="click: jumpToFirstPage, enable: gridViewModel.currentPageIndex">
+                    Jump to First Page
+                </button>
+
+            </div>
+        </div>
+    </div>
+
 </section>

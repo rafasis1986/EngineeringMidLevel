@@ -14,7 +14,6 @@ export function getMeInfo():  Promise<IUser> {
         'headers': {
             'Authorization': AuthSingleton.getInstance().getToken()
         }};
-    console.log('me');
     $.ajax(ajaxSettings)
         .then((response: any) => {
             console.log(response);

@@ -2,11 +2,14 @@ import * as router from 'plugins/router';
 import * as app from 'durandal/app';
 import {setAuthToken} from '../services/authServices';
 import {Constant} from '../constants/enviroment';
+import {setApiUrls} from '../services/urlServices';
 
 
 let activate = function() {
     setAuthToken().then((resp: boolean) => {
-        console.log('Succes Ath!');
+        return setApiUrls();
+    }).then((resp) => {
+        console.log('Succes Auth!');
     }).catch((err: Error) => {
         console.log(err.toString());
         window.location.assign(Constant.DEFAULT_AUTH_URL);

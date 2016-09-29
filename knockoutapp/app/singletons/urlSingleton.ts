@@ -31,7 +31,6 @@ class UrlSingleton {
         return this._api_base;
     }
 
-
     public getAuthUrl(): string {
         return this._api_base + Constant.AUTH_PATH;
     }

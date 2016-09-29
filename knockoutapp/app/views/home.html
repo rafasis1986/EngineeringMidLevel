@@ -9,24 +9,10 @@
     <div class="container">
         <!-- Example row of columns -->
 
-        <div class="row" data-bind="foreach: features">
+        <div class="row" data-bind="foreach: messages">
             <div class="col-md-8 col-md-offset-2 well" >
                 <h2 data-bind="text: title"></h2>
                 <p data-bind="html: content"></p>
-                <span data-bind="if:$data.arguments && $data.arguments.length > 0">
-                    <hr>
-                    <strong>Arguments</strong>
-                    <ul data-bind="foreach:$data.arguments">
-                    <li data-bind="text:$data"></li>        
-                </ul>
-                </span>
-                <span data-bind="if:$data.options && $data.options.length > 0">
-                    <hr>
-                    <strong>Options</strong>
-                    <ul data-bind="foreach:$data.options">
-                    <li data-bind="text:$data"></li>        
-                </ul>
-                </span>
             </div>
         </div>
     </div>

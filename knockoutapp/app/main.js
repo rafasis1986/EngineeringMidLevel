@@ -8,7 +8,7 @@ requirejs.config({
         'jquery': '../node_modules/jquery/dist/jquery',
         'bootstrap': '../node_modules/bootstrap/dist/js/bootstrap',
         'js-cookie': '../node_modules/js-cookie/src/js.cookie',
-        'q': '../node_modules/q/q',
+        'q': '../node_modules/q/q'
     },
   shim: {
     bootstrap: {

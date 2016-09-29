@@ -50,3 +50,9 @@ body {
   height: 60px;
   background-color: #f8f8f8;
 }
+
+.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 400px;
+    height: 300px
+}

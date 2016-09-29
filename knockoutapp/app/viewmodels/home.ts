@@ -1,8 +1,7 @@
 import * as ko from 'knockout';
 import * as system from 'durandal/system';
 import * as app from 'durandal/app';
-import {IFeature} from 'homeInterfaces';
-import {setAuthToken} from '../services/authServices';
+import {IMessage} from 'homeInterfaces';
 import {getMeInfo} from '../services/userServices';
 import {IUser} from 'userInterfaces';
 import {setApiUrls} from '../services/urlServices';
@@ -10,10 +9,11 @@ import {Constant} from '../constants/enviroment';
 
 
 class Home {
-    public features: any = ko.observableArray();
-    public isLoading: any = ko.observable();
-    public email: any = ko.observable();
-    public full_name: any = ko.observable();
+
+    private messages: any = ko.observableArray();
+    private isLoading: any = ko.observable();
+    private email: any = ko.observable();
+    private full_name: any = ko.observable();
 
     public activate() {
         this.isLoading(true);
@@ -21,7 +21,7 @@ class Home {
             return getMeInfo();
         }).then((user: IUser) => {
             this.full_name(user.full_name);
-            this.features(this.loadFeatures());
+            this.messages(this.loadMessages());
             this.isLoading(false);
         }).catch((error: Error) => {
             console.log(error.toString());
@@ -29,7 +29,7 @@ class Home {
         });
     }
 
-    public loadFeatures(): IFeature[] {
+    public loadMessages(): IMessage[] {
         return [{
                 title: "Welcome to IWS-TEST",
                 content: "Use the navbar menu to move to aother options"

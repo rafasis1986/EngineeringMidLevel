@@ -11,6 +11,7 @@ export class Constant {
     public static get DEVELOPMENT_ENV():string { return 'dev'; };
     public static get DEVELOPMENT_BE_URL():string { return 'http://localhost:5000'; };
     public static get ENV_LABEL():string { return 'Env'; };
+    public static get PAGINATE_LIMIT():number { return 10; };
     public static get PRODUCTION_ENV():string { return 'prod'; };
     public static get PRODUCTION_BE_URL():string { return 'http://rtorres.info.ve'; };
     public static get REQUESTS_API():string { return 'request_list'; };
