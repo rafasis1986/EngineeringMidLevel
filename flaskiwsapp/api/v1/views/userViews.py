@@ -10,7 +10,6 @@ from flaskiwsapp.users.controllers.userControllers import get_all_users
 
 users_api_blueprint = Blueprint('users_api_blueprint', __name__)
 cors = CORS(users_api_blueprint)
-
 users_api = CustomApi(users_api_blueprint)
 
 

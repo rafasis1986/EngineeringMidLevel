@@ -12,6 +12,7 @@ class ClientJsonSchema(Schema):
     """A Schema for client model."""
     id = fields.Int()
     email = fields.Str()
+    full_name = fields.Str()
 
     class Meta:
         type_ = 'client'

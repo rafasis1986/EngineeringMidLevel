@@ -4,9 +4,11 @@ from flaskiwsapp.users.controllers.clientControllers import get_all_clients, del
 from flask_jwt import jwt_required
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.api.v1.schemas.clientSchemas import ClientJsonSchema
+from flask_cors.extension import CORS
 
 
 clients_api_blueprint = Blueprint('clients_api_blueprint', __name__)
+cors = CORS(clients_api_blueprint)
 client_api = CustomApi(clients_api_blueprint)
 
 
