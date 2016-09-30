@@ -9,15 +9,15 @@ from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, Requ
 from flaskiwsapp.api.v1.views.userViews import users_api_blueprint
 from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
 from flaskiwsapp.users.models.user import User
-from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.auth.views import auth_blueprint
 from flaskiwsapp.users.models.client import Client
 from flaskiwsapp.projects.models.request import Request
 from flaskiwsapp.api.v1.views.clientViews import clients_api_blueprint
 from flaskiwsapp.api.v1.views.requestViews import requests_api_blueprint
+from flaskiwsapp.settings.baseConfig import BaseConfig
 
 
-def create_app(config_object=ProdConfig):
+def create_app(config_object=BaseConfig):
     """An application factory, as explained here:
     http://flask.pocoo.org/docs/patterns/appfactories.
 
