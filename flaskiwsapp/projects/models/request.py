@@ -19,7 +19,7 @@ class Request(SurrogatePK, Model):
     title = Column(db.String(80), nullable=False)
     description = Column(db.Text(), nullable=False)
     client_id = reference_col('clients', nullable=False)
-    client = relationship('Client', backref='targets')
+    client = relationship('Client', backref='request')
     client_priority = Column(db.SmallInteger(), nullable=False)
     created_at = Column(db.DateTime(), default=datetime.datetime.utcnow)
     product_area = Column(ENUM(*AREAS, name='areas', create_type=False), nullable=False)

@@ -13,7 +13,6 @@ class BaseClientJsonSchema(BaseUserJsonSchema):
 
     class Meta:
         type_ = 'client'
-        strict = True
         inflect = underscore
         self_url = '/api/%s/clients/{id}' % BaseConfig.API_VERSION
         self_url_kwargs = {'id': '<id>'}

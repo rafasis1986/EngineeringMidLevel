@@ -3,8 +3,9 @@ from flask_cors.extension import CORS
 from flask_jwt import jwt_required
 from flask_restful import Resource
 
-from flaskiwsapp.api.v1.schemas.requestSchemas import RequestJsonSchema
-from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, update_request, delete_request
+from flaskiwsapp.api.v1.schemas.requestSchemas import BaseRequestJsonSchema, RequestDetailJsonSchema
+from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, update_request, delete_request,\
+    get_request_by_id
 from flaskiwsapp.snippets.customApi import CustomApi
 
 
@@ -25,7 +26,7 @@ class RequestsAPI(Resource):
 
         """
         requests = get_all_requests()
-        request_schema = RequestJsonSchema(many=True)
+        request_schema = BaseRequestJsonSchema(many=True)
 
         return request_schema.dump(requests).data
 
@@ -49,6 +50,15 @@ class RequestAPI(Resource):
         :returns:
         """
         return delete_request(request_id)
+
+    @jwt_required()
+    def get(self, request_id):
+        """
+        HTTP DELETE. Get specific Request.
+        :returns:
+        """
+        request = get_request_by_id(request_id)
+        return RequestDetailJsonSchema().dump(request).data
 
 
 request_api.add_resource(RequestsAPI, '/', endpoint='list')
