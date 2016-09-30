@@ -1,10 +1,15 @@
 from flask.blueprints import Blueprint
-from flask_restful import Resource
+from flask_cors.extension import CORS
 from flask_jwt import jwt_required
-from flaskiwsapp.snippets.customApi import CustomApi
+from flask_restful import Resource
+
 from flaskiwsapp.api.v1.schemas.requestSchemas import RequestJsonSchema
+from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, update_request, delete_request
+from flaskiwsapp.snippets.customApi import CustomApi
+
 
 requests_api_blueprint = Blueprint('requests_api_blueprint', __name__)
+cors = CORS(requests_api_blueprint)
 request_api = CustomApi(requests_api_blueprint)
 
 
