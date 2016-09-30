@@ -26,7 +26,7 @@ class Clients {
         this.isLoading(true);
         return  this.loadClients().then((data) => {
                 this.clients(data);
-                this.gridViewModel = new SimpleGridClient(data, columns, 2);
+                this.gridViewModel = new SimpleGridClient(data, columns);
                 this.isLoading(false);
         });
     }

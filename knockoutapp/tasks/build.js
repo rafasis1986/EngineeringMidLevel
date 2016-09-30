@@ -12,7 +12,7 @@ gulp.task('build-ts', function () {
     if (!typescriptCompiler) {
         typescriptCompiler = typescript.create(require('../tsconfig.json').compilerOptions);
     }
-    
+
     return gulp.src(paths.source_dts.concat(paths.source_ts))
         .pipe(plumber())
         .pipe(sourcemaps.init({ loadMaps: true }))

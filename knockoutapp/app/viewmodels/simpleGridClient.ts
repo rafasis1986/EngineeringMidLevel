@@ -11,8 +11,6 @@ import {getClientDetails} from '../services/clientServices';
 
 class SimpleGridClient extends SimpleGrid {
 
-    protected dialog: any = null;
-
     public showCustomModal(clientPath: any){
         let clientInfo: IClient;
         getClientDetails(clientPath)
@@ -22,12 +20,8 @@ class SimpleGridClient extends SimpleGrid {
                 this.dialog.show();})
             .catch((error: Error) => {
                 console.log(error.toString());
-            })
+            });
     }
-
-
-
-
 }
 
 export = SimpleGridClient;

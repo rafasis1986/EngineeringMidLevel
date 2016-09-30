@@ -9,7 +9,8 @@ class SimpleGrid {
     protected pageSize: number =  Constant.PAGINATE_LIMIT;
     protected columns: any = [];
     protected itemsOnCurrentPage;
-    protected maxPageIndex: number;
+    protected maxPageIndex: any;
+    protected dialog: any = null;
 
     constructor (data: any[], colums?: any[], pageSize?: number) {
         this.data(data);
@@ -19,7 +20,7 @@ class SimpleGrid {
             let startIndex = this.pageSize * this.currentPageIndex();
             return this.data.slice(startIndex, startIndex + this.pageSize);
         });
-        this.maxPageIndex = ko.computed(() => {
+        this.maxPageIndex =  ko.computed(() => {
             return Math.ceil(ko.utils.unwrapObservable(this.data).length / this.pageSize) -1;
         });
     }

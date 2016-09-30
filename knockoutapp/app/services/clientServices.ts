@@ -4,7 +4,7 @@ import {UrlSingleton} from '../singletons/urlSingleton';
 import {Constant} from '../constants/enviroment';
 import {AuthSingleton} from '../singletons/authSingleton';
 import Deferred = Q.Deferred;
-import {IClient} from "clientInterfaces";
+import {IClient} from 'clientInterfaces';
 
 
 export function getClients():  Promise<IClient[]> {
