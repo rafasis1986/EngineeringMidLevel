@@ -36,3 +36,30 @@ export function getClients():  Promise<IClient[]> {
 
     return deferred.promise;
 }
+
+
+export function getClientDetails(clientPath: string):  Promise<IClient> {
+    let deferred: Deferred<IClient> = Q.defer<IClient>(),
+        ajaxSettings: any = {
+            'url': UrlSingleton.getInstance().getApiBase() + clientPath,
+            'method': 'GET',
+            'headers': {
+                'Authorization': AuthSingleton.getInstance().getToken()
+            }};
+    $.ajax(ajaxSettings)
+        .then((client: any) => {
+            deferred.resolve({
+                email:  client.data.attributes.email,
+                full_name:client.data.attributes.full_name,
+                id: client.data.id,
+                link: client.data.links.self,
+                first_name: client.data.attributes.first_name,
+                last_name: client.data.attributes.last_name,
+                created_at: client.data.attributes.created_at});
+        })
+        .fail((error: Error) => {
+            deferred.reject(error);
+        });
+
+    return deferred.promise;
+}

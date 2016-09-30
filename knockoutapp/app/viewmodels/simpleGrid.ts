@@ -1,7 +1,7 @@
 import * as ko from 'knockout';
+import * as app from 'durandal/app';
 import {Constant} from '../constants/enviroment';
 
-import * as app from 'durandal/app';
 class SimpleGrid {
 
     protected data: any = ko.observableArray();
@@ -9,10 +9,10 @@ class SimpleGrid {
     protected pageSize: number =  Constant.PAGINATE_LIMIT;
     protected columns: any = [];
     protected itemsOnCurrentPage;
-    protected maxPageIndex: any;
+    protected maxPageIndex: number;
 
-    constructor (data?: any[], colums?: any[], pageSize?: number) {
-        this.data = data || null;
+    constructor (data: any[], colums?: any[], pageSize?: number) {
+        this.data(data);
         this.columns = colums || [];
         this.pageSize = pageSize || this.pageSize;
         this.itemsOnCurrentPage = ko.computed(() => {
@@ -56,6 +56,10 @@ class SimpleGrid {
         return this.currentPageIndex;
     }
 
+    public getMaxPageIndex(): number {
+        return this.maxPageIndex;
+    }
+
     public getColumnsForScaffolding(data: any): any {
         if ((typeof data.length !== 'number') || data.length === 0) {
             return [];
@@ -67,9 +71,31 @@ class SimpleGrid {
         return columns;
     }
 
-    public viewDetail(clientData: any) {
+    public viewDetail(clientData: any, data: any, event: any): any {
         console.log(clientData);
+        console.log(data);
+        console.log(event);
         return app.showMessage(clientData, clientData);
+    }
+
+    public jumpToFirstPage(): void {
+        this.currentPageIndex = 0;
+    }
+
+    public jumpToLastPage(): void {
+        this.currentPageIndex = this.maxPageIndex;
+    }
+
+    public sortBy(key: string, order: string): void {
+        if (order == 'asc'){
+            this.data.sort((a, b) => {
+                return a[key] < b[key] ? -1 : 1;
+            });
+        } else {
+            this.data.sort((a, b) => {
+                return a[key] < b[key] ? 1 : -1;
+            });
+        }
     }
 
 }
