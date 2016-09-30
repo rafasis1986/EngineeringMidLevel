@@ -1,8 +1,10 @@
 """Admin views."""
 from flask import redirect, url_for, abort
+from flask.globals import request
 from flask_admin import expose, helpers
 from flask_admin.contrib import sqla
-from wtforms import PasswordField
+from wtforms import PasswordField, validators
+from wtforms.fields.html5 import URLField
 
 import flask_admin as admin
 import flask_login as login
@@ -12,7 +14,6 @@ from flaskiwsapp.auth.snippets.dbconections import auth0_user_signup, \
     auth0_user_change_password
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.users.validators import get_user
-from flask.globals import request
 
 
 # Create customized model view class
@@ -72,33 +73,39 @@ class ClientView(MyModelView):
     """Flask client model view."""
     create_modal = True
     edit_modal = True
+    list_template = 'admin/client/list.html'
     form_excluded_columns = ('password', 'active')
     form_columns = (
         'email',
         'first_name',
-        'last_name',
-        'created_at'
+        'last_name'
     )
 
 
 class RequestView(MyModelView):
     """Flask Request model view."""
-    create_modal = True
     edit_modal = True
+    create_modal = True
+    form_excluded_columns = ('ticket_url')
+    list_template = 'admin/request/list.html'
+
+    # Add dummy password field
+    form_extra_fields = {
+        'url_dummy': URLField('Ticket url', validators=[validators.DataRequired()])
+    }
     form_columns = (
         'title',
         'description',
         'client',
         'client_priority',
         'product_area',
-        'ticket_url',
+        'url_dummy',
         'target_date'
     )
 
-    def after_model_change(self, form, model, is_created):
-        MyModelView.after_model_change(self, form, model, is_created)
-        # @TODO: UPDATE client_priority
-        pass
+    def on_model_change(self, form, model, is_created):
+        MyModelView.on_model_change(self, form, model, is_created)
+        model.set_ticket_url(form.url_dummy.data)
 
 
 # Create customized index view class taht handles login & registration

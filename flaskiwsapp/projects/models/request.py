@@ -9,6 +9,7 @@ from sqlalchemy.dialects.postgresql.base import ENUM
 
 from flaskiwsapp.database import SurrogatePK, Model, db, reference_col, relationship, Column
 from flaskiwsapp.projects.snippets.constants import AREAS
+from sqlalchemy_utils.types.url import URLType
 
 
 class Request(SurrogatePK, Model):
@@ -20,10 +21,12 @@ class Request(SurrogatePK, Model):
     client_id = reference_col('clients', nullable=False)
     client = relationship('Client', backref='targets')
     client_priority = Column(db.SmallInteger(), nullable=False)
-    created_at = Column(db.DateTime, nullable=True, default=datetime.datetime.utcnow)
+    created_at = Column(db.DateTime(), default=datetime.datetime.utcnow)
     product_area = Column(ENUM(*AREAS, name='areas', create_type=False), nullable=False)
     target_date = Column(db.DateTime(), nullable=False)
-    ticket_url = Column(db.String(256), nullable=False)
+    ticket_url = Column(URLType)
+    attended = Column(db.Boolean(), default=False)
+    attended_date = Column(db.DateTime(), nullable=True)
 
     def __init__(self, title="", **kwargs):
         """Create instance."""
@@ -35,3 +38,7 @@ class Request(SurrogatePK, Model):
 
     def get_id(self):
         return self.id
+
+    def set_ticket_url(self, ticket_url):
+        """Set ticket Url"""
+        self.ticket_url = ticket_url

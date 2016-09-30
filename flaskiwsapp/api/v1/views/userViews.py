@@ -3,7 +3,7 @@ from flask_cors.extension import CORS
 from flask_jwt import jwt_required, current_identity
 from flask_restful import Resource, reqparse
 
-from flaskiwsapp.api.v1.schemas.userSchemas import UserJsonSchema, BaseUserJsonSchema
+from flaskiwsapp.api.v1.schemas.userSchemas import UserDetailJsonSchema, BaseUserJsonSchema
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.users.controllers.userControllers import get_all_users
 
@@ -51,7 +51,7 @@ class UserMeAPI(Resource):
         HTTP GET. show myself info
         :returns:
         """
-        return UserJsonSchema().dump(current_identity).data
+        return UserDetailJsonSchema().dump(current_identity).data
 
 
 users_api.add_resource(UsersAPI, '/', endpoint='list')

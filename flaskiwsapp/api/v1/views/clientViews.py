@@ -3,7 +3,7 @@ from flask_restful import Resource
 from flaskiwsapp.users.controllers.clientControllers import get_all_clients, delete_client, get_client_by_id
 from flask_jwt import jwt_required
 from flaskiwsapp.snippets.customApi import CustomApi
-from flaskiwsapp.api.v1.schemas.clientSchemas import ClientJsonSchema
+from flaskiwsapp.api.v1.schemas.clientSchemas import ClientDetailJsonSchema, BaseClientJsonSchema
 from flask_cors.extension import CORS
 
 
@@ -25,7 +25,7 @@ class ClientsAPI(Resource):
         """
 
         clients = get_all_clients()
-        client_schema = ClientJsonSchema(many=True)
+        client_schema = BaseClientJsonSchema(many=True)
 
         return client_schema.dump(clients).data
 
@@ -48,7 +48,7 @@ class ClientAPI(Resource):
         :returns:
         """
         client = get_client_by_id(client_id)
-        return ClientJsonSchema().dump(client).data
+        return ClientDetailJsonSchema().dump(client).data
 
 
 client_api.add_resource(ClientsAPI, '/', endpoint='list')

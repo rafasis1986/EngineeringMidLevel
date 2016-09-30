@@ -3,16 +3,13 @@ Created on Sep 24, 2016
 
 @author: rtorres
 '''
-from marshmallow_jsonapi import Schema, fields
 from inflection import underscore
 from flaskiwsapp.settings.baseConfig import BaseConfig
+from flaskiwsapp.api.v1.schemas.userSchemas import BaseUserJsonSchema, UserDetailJsonSchema
 
 
-class ClientJsonSchema(Schema):
-    """A Schema for client model."""
-    id = fields.Int()
-    email = fields.Str()
-    full_name = fields.Str()
+class BaseClientJsonSchema(BaseUserJsonSchema):
+    """A Simple Schema for client model."""
 
     class Meta:
         type_ = 'client'
@@ -21,3 +18,8 @@ class ClientJsonSchema(Schema):
         self_url = '/api/%s/clients/{id}' % BaseConfig.API_VERSION
         self_url_kwargs = {'id': '<id>'}
         self_url_many = '/api/%s/clients/' % BaseConfig.API_VERSION
+
+
+class ClientDetailJsonSchema(UserDetailJsonSchema, BaseClientJsonSchema):
+    """A Schema for client model."""
+    pass
