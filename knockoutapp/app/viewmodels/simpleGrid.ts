@@ -73,10 +73,7 @@ class SimpleGrid {
         return columns;
     }
 
-    public viewDetail(clientData: any, data: any, event: any): any {
-        console.log(clientData);
-        console.log(data);
-        console.log(event);
+    public viewDetail(clientData: any, data: any, event: any): any {;
         return app.showMessage(clientData, clientData);
     }
 

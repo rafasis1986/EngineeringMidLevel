@@ -10,7 +10,7 @@ class CustomModal {
         this.model = model;
     }
 
-    public ok(){
+    public close(){
         dialog.close(this, this.model);
     }
 

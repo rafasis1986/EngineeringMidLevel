@@ -15,6 +15,7 @@ const columns = [{ headerText: 'Id', rowText: 'id' },
     { headerText: 'Priority', rowText: 'client_priority' },
     { headerText: 'Area', rowText: 'product_area' },
     { headerText: 'Target Date', rowText: 'target_date' },
+    { headerText: 'Attended', rowText: 'attended' },
     { headerText: 'Details', rowText: 'link' },
 ];
 
