@@ -3,7 +3,6 @@ import * as system from 'durandal/system';
 import * as app from 'durandal/app';
 import * as Q from 'q';
 import Deferred = Q.Deferred;
-import {Constant} from '../constants/enviroment';
 import {IRequest} from 'requestInterface';
 import SimpleGridRequest = require('./simpleGridRequest');
 import {getRequests} from '../services/requestServices';
@@ -48,7 +47,6 @@ class Requests {
             }, 500);
         });
     }
-
 }
 
 export = Requests;

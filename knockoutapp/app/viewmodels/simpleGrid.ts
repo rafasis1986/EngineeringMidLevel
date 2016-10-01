@@ -98,16 +98,23 @@ class SimpleGrid {
         if (order){
             this.columns[position].order = false;
             this.data.sort((a, b) => {
-                return a[key] <= b[key] ? -1 : 1;
+                if (typeof(a[key]) === 'string'){
+                    return a[key].toLowerCase() <= b[key].toLowerCase() ? -1 : 1;
+                } else {
+                    return a[key] <= b[key] ? -1 : 1;
+                }
             });
         } else {
             this.columns[position].order = true;
             this.data.sort((a, b) => {
-                return a[key] < b[key] ? 1 : -1;
+                if (typeof(a[key]) === 'string'){
+                    return a[key].toLowerCase() >= b[key].toLowerCase() ? -1 : 1;
+                } else {
+                    return a[key] >= b[key] ? -1 : 1;
+                }
             });
         }
     }
-
 }
 
 export = SimpleGrid;

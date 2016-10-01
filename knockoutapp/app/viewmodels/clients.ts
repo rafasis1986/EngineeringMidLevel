@@ -6,7 +6,6 @@ import Deferred = Q.Deferred;
 import {getClients} from '../services/clientServices';
 import {IClient} from 'clientInterfaces';
 import SimpleGridClient = require('./simpleGridClient');
-import {Constant} from '../constants/enviroment';
 
 
 const columns = [{ headerText: 'Id', rowText: 'id' },
