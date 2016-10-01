@@ -15,10 +15,10 @@ let activate = function() {
         window.location.assign(Constant.DEFAULT_AUTH_URL);
     });
     router.map([
-        { route: '', moduleId: 'viewmodels/home', title: "Home", nav: true },
-        { route: 'clients', moduleId: 'viewmodels/clients', title: "Clients", nav: true },
-        { route: 'requests', moduleId: 'viewmodels/requests', title: "Requests", nav: true },
-        { route: 'logout', moduleId: 'viewmodels/logout', title: "Logout", nav: false }
+        { route: '', moduleId: 'viewmodels/home', title: 'Home', nav: true },
+        { route: 'clients', moduleId: 'viewmodels/clients', title: 'Clients', nav: true },
+        { route: 'requests', moduleId: 'viewmodels/requests', title: 'Requests', nav: true },
+        { route: 'logout', moduleId: 'viewmodels/logout', title: 'Logout', nav: false }
         ]).buildNavigationModel();
     return router.activate();
 

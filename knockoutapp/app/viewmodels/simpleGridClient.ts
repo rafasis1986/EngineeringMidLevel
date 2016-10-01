@@ -4,7 +4,6 @@ import ClientDetails = require('./clientDetails');
 import SimpleGrid = require('./simpleGrid');
 import CustomDialog = require('./customModal');
 import Existing = require('./clientDetails');
-import {Constant} from '../constants/enviroment';
 import {IClient} from 'clientInterfaces';
 import {getClientDetails} from '../services/clientServices';
 

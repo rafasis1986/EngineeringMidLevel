@@ -12,7 +12,7 @@ import {IRequestBase} from 'requestInterface';
 
 const columns = [{ headerText: 'Id', rowText: 'id' },
     { headerText: 'Title', rowText: 'title' },
-    { headerText: 'Client', rowText: 'id' },
+    { headerText: 'Client', rowText: 'client_id' },
     { headerText: 'Priority', rowText: 'client_priority' },
     { headerText: 'Area', rowText: 'product_area' },
     { headerText: 'Target Date', rowText: 'target_date' },

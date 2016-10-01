@@ -1,6 +1,7 @@
 import * as ko from 'knockout';
 import * as app from 'durandal/app';
 import {Constant} from '../constants/enviroment';
+import {findPositionJsonArray} from '../snippets/jsonUtils';
 
 class SimpleGrid {
 
@@ -87,12 +88,20 @@ class SimpleGrid {
         this.currentPageIndex = this.maxPageIndex;
     }
 
-    public sortBy(key: string, order: string): void {
-        if (order == 'asc'){
+    public sortBy(key: string): void {
+        let position: number = findPositionJsonArray(this.columns, 'rowText', key),
+            order: boolean;
+        if (position == -1) {
+            return;
+        }
+        order = this.columns[position].order;
+        if (order){
+            this.columns[position].order = false;
             this.data.sort((a, b) => {
-                return a[key] < b[key] ? -1 : 1;
+                return a[key] <= b[key] ? -1 : 1;
             });
         } else {
+            this.columns[position].order = true;
             this.data.sort((a, b) => {
                 return a[key] < b[key] ? 1 : -1;
             });
