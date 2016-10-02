@@ -10,6 +10,7 @@ from flaskiwsapp.database import db as _db
 from .factories import UserFactory
 from flaskiwsapp.settings.testConfig import TestConfig
 from flaskiwsapp.snippets.helpers import register_token_auth
+from tests.factories import AdminFactory
 
 
 @pytest.yield_fixture(scope='function')
@@ -70,6 +71,6 @@ def user(db):
 @pytest.fixture
 def admin(db):
     """A admin for the tests."""
-    admin = UserFactory(email="admin@example.com", password="admin", admin=True)
+    admin = AdminFactory(email="admin@example.com", password="admin", admin=True)
     db.session.commit()
     return admin
