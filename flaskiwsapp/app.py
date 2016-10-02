@@ -19,7 +19,6 @@ from flaskiwsapp.users.models.client import Client
 from flaskiwsapp.users.models.user import User
 
 
-
 def create_app(config_object=BaseConfig):
     """An application factory, as explained here:
     http://flask.pocoo.org/docs/patterns/appfactories.

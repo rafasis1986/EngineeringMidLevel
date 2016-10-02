@@ -1,11 +1,11 @@
 flaskiwsapp.main package
-======================================
+========================
 
 Submodules
 ----------
 
 flaskiwsapp.main.views module
--------------------------------------------
+-----------------------------
 
 .. automodule:: flaskiwsapp.main.views
     :members:
