@@ -1,0 +1,12 @@
+sudo: false 
+language: python
+cache: pip
+python:
+      - 3.5
+install: pip install -r requirements/dev.txt
+addons:
+  postgresql: "9.4"
+services: postgresql
+before_script:
+  - psql -c 'create database iws_test;' -U postgres
+script: ./manage.py test
