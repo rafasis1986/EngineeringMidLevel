@@ -205,3 +205,4 @@ crashlytics-build.properties
 # experimental
 Makefile
 migrations/*
+/doc/*
