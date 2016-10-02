@@ -6,6 +6,7 @@ from flask import Flask, render_template
 from flask_admin import Admin
 
 from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, RequestView
+from flaskiwsapp.main.views import load_user
 from flaskiwsapp.api.v1.views.clientViews import clients_api_blueprint
 from flaskiwsapp.api.v1.views.requestViews import requests_api_blueprint
 from flaskiwsapp.api.v1.views.ticketViews import tickets_api_blueprint
@@ -16,6 +17,7 @@ from flaskiwsapp.projects.models.request import Request
 from flaskiwsapp.settings.baseConfig import BaseConfig
 from flaskiwsapp.users.models.client import Client
 from flaskiwsapp.users.models.user import User
+
 
 
 def create_app(config_object=BaseConfig):

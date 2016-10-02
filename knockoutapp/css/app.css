@@ -1,0 +1,58 @@
+#top-menu .navbar-search {
+  width: 250px;
+}
+#applicationHost .splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+}
+#applicationHost .splash h1 {
+  font-variant: small-caps;
+  padding: 100px 0;
+  margin: 0;
+}
+.router-loader {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+.router-loader i {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -0.5em;
+  margin-left: -0.5em;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  padding-top: 70px;
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background: #fff;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f8f8f8;
+}
+
+.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 400px;
+    height: 300px
+}

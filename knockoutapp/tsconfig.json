@@ -1,0 +1,23 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": "app/",
+         "module":"amd",
+        "sourceMap": true,
+        "target": "es5",
+        "allowJs":false,
+        "noImplicitAny": false,
+        "noResolve": true,
+        "removeComments": true,
+        "noLib": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "pretty": true,
+        "allowSyntheticDefaultImports": false
+    },
+    "exclude": [
+        "node_modules",
+        "typings/index.d.ts"
+    ]
+   
+}

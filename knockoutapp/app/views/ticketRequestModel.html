@@ -1,0 +1,14 @@
+<div class="modal-body">
+    <form>
+      <div class="form-group form-group-sm">
+          <label for="detailInput" class="col-md-2 control-label"><h2>Details</h2></label>
+          <textarea class="col-md-10 form-control" placeholder="Detail" rows="3" id="detailInput"
+                    data-bind="value: detail, valueUpdate: 'afterkeydown'"></textarea>
+          <span class="help-block">Please enter a detail</span>
+      </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" data-bind="click: close" data-dismiss="modal">Close</button>
+    <button class="btn btn-primary" type="button" data-bind="click: send"  >Submit</button>
+</div>
