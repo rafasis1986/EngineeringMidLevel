@@ -12,8 +12,8 @@ RUN pip install -r /requirements/prod.txt \
 COPY . /app
 RUN chown -R flask /app
 
-COPY ./compose/flask/gunicorn.sh /gunicorn.sh
-COPY ./compose/flask/entrypoint.sh /entrypoint.sh
+COPY ./container/compose/flask/gunicorn.sh /gunicorn.sh
+COPY ./container/compose/flask/entrypoint.sh /entrypoint.sh
 RUN sed -i 's/\r//' /entrypoint.sh \
     && sed -i 's/\r//' /gunicorn.sh \
     && chmod +x /entrypoint.sh \
