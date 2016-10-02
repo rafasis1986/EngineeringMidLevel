@@ -26,6 +26,8 @@ class Request(SurrogatePK, Model):
     ticket_url = Column(db.String(256), nullable=False)
     attended = Column(db.Boolean(), default=False)
     attended_date = Column(db.DateTime(), nullable=True)
+    previous = reference_col('requests', nullable=True)
+    next = relationship('Request', uselist=False)
 
     def __init__(self, title="", **kwargs):
         """Create instance."""
@@ -41,3 +43,7 @@ class Request(SurrogatePK, Model):
     def set_ticket_url(self, ticket_url):
         """Set ticket Url"""
         self.ticket_url = ticket_url
+
+    def set_client_priority(self, priority):
+        """Set client priority"""
+        self.client_priority = priority

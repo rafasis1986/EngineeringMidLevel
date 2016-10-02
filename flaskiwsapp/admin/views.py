@@ -4,7 +4,7 @@ from flask.globals import request
 from flask_admin import expose, helpers
 from flask_admin.contrib import sqla
 from wtforms import PasswordField, validators
-from wtforms.fields.html5 import URLField
+from wtforms.fields.html5 import URLField, IntegerField
 
 import flask_admin as admin
 import flask_login as login
@@ -14,6 +14,8 @@ from flaskiwsapp.auth.snippets.dbconections import auth0_user_signup, \
     auth0_user_change_password
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.users.validators import get_user
+from flaskiwsapp.projects.controllers.requestControllers import insert_request_priority,\
+    remove_request_from_priority_list, update_request_on_priority_list
 
 
 # Create customized model view class
@@ -84,20 +86,20 @@ class ClientView(MyModelView):
 
 class RequestView(MyModelView):
     """Flask Request model view."""
-    edit_modal = True
     create_modal = True
     form_excluded_columns = ('ticket_url')
     list_template = 'admin/request/list.html'
 
     # Add dummy password field
     form_extra_fields = {
-        'url_dummy': URLField('Ticket url', validators=[validators.DataRequired()])
+        'url_dummy': URLField('Ticket url', validators=[validators.DataRequired()]),
+        'priority_dummy': IntegerField('Client Priority', validators=[validators.NumberRange(min=1)])
     }
     form_columns = (
         'title',
         'description',
         'client',
-        'client_priority',
+        'priority_dummy',
         'product_area',
         'url_dummy',
         'target_date'
@@ -106,6 +108,18 @@ class RequestView(MyModelView):
     def on_model_change(self, form, model, is_created):
         MyModelView.on_model_change(self, form, model, is_created)
         model.set_ticket_url(form.url_dummy.data)
+        model.set_client_priority(form.priority_dummy.data)
+
+    def after_model_change(self, form, model, is_created):
+        MyModelView.after_model_change(self, form, model, is_created)
+        if is_created:
+            model = insert_request_priority(model)
+        else:
+            model = update_request_on_priority_list(model)
+
+    def on_model_delete(self, model):
+        MyModelView.after_model_delete(self, model)
+        model = remove_request_from_priority_list(model)
 
 
 # Create customized index view class taht handles login & registration
