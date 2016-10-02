@@ -51,3 +51,6 @@ sendgrid==3.4.0
 Flask-Marshmallow==0.7.0
 marshmallow-jsonapi==0.8.0
 inflection==0.3.1
+
+# server
+gunicorn==19.6.0
