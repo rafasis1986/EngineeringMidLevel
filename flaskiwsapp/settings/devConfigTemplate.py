@@ -18,5 +18,7 @@ class DevConfig(BaseConfig):
     AUTH0_CLIENT_ID = ''
     AUTH0_CLIENT_SECRET = ''
     AUTH0_DOMAIN = ''
-    APP_URL = 'http://localhost'
+    APP_DOMAIN = 'localhost'
+    APP_URL = 'http://%s' % APP_DOMAIN
     SERVER_NAME = 'locahost'
+

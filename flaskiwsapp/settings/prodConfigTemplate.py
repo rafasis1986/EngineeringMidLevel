@@ -11,3 +11,5 @@ class ProdConfig(BaseConfig):
     ENV = 'prod'
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/example'  # TODO: Change me
+    APP_DOMAIN = 'localhost'
+    APP_URL = 'http://%s' % APP_DOMAIN
