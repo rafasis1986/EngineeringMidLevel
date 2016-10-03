@@ -4,7 +4,7 @@ import * as app from 'durandal/app';
 import * as Q from 'q';
 import Deferred = Q.Deferred;
 import {IRequest} from 'requestInterface';
-import SimpleGridRequest = require('./simpleGridRequest');
+import SimpleGridRequest = require('../widgets/simpleGridRequest');
 import {getRequests} from '../services/requestServices';
 import {IRequestBase} from 'requestInterface';
 

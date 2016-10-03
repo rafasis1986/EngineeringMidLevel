@@ -16,3 +16,4 @@ app/viewmodels/*.js*
 app/interfaces/*.js*
 app/singletons/*.js*
 app/snippets/*.js*
+app/widgets/*.js*

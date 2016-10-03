@@ -10,13 +10,13 @@ class CustomModal {
         this.model = model;
     }
 
-    public close(){
+    public close () {
         dialog.close(this, this.model);
     }
 
-    public show(){
+    public show () {
         return dialog.show(this);
     }
 }
 
-export = CustomModal
+export = CustomModal;

@@ -1,9 +1,9 @@
 import * as ko from 'knockout';
 import * as app from 'durandal/app';
-import ClientDetails = require('./clientDetails');
+import ClientDetails = require('../viewmodels/clientDetails');
 import SimpleGrid = require('./simpleGrid');
 import CustomDialog = require('./customModal');
-import Existing = require('./clientDetails');
+import Existing = require('../viewmodels/clientDetails');
 import {IClient} from 'clientInterfaces';
 import {getClientDetails} from '../services/clientServices';
 

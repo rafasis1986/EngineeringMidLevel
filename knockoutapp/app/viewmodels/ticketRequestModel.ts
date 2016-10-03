@@ -6,7 +6,7 @@ class TicketRequestModel {
 
     constructor () {}
 
-    public send(){
+    public send() {
         alert('epale');
     }
 }
