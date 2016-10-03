@@ -1,6 +1,5 @@
 {
   "globalDependencies": {
-    "durandal": "registry:dt/durandal#1.1.1+20160316155526",
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
     "jquery": "registry:dt/jquery#1.10.0+20160908203239",
     "js-cookie": "registry:dt/js-cookie#2.0.0+20160317120654",

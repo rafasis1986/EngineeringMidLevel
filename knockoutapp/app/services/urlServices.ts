@@ -9,7 +9,6 @@ export function setApiUrls (): Promise<boolean> {
     let deferred: Deferred<boolean> = Q.defer<boolean>(),
         url: string,
         urls: string[],
-        response: boolean = false,
         urlObject: any = {},
         singleton: any = UrlSingleton.getInstance();
 
@@ -40,9 +39,12 @@ export function setApiUrls (): Promise<boolean> {
             if (urlObject[Constant.REQUESTS_API]) {
                 singleton.setApiRequests(urlObject[Constant.REQUESTS_API]);
             }
+            if (urlObject[Constant.TICKETS_API]) {
+                singleton.setApiRequests(urlObject[Constant.TICKETS_API]);
+            }
             deferred.resolve(true);
         } else {
-            deferred.reject('Missed the api Urls.')
+            deferred.reject('Missed the api Urls.');
         }
     }
 

@@ -10,6 +10,8 @@ class UrlSingleton {
 
     private _api_requests: string = null;
 
+    private _api_tickets: string = null;
+
     private _api_base: string = null;
 
     constructor() {
@@ -57,6 +59,14 @@ class UrlSingleton {
 
     public getApiRequests(): string {
         return this._api_requests;
+    }
+
+    public setApiTickets(value: string): void {
+        this._api_tickets = this._api_base + value;
+    }
+
+    public getApiTickets(): string {
+        return this._api_tickets;
     }
 
 }

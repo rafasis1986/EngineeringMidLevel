@@ -5,8 +5,8 @@ declare module 'requestInterface' {
     export interface IRequestBase {
         id: number,
         attended: boolean,
-        client_id: number;
-        client_link: string;
+        client_id: number,
+        client_link: string,
         client_priority: number,
         link: string,
         product_area: string,
@@ -17,7 +17,7 @@ declare module 'requestInterface' {
     export interface IRequest extends IRequestBase{
         attended_date: string,
         client ?: any,
-        created_at: string
+        created_at: string,
         description: string,
         ticket_url:  string,
     }
