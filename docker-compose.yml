@@ -5,6 +5,11 @@ volumes:
   postgres_backup: {}
 
 services:
+  npm:
+    build:
+      context: .
+      dockerfile: ./container/compose/npm/Dockerfile
+
   postgres:
     build: ./container/compose/postgres
     volumes:

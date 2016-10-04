@@ -1,5 +1,7 @@
 FROM postgres:9.4
 
+MAINTAINER Rafael Torres <rdtr.sis@gmail.com>
+
 # add backup scripts
 ADD backup.sh /usr/local/bin/backup
 ADD restore.sh /usr/local/bin/restore
