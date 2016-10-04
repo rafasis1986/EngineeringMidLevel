@@ -54,5 +54,5 @@ class UserMeAPI(Resource):
         return UserDetailJsonSchema().dump(current_identity).data
 
 
-users_api.add_resource(UsersAPI, '/', endpoint='list')
+users_api.add_resource(UsersAPI, '', endpoint='list')
 users_api.add_resource(UserMeAPI, 'me', endpoint='me')

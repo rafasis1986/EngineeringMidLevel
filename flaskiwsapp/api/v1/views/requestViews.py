@@ -61,5 +61,5 @@ class RequestAPI(Resource):
         return RequestDetailJsonSchema().dump(request).data
 
 
-request_api.add_resource(RequestsAPI, '/', endpoint='list')
+request_api.add_resource(RequestsAPI, '', endpoint='list')
 request_api.add_resource(RequestAPI, '<request_id>', endpoint='detail')

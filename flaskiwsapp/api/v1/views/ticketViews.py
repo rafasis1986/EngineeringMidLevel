@@ -1,13 +1,16 @@
+from werkzeug.exceptions import BadRequest
+
+from flask import request
 from flask.blueprints import Blueprint
 from flask_cors.extension import CORS
 from flask_jwt import jwt_required, current_identity, JWTError
-from flask_restful import Resource, reqparse, fields
+from flask_restful import Resource, reqparse, fields, marshal_with
 
 from flaskiwsapp.api.v1.schemas.ticketSchemas import BaseTicketJsonSchema
-from flaskiwsapp.projects.controllers.ticketControllers import create_ticket, delete_ticket,\
-    get_ticket_by_id, get_tickets_user
-from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.projects.controllers.requestControllers import get_request_by_id
+from flaskiwsapp.projects.controllers.ticketControllers import create_ticket, delete_ticket, \
+    get_ticket_by_id, get_tickets_user, get_all_tickets
+from flaskiwsapp.snippets.customApi import CustomApi
 
 
 tickets_api_blueprint = Blueprint('tickets_api_blueprint', __name__)
@@ -19,7 +22,6 @@ ticket_parser = reqparse.RequestParser(bundle_errors=True)
 ticket_parser.add_argument('request_id', type=int, location='json', required=True, help="Choose a request id")
 ticket_parser.add_argument('detail', type=str, location='json', required=True, help="send a detail.")
 
-# This will be used to marshal output for users
 ticket_fields = {
     'request_id': fields.Integer,
     'detail': fields.String
@@ -38,17 +40,20 @@ class TicketsAPI(Resource):
         :returns: One or all available requests.
 
         """
-        tickets = get_tickets_user(current_identity.id)
+        tickets = get_all_tickets()
         request_schema = BaseTicketJsonSchema(many=True)
         return request_schema.dump(tickets).data
 
     @jwt_required()
+    @marshal_with(ticket_fields)
     def post(self):
         try:
             args = ticket_parser.parse_args()
             request = get_request_by_id(args.request_id)
             ticket = create_ticket(request, current_identity, args.detail)
             ticket_schema = BaseTicketJsonSchema()
+        except BadRequest as e:
+            raise JWTError(e, e.description)
         except Exception as e:
             raise JWTError(e, e.args[0])
         else:
@@ -84,6 +89,6 @@ class TicketMeAPI(Resource):
         tickets = get_tickets_user(current_identity.id)
         return BaseTicketJsonSchema(many=True).dump(tickets).data
 
-tickets_api.add_resource(TicketsAPI, '/', endpoint='list')
-tickets_api.add_resource(TicketsAPI, 'me', endpoint='me')
+tickets_api.add_resource(TicketsAPI, '', endpoint='list')
+tickets_api.add_resource(TicketMeAPI, 'me', endpoint='me')
 tickets_api.add_resource(TicketAPI, '<ticket_id>', endpoint='detail')

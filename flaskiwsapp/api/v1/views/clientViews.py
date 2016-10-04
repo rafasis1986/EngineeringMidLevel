@@ -51,5 +51,5 @@ class ClientAPI(Resource):
         return ClientDetailJsonSchema().dump(client).data
 
 
-client_api.add_resource(ClientsAPI, '/', endpoint='list')
+client_api.add_resource(ClientsAPI, '', endpoint='list')
 client_api.add_resource(ClientAPI, '<client_id>', endpoint='detail')
