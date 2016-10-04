@@ -9,6 +9,8 @@ services:
     build:
       context: .
       dockerfile: ./container/compose/npm/Dockerfile
+    volumes:
+      - ./knockoutapp:/webapp
 
   postgres:
     build: ./container/compose/postgres
@@ -33,6 +35,8 @@ services:
           dockerfile: ./container/compose/nginx/Dockerfile
     depends_on:
       - flask
-
+    volumes:
+      - ./knockoutapp:/webapp
     ports:
       - "0.0.0.0:80:80"
+
