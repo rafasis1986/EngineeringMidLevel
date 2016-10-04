@@ -3,6 +3,7 @@ import * as app from 'durandal/app';
 import {IRequest} from 'requestInterface';
 import {createTicket} from "../services/ticketServices";
 import {ITicketBase} from "ticketInterface";
+import * as dialog from 'plugins/dialog';
 
 class TicketRequestModel {
 
@@ -28,7 +29,7 @@ class TicketRequestModel {
         };
         createTicket(ticket)
             .then((t: ITicketBase) => {
-                alert('creted');
+                alert('created');
             })
             .catch((err: any) => {
                 console.log(err.data.detail);
@@ -37,7 +38,9 @@ class TicketRequestModel {
     }
 
     public cancel(): void {
+        dialog.close(this);
     }
+
 
 
 }
