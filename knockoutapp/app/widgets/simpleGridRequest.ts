@@ -5,7 +5,7 @@ import CustomDialog = require('./customModal');
 import {IRequest} from 'requestInterface';
 import {getRequestDetails} from '../services/requestServices';
 import RequestDetails = require('../viewmodels/requestDetails');
-import TicketRequestModel = require('../viewmodels/ticketRequestModel');
+import TicketRequestModel = require('../viewmodels/ticketDetails');
 import TicketModal = require('./ticketModal');
 
 
@@ -25,7 +25,7 @@ class SimpleGridRequest extends SimpleGrid {
         console.log(requestPath);
         getRequestDetails(requestPath)
             .then((request: IRequest) => {
-                this.dialog = new TicketModal(request.title, new TicketRequestModel());
+                this.dialog = new TicketModal(request.title, new TicketRequestModel(request));
                 this.dialog.show();
             }).catch((error: Error) => {
                 console.log(error.toString());

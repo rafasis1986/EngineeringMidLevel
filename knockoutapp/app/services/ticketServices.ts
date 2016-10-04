@@ -38,8 +38,8 @@ export function getTickets():  Promise<ITicketBase[]> {
 }
 
 
-export function createTicket(ticket: ITicketBase):  Promise<ITicketBase[]> {
-    let deferred: Deferred<ITicketBase[]> = Q.defer<ITicketBase[]>(),
+export function createTicket(ticket: ITicketBase):  Promise<ITicketBase> {
+    let deferred: Deferred<ITicketBase> = Q.defer<ITicketBase>(),
         ajaxSettings: any = {
             'url': UrlSingleton.getInstance().getApiTickets(),
             'method': 'POST',
@@ -48,23 +48,18 @@ export function createTicket(ticket: ITicketBase):  Promise<ITicketBase[]> {
                 'content-type': 'application/json'
             },
             'data' : {
-                'request_id': ticket.request_id,
-                'detail': ticket.detail
+                request_id: ticket.request_id,
+                detail: ticket.detail
             }
     };
     $.ajax(ajaxSettings)
         .then((response: any) => {
-            let resp: ITicketBase[];
-            resp = response.data.map( (request: any) => {
-                if (request.type === 'request') {
-                    let aux: any = {};
-                    aux.id = request.id;
-                    aux.detail = request.attributes.detail;
-                    aux.created_at = request.attributes.created_at;
-                    return aux;
-                }
+            deferred.resolve({
+                id: response.data.id,
+                detail: response.data.attributes.detail,
+                created_at: response.data.attributes.created_at,
+                request_id: response.data.relationships.request.data.id
             });
-            deferred.resolve(resp);
         })
         .fail((error: Error) => {
             deferred.reject(error);
