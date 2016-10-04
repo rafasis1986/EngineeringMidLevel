@@ -40,17 +40,21 @@ export function getTickets():  Promise<ITicketBase[]> {
 
 export function createTicket(ticket: ITicketBase):  Promise<ITicketBase> {
     let deferred: Deferred<ITicketBase> = Q.defer<ITicketBase>(),
-        ajaxSettings: any = {
+        data: any,
+        ajaxSettings: any;
+
+        data = {
+            request_id: ticket.request_id,
+            detail: ticket.detail
+        };
+        ajaxSettings= {
             'url': UrlSingleton.getInstance().getApiTickets(),
             'method': 'POST',
             'headers': {
                 'Authorization': AuthSingleton.getInstance().getToken(),
-                'content-type': 'application/json'
+                'Content-Type': 'application/json'
             },
-            'data' : {
-                request_id: ticket.request_id,
-                detail: ticket.detail
-            }
+            'data' : JSON.stringify(data)
     };
     $.ajax(ajaxSettings)
         .then((response: any) => {

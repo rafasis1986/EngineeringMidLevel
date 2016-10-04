@@ -40,7 +40,7 @@ export function setApiUrls (): Promise<boolean> {
                 singleton.setApiRequests(urlObject[Constant.REQUESTS_API]);
             }
             if (urlObject[Constant.TICKETS_API]) {
-                singleton.setApiRequests(urlObject[Constant.TICKETS_API]);
+                singleton.setApiTickets(urlObject[Constant.TICKETS_API]);
             }
             deferred.resolve(true);
         } else {
