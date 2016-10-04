@@ -59,7 +59,7 @@ def call_back():
                                  'last_name': last_name})
     token = _default_jwt_encode_handler(user)
     response_url = current_app.config['APP_URL']
-    app_domain = current_app.config['APP_DOMAIN']
+    app_domain = current_app.config['SERVER_NAME']
     response = redirect(response_url, code=302)
     expire_date = datetime.datetime.now() + current_app.config['JWT_EXPIRATION_DELTA']
     response.set_cookie('Authorization', domain='.%s' % app_domain, value=token, expires=expire_date)

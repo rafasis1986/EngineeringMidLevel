@@ -7,7 +7,7 @@ export class Constant {
     public static get AUTH_PATH(): string { return '/auth'; };
     public static get CHARACTER_PARTITION(): string { return '\\073'; };
     public static get CLIENTS_API(): string { return 'client_list'; };
-    public static get DEFAULT_AUTH_URL(): string { return 'http://localhost:5000/auth'; };
+    public static get DEFAULT_AUTH_URL(): string { return 'http://rtorres.info.ve/auth'; };
     public static get DEVELOPMENT_ENV(): string { return 'dev'; };
     public static get DEVELOPMENT_BE_URL(): string { return 'http://localhost:5000'; };
     public static get ENV_LABEL(): string { return 'Env'; };
