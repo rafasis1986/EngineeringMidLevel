@@ -21,6 +21,7 @@ class BaseTicketJsonSchema(Schema):
     """A Simple Schema for ticket model."""
     id = fields.Integer()
     detail = fields.Str()
+    created_at = fields.DateTime()
     request = fields.Relationship(
         related_url=REQUEST_URL,
         related_url_kwargs={'id': '<request.id>'},
@@ -42,8 +43,3 @@ class BaseTicketJsonSchema(Schema):
         self_url = BASE_URL + '{id}'
         self_url_kwargs = {'id': '<id>'}
         self_url_many = BASE_URL
-
-
-class DetailTicketJsonSchema(BaseTicketJsonSchema):
-    """A Simple Schema for ticket model."""
-    created_at = fields.DateTime()

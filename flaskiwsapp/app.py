@@ -6,7 +6,7 @@ from flask import Flask, render_template
 from flask_admin import Admin
 
 from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, RequestView
-from flaskiwsapp.main.views import load_user
+from flaskiwsapp.main.views import load_user, main_blueprint
 from flaskiwsapp.api.v1.views.clientViews import clients_api_blueprint
 from flaskiwsapp.api.v1.views.requestViews import requests_api_blueprint
 from flaskiwsapp.api.v1.views.ticketViews import tickets_api_blueprint
@@ -47,6 +47,7 @@ def register_extensions(app):
 def register_blueprints(app):
     """Register Flask blueprints."""
     url_api = '/api/%s/{api}/' % app.config['API_VERSION']
+    app.register_blueprint(main_blueprint)
     app.register_blueprint(users_api_blueprint, url_prefix=url_api.format(api='users'))
     app.register_blueprint(clients_api_blueprint, url_prefix=url_api.format(api='clients'))
     app.register_blueprint(requests_api_blueprint, url_prefix=url_api.format(api='requests'))

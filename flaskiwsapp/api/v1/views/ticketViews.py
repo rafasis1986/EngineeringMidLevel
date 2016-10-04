@@ -3,9 +3,8 @@ from flask_cors.extension import CORS
 from flask_jwt import jwt_required, current_identity, JWTError
 from flask_restful import Resource, reqparse, fields
 
-from flaskiwsapp.api.v1.schemas.ticketSchemas import BaseTicketJsonSchema,\
-    DetailTicketJsonSchema
-from flaskiwsapp.projects.controllers.ticketControllers import create_ticket, get_all_tickets, delete_ticket,\
+from flaskiwsapp.api.v1.schemas.ticketSchemas import BaseTicketJsonSchema
+from flaskiwsapp.projects.controllers.ticketControllers import create_ticket, delete_ticket,\
     get_ticket_by_id, get_tickets_user
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.projects.controllers.requestControllers import get_request_by_id
@@ -39,7 +38,7 @@ class TicketsAPI(Resource):
         :returns: One or all available requests.
 
         """
-        tickets = get_all_tickets()
+        tickets = get_tickets_user(current_identity.id)
         request_schema = BaseTicketJsonSchema(many=True)
         return request_schema.dump(tickets).data
 
@@ -49,7 +48,7 @@ class TicketsAPI(Resource):
             args = ticket_parser.parse_args()
             request = get_request_by_id(args.request_id)
             ticket = create_ticket(request, current_identity, args.detail)
-            ticket_schema = DetailTicketJsonSchema()
+            ticket_schema = BaseTicketJsonSchema()
         except Exception as e:
             raise JWTError(e, e.args[0])
         else:
@@ -74,7 +73,7 @@ class TicketAPI(Resource):
         :returns:
         """
         ticket = get_ticket_by_id(ticket_id)
-        return DetailTicketJsonSchema().dump(ticket).data
+        return BaseTicketJsonSchema().dump(ticket).data
 
 
 class TicketMeAPI(Resource):

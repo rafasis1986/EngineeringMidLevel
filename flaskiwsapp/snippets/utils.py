@@ -23,6 +23,7 @@ def get_api_urls(app):
     res.update({'user_list': url_for('users_api_blueprint.list')})
     res.update({'client_list': url_for('clients_api_blueprint.list')})
     res.update({'request_list': url_for('requests_api_blueprint.list')})
+    res.update({'tickets_list': url_for('tickets_api_blueprint.list')})
     str_resp = ''
     for k in res.keys():
         str_resp += k + ':' + res[k] + ';'
