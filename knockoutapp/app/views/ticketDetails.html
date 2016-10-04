@@ -1,47 +1,22 @@
 <div class="modal-body">
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <th width="30%">Request Id</th>
-                        <td><strong data-bind="text: request_id"></strong></td>
-                    </tr>
-                    <tr>
-                        <th>Client Info</th>
-                        <td><p data-bind="text: client_id"></p></td>
-                    </tr>
-                    <tr>
-                        <th>Created</th>
-                        <td><p data-bind="text: created_at"></p></td>
-                    </tr>
-                    <tr>
-                        <th>Description</th>
-                        <td><p data-bind="text: description"></p></td>
-                    </tr>
-                    <tr>
-                        <th>Target Date</th>
-                        <td><p data-bind="text: target_date"></p></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-12">
-            <form>
-              <div class="form-group form-group-sm">
-                  <label for="detailInput" class="col-md-2 control-label"><h2>Details</h2></label>
-                  <textarea class="col-md-10 form-control" placeholder="Detail" rows="3" id="detailInput"
-                            data-bind="value: detail, valueUpdate: 'afterkeydown'"></textarea>
-                  <span class="help-block">Please enter a detail</span>
-              </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-raised btn-success" type="button" data-bind="click: success"  >Submit</button>
-</div>
-
-<div class="modal-body">
-
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th width="30%">Ticket Id</th>
+            <td><strong data-bind="text: ticket.id"></strong></td>
+        </tr>
+        <tr>
+            <th>Request</th>
+            <td><p data-bind="text: ticket.request_title"></p></td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td><p data-bind="text: ticket.created_at"></p></td>
+        </tr>
+        <tr>
+            <th>Details</th>
+            <td><p data-bind="text: ticket.detail"></p></td>
+        </tr>
+        </tbody>
+    </table>
 </div>

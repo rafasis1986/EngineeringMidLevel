@@ -5,7 +5,7 @@ import CustomDialog = require('./customModal');
 import {IRequest} from 'requestInterface';
 import {getRequestDetails} from '../services/requestServices';
 import RequestDetails = require('../viewmodels/requestDetails');
-import TicketRequestModel = require('../viewmodels/ticketDetails');
+import TicketRequestModel = require('../viewmodels/ticketCreate');
 import TicketModal = require('./ticketModal');
 
 

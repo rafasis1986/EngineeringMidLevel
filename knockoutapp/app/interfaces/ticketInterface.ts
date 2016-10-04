@@ -7,6 +7,7 @@ declare module 'ticketInterface' {
         id: number,
         detail: string,
         created_at: string,
+        link: string,
         request_id: number
     }
 }

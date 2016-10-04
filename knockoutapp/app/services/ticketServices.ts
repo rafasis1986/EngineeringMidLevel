@@ -11,7 +11,7 @@ import {ITicketBase} from 'ticketInterface';
 export function getTickets():  Promise<ITicketBase[]> {
     let deferred: Deferred<ITicketBase[]> = Q.defer<ITicketBase[]>(),
         ajaxSettings: any = {
-        'url': UrlSingleton.getInstance().getApiTickets(),
+        'url': UrlSingleton.getInstance().getApiTickets() + 'me',
         'method': 'GET',
         'headers': {
             'Authorization': AuthSingleton.getInstance().getToken()
@@ -23,8 +23,9 @@ export function getTickets():  Promise<ITicketBase[]> {
                 if (request.type === 'request') {
                     let aux: any = {};
                     aux.id = request.id;
-                    aux.detail = request.attributes.detail;
                     aux.created_at = request.attributes.created_at;
+                    aux.link = request.links.self;
+                    aux.request_title = request.relationships.request.data.id;
                     return aux;
                 }
             });
@@ -58,11 +59,13 @@ export function createTicket(ticket: ITicketBase):  Promise<ITicketBase> {
     };
     $.ajax(ajaxSettings)
         .then((response: any) => {
+            // TODO: refactory BE response
             deferred.resolve({
                 id: response.data.id,
                 detail: response.data.attributes.detail,
                 created_at: response.data.attributes.created_at,
-                request_id: response.data.relationships.request.data.id
+                request_id: response.data.relationships.request.data.id,
+                link: ''
             });
         })
         .fail((error: Error) => {

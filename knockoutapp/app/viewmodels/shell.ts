@@ -18,6 +18,7 @@ let activate = function() {
         { route: '', moduleId: 'viewmodels/home', title: 'Home', nav: true },
         { route: 'clients', moduleId: 'viewmodels/clients', title: 'Clients', nav: true },
         { route: 'requests', moduleId: 'viewmodels/requests', title: 'Requests', nav: true },
+        { route: 'tickets', moduleId: 'viewmodels/tickets', title: 'Tickets', nav: true },
         { route: 'logout', moduleId: 'viewmodels/logout', title: 'Logout', nav: false }
         ]).buildNavigationModel();
     return router.activate();
