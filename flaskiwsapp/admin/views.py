@@ -1,4 +1,6 @@
 """Admin views."""
+import logging
+
 from flask import redirect, url_for, abort
 from flask.globals import request
 from flask_admin import expose, helpers
@@ -15,7 +17,13 @@ from flaskiwsapp.auth.snippets.dbconections import auth0_user_signup, \
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.users.validators import get_user
 from flaskiwsapp.projects.controllers.requestControllers import insert_request_priority,\
-    remove_request_from_priority_list, update_request_on_priority_list
+    remove_request_from_priority_list, update_request_on_priority_list, update_checked_request
+from flaskiwsapp.projects.controllers.ticketControllers import create_ticket
+from flask.helpers import flash
+from flask_admin.babel import gettext
+
+
+log = logging.getLogger("flask-admin.sqla")
 
 
 # Create customized model view class
@@ -120,6 +128,21 @@ class RequestView(MyModelView):
     def on_model_delete(self, model):
         MyModelView.after_model_delete(self, model)
         model = remove_request_from_priority_list(model)
+
+
+class TicketView(MyModelView):
+    """Flask Request model view."""
+    create_modal = True
+    form_columns = (
+        'request',
+        'user',
+        'detail',
+        'created_at'
+    )
+
+    def after_model_change(self, form, model, is_created):
+        MyModelView.after_model_change(self, form, model, is_created)
+        model = update_checked_request(model.request.id)
 
 
 # Create customized index view class taht handles login & registration

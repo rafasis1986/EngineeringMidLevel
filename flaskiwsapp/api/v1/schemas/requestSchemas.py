@@ -26,6 +26,7 @@ class BaseRequestJsonSchema(Schema):
         related_url_kwargs={'id': '<client.id>'},
         include_resource_linkage=True,
         type_='client',
+        id_field='email',
         schema=BaseClientJsonSchema
     )
 

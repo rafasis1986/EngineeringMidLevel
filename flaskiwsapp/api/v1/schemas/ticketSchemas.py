@@ -33,6 +33,7 @@ class BaseTicketJsonSchema(Schema):
         related_url_kwargs={'id': '<user.id>'},
         include_resource_linkage=True,
         type_='user',
+        id_field='email',
         schema=BaseUserJsonSchema
     )
 
