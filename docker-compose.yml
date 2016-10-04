@@ -23,7 +23,9 @@ services:
     env_file: .env
 
   nginx:
-    build: ./container/compose/nginx
+    build:
+          context: .
+          dockerfile: ./container/compose/nginx/Dockerfile
     depends_on:
       - flask
 
