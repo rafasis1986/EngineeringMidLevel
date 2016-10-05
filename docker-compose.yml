@@ -1,0 +1,42 @@
+version: '2'
+
+volumes:
+  postgres_data: {}
+  postgres_backup: {}
+
+services:
+  npm:
+    build:
+      context: .
+      dockerfile: ./container/compose/npm/Dockerfile
+    volumes:
+      - ./knockoutapp:/webapp
+
+  postgres:
+    build: ./container/compose/postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_backup:/backups
+    env_file: .env
+
+  flask:
+    build:
+      context: .
+      dockerfile: ./container/compose/flask/Dockerfile
+    user: flask
+    depends_on:
+      - postgres
+    command: /gunicorn.sh
+    env_file: .env
+
+  nginx:
+    build:
+          context: .
+          dockerfile: ./container/compose/nginx/Dockerfile
+    depends_on:
+      - flask
+    volumes:
+      - ./knockoutapp:/webapp
+    ports:
+      - "0.0.0.0:80:80"
+

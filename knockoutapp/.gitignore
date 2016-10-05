@@ -1,0 +1,19 @@
+# Created by https://www.gitignore.io/api/typings,node
+
+### Typings ###
+## Ignore downloaded typings
+typings
+
+# Dependency directories
+node_modules
+
+coverage/
+bower_components/
+dist/
+app/constants/*.js*
+app/services/*.js*
+app/viewmodels/*.js*
+app/interfaces/*.js*
+app/singletons/*.js*
+app/snippets/*.js*
+app/widgets/*.js*

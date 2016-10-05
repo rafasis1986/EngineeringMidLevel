@@ -1,0 +1,23 @@
+
+<section id="page-clients" class="page">
+
+    <div class="page-header">
+        <div data-bind="if: displayMessage">
+            <div data-bind="alert: { message: message, type: type }" class="alert-dismissible"></div>
+        </div>
+        <h1>Requests</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 well" >
+                <div data-bind="compose: gridViewModel">
+                    <div data-active-view="true" style="" data-view="models/simpleGridRequest">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 well" >
+                <a href="#request_create" class="btn btn-raised btn-success">Create Request</a>
+            </div>
+        </div>
+    </div>
+</section>

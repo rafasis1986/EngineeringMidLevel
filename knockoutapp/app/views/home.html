@@ -1,0 +1,23 @@
+<section>
+    <div class="page-header">
+        <div data-bind="if: displayMessage">
+            <div data-bind="alert: { message: message, type: type }" class="alert-dismissible"></div>
+        </div>
+        <h1>Home</h1>
+    </div>
+
+   <h3>Mr.</h3>
+    <h2><span data-bind="text: full_name"></span></h2>
+
+    <div class="container">
+        <!-- Example row of columns -->
+
+        <div class="row" data-bind="foreach: messages">
+            <div class="col-md-8 col-md-offset-2 well" >
+                <h2 data-bind="text: title"></h2>
+                <p data-bind="html: content"></p>
+            </div>
+        </div>
+    </div>
+    
+</section>
