@@ -48,8 +48,8 @@ class RequestCreate extends BaseView{
 
     public submit(): void {
         let value: any;
-        value = this.title() && this.details() && this.ticket_url() &&  this.target_date();.
-        if (! value) {
+        value = this.title() && this.details() && this.ticket_url() &&  this.target_date();
+        if (! value){
             makeMessage(MessageTypes.WARNING, 'Please check the form');
             this.showMessage()
             this.errors.showAllMessages();

@@ -51,7 +51,12 @@
                         <div class="form-group">
                             <label class="col-md-2 col-md-offset-2 control-label">Target Date</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" placeholder="target date" data-bind="value: target_date">
+                                <div class="input-group date" data-provide="datepicker">
+                                    <input type="text" class="form-control" placeholder="target date" data-bind="value: target_date">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         </fieldset>

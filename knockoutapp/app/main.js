@@ -6,6 +6,7 @@ requirejs.config({
         'transitions': '../node_modules/durandal/js/transitions',
         'knockout': '../node_modules/knockout/build/output/knockout-latest.debug',
         'jquery': '../node_modules/jquery/dist/jquery',
+        'bootstrap-datepicker': '../node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker',
         'bootstrap': '../node_modules/bootstrap/dist/js/bootstrap',
         'js-cookie': '../node_modules/js-cookie/src/js.cookie',
         'q': '../node_modules/q/q',
@@ -20,7 +21,8 @@ requirejs.config({
     }
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockstrap', 'bootstrap'],  function (system, app, viewLocator) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockstrap', 'bootstrap', 'bootstrap-datepicker'],
+    function (system, app, viewLocator) {
 
     system.debug(true);
 
