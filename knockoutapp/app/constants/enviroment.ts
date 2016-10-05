@@ -7,10 +7,13 @@ export class Constant {
     public static get AUTH_PATH(): string { return '/auth'; };
     public static get CHARACTER_PARTITION(): string { return '\\073'; };
     public static get CLIENTS_API(): string { return 'client_list'; };
-    public static get DEFAULT_AUTH_URL(): string { return 'http://rtorres.info.ve/auth'; };
+    public static get DEFAULT_AUTH_URL(): string { return 'http://localhost:5000/auth'; };
     public static get DEVELOPMENT_ENV(): string { return 'dev'; };
     public static get DEVELOPMENT_BE_URL(): string { return 'http://localhost:5000'; };
     public static get ENV_LABEL(): string { return 'Env'; };
+    public static get MESSAGE(): string { return 'message'; };
+    public static get MESSAGE_CONTENT(): string { return 'message_content'; };
+    public static get MESSAGE_TYPE(): string { return 'message_type'; };
     public static get PAGINATE_LIMIT(): number { return 10; };
     public static get PRODUCTION_ENV(): string { return 'prod'; };
     public static get PRODUCTION_BE_URL(): string { return 'http://rtorres.info.ve'; };

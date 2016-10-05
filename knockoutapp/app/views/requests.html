@@ -2,6 +2,9 @@
 <section id="page-clients" class="page">
 
     <div class="page-header">
+        <div data-bind="if: displayMessage">
+            <div data-bind="alert: { message: message, type: type }" class="alert-dismissible"></div>
+        </div>
         <h1>Requests</h1>
     </div>
     <div class="container">

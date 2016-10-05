@@ -6,6 +6,7 @@ import Deferred = Q.Deferred;
 import {getClients} from '../services/clientServices';
 import {IClient} from 'clientInterfaces';
 import SimpleGridClient = require('../widgets/simpleGridClient');
+import BaseView = require('./baseView');
 
 
 const columns = [{ headerText: 'Id', rowText: 'id' },
@@ -13,13 +14,11 @@ const columns = [{ headerText: 'Id', rowText: 'id' },
     { headerText: 'Name', rowText: 'full_name' },
     { headerText: 'Details', rowText: 'link' }];
 
-class Clients {
+class Clients extends BaseView {
 
     private clients: any = ko.observableArray();
     private isLoading: any = ko.observable();
     private gridViewModel: any;
-
-    constructor() {}
 
     public activate(){
         this.isLoading(true);

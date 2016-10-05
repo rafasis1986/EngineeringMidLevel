@@ -6,6 +6,7 @@ import Deferred = Q.Deferred;
 import {getTickets} from '../services/ticketServices';
 import {ITicketBase} from 'ticketInterface';
 import SimpleGridTicket = require('../widgets/simpleGridTicket');
+import BaseView = require('./baseView');
 
 
 const columns = [{ headerText: 'Id', rowText: 'id' },
@@ -13,13 +14,12 @@ const columns = [{ headerText: 'Id', rowText: 'id' },
     { headerText: 'Date', rowText: 'created_at' },
     { headerText: 'Details', rowText: 'link' }];
 
-class Tickets {
+class Tickets extends BaseView {
 
     private clients: any = ko.observableArray();
     private isLoading: any = ko.observable();
     private gridViewModel: any;
 
-    constructor() {}
 
     public activate(){
         this.isLoading(true);

@@ -19,7 +19,7 @@
             <tr data-bind="foreach: $parent.columns">
                 <!-- ko if: rowText == 'link' -->
                 <td>
-                    <a href="" data-bind="click: function(data, event) { $root.showCustomModal($parent[rowText], data, event)}">
+                    <a href="" data-bind="click: function(data, event) { $root.showCustomModal($parent, data, event)}">
                         <span class="glyphicon glyphicon-modal-window "></span></a>
                 </td>
                 <!-- /ko -->

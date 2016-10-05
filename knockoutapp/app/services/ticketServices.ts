@@ -20,7 +20,7 @@ export function getTickets():  Promise<ITicketBase[]> {
         .then((response: any) => {
             let resp: ITicketBase[];
             resp = response.data.map( (request: any) => {
-                if (request.type === 'request') {
+                if (request.type === 'ticket') {
                     let aux: any = {};
                     aux.id = request.id;
                     aux.created_at = request.attributes.created_at;

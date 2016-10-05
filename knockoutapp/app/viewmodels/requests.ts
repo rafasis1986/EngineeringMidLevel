@@ -7,6 +7,7 @@ import {IRequest} from 'requestInterface';
 import SimpleGridRequest = require('../widgets/simpleGridRequest');
 import {getRequests} from '../services/requestServices';
 import {IRequestBase} from 'requestInterface';
+import BaseView = require('./baseView');
 
 
 const columns = [{ headerText: 'Id', rowText: 'id' },
@@ -19,13 +20,11 @@ const columns = [{ headerText: 'Id', rowText: 'id' },
     { headerText: 'Details', rowText: 'link' },
 ];
 
-class Requests {
+class Requests extends BaseView {
 
     private requests: any = ko.observableArray();
     private isLoading: any = ko.observable();
     private gridViewModel: any;
-
-    constructor() {}
 
     public activate(){
         this.isLoading(true);

@@ -19,7 +19,7 @@ requirejs.config({
     }
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'bootstrap'],  function (system, app, viewLocator) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'knockstrap', 'bootstrap'],  function (system, app, viewLocator) {
 
     system.debug(true);
 

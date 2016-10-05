@@ -1,14 +1,15 @@
 import * as ko from 'knockout';
 import * as system from 'durandal/system';
 import * as app from 'durandal/app';
-import {IMessage} from 'homeInterfaces';
+import {IHomeMessage} from 'homeInterfaces';
 import {getMeInfo} from '../services/userServices';
 import {IUser} from 'userInterfaces';
 import {setApiUrls} from '../services/urlServices';
 import {Constant} from '../constants/enviroment';
+import BaseView = require('./baseView');
 
 
-class Home {
+class Home extends BaseView {
 
     private messages: any = ko.observableArray();
     private isLoading: any = ko.observable();
@@ -29,10 +30,10 @@ class Home {
         });
     }
 
-    public loadMessages(): IMessage[] {
+    public loadMessages(): IHomeMessage[] {
         return [{
-                title: "Welcome to IWS-TEST",
-                content: "Use the navbar menu to move to aother options"
+                title: 'Welcome to IWS-TEST',
+                content: 'Use the navbar menu to move to aother options'
         }];
     }
 }
