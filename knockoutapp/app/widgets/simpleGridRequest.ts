@@ -22,7 +22,6 @@ class SimpleGridRequest extends SimpleGrid {
     }
 
     public showTicketModal(requestPath: any) {
-        console.log(requestPath);
         getRequestDetails(requestPath)
             .then((request: IRequest) => {
                 this.dialog = new TicketModal(request.title, new TicketRequestModel(request));

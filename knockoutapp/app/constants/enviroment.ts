@@ -3,6 +3,7 @@
  */
 
 export class Constant {
+    public static get AREAS_API(): string { return 'utils_areas'; };
     public static get AUTH_LABEL(): string { return 'Authorization'; };
     public static get AUTH_PATH(): string { return '/auth'; };
     public static get CHARACTER_PARTITION(): string { return '\\073'; };

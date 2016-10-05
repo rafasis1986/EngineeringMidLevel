@@ -42,6 +42,10 @@ export function setApiUrls (): Promise<boolean> {
             if (urlObject[Constant.TICKETS_API]) {
                 singleton.setApiTickets(urlObject[Constant.TICKETS_API]);
             }
+            if (urlObject[Constant.AREAS_API]) {
+                singleton.setApiAreas(urlObject[Constant.AREAS_API]);
+            }
+
             deferred.resolve(true);
         } else {
             deferred.reject('Missed the api Urls.');

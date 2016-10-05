@@ -59,7 +59,6 @@ export function createTicket(ticket: ITicketBase):  Promise<ITicketBase> {
     };
     $.ajax(ajaxSettings)
         .then((response: any) => {
-            // TODO: refactory BE response
             deferred.resolve({
                 id: response.data.id,
                 detail: response.data.attributes.detail,

@@ -5,6 +5,7 @@ import {Constant} from '../constants/enviroment';
 import {AuthSingleton} from '../singletons/authSingleton';
 import Deferred = Q.Deferred;
 import {IRequestBase, IRequest} from 'requestInterface';
+import {ICreateRequest} from "requestInterface";
 
 
 export function getRequests():  Promise<IRequestBase[]> {
@@ -67,6 +68,50 @@ export function getRequestDetails(requestPath: string):  Promise<IRequest> {
                 target_date: request.data.attributes.target_date,
                 ticket_url: request.data.attributes.ticket_url,
                 title: request.data.attributes.title
+            });
+        })
+        .fail((error: Error) => {
+            deferred.reject(error);
+        });
+
+    return deferred.promise;
+}
+
+export function createRequest(request: ICreateRequest):  Promise<ICreateRequest> {
+    let deferred: Deferred<ICreateRequest> = Q.defer<ICreateRequest>(),
+        data: any,
+        ajaxSettings: any;
+
+    data = {
+        client: request.client,
+        client_priority: request.client_priority,
+        details: request.details,
+        product_area: request.product_area,
+        target_date: request.target_date,
+        ticket_url: request.ticket_url,
+        title: request.title
+
+    };
+    console.log(UrlSingleton.getInstance().getApiRequests());
+    ajaxSettings = {
+        'url': UrlSingleton.getInstance().getApiRequests(),
+        'method': 'POST',
+        'headers': {
+            'Authorization': AuthSingleton.getInstance().getToken(),
+            'Content-Type': 'application/json'
+        },
+        'data' : JSON.stringify(data)
+    };
+    $.ajax(ajaxSettings)
+        .then((response: any) => {
+            deferred.resolve({
+                client: '',
+                client_priority: '',
+                details: response.data.attributes.details,
+                product_area: '',
+                target_date: '',
+                title: '',
+                ticket_url:  ''
             });
         })
         .fail((error: Error) => {

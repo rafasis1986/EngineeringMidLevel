@@ -9,7 +9,8 @@ requirejs.config({
         'bootstrap': '../node_modules/bootstrap/dist/js/bootstrap',
         'js-cookie': '../node_modules/js-cookie/src/js.cookie',
         'q': '../node_modules/q/q',
-        'knockstrap': '../node_modules/knockstrap/build/knockstrap'
+        'knockstrap': '../node_modules/knockstrap/build/knockstrap',
+        'knockout.validation': '../node_modules/knockout.validation/dist/knockout.validation'
     },
   shim: {
     bootstrap: {

@@ -14,6 +14,8 @@ class UrlSingleton {
 
     private _api_base: string = null;
 
+    private _api_areas: string = null;
+
     constructor() {
         if(UrlSingleton._instance){
             throw new Error("Error: Instantiation failed: Use UrlSingleton.getInstance() instead of new.");
@@ -69,6 +71,13 @@ class UrlSingleton {
         return this._api_tickets;
     }
 
+    public setApiAreas(value: string): void{
+        this._api_areas = this._api_base + value;
+    }
+
+    public getApiAreas(): string {
+        return this._api_areas;
+    }
 }
 
 export {UrlSingleton}

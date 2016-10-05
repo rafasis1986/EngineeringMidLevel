@@ -11,7 +11,11 @@ class BaseView {
     protected displayMessage: any = ko.observable(false);
 
     constructor () {
-        let message: IMessage = getMessage(); 
+        this.showMessage();
+    }
+
+    public showMessage() :void {
+        let message: IMessage = getMessage();
         if(message != null) {
             this.displayMessage(true);
             this.message(message.content);

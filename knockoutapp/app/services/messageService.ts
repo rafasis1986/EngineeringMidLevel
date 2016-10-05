@@ -1,7 +1,7 @@
 import {Constant} from '../constants/enviroment';
 import {IMessage} from 'messageInterface';
 
-export function makeMessage(message:string, type:string): void {
+export function makeMessage(type:string, message:string): void {
     sessionStorage.setItem(Constant.MESSAGE, 'true');
     sessionStorage.setItem(Constant.MESSAGE_CONTENT, message);
     sessionStorage.setItem(Constant.MESSAGE_TYPE, type);

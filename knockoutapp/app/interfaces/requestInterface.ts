@@ -21,4 +21,15 @@ declare module 'requestInterface' {
         description: string,
         ticket_url:  string,
     }
+
+    export interface ICreateRequest{
+        client: string,
+        client_priority: string,
+        details: string,
+        product_area: string,
+        target_date: string,
+        ticket_url: string,
+        title: string
+    }
+
 }

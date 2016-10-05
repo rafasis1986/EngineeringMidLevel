@@ -1,11 +1,14 @@
 import * as ko from 'knockout';
 import * as app from 'durandal/app';
-import {IRequest} from 'requestInterface';
-import {createTicket} from "../services/ticketServices";
-import {ITicketBase} from "ticketInterface";
 import * as dialog from 'plugins/dialog';
+import {IRequest} from 'requestInterface';
+import {createTicket} from '../services/ticketServices';
+import {ITicketBase} from 'ticketInterface';
+import {makeMessage} from '../services/messageService';
+import {MessageTypes} from '../constants/messageTypes';
+import CustomModal = require('../widgets/customModal');
 
-class TicketRequestModel {
+class TicketCreate extends CustomModal {
 
     protected detail: any = ko.observable();
     protected target_date: any = ko.observable();
@@ -15,6 +18,7 @@ class TicketRequestModel {
     protected created_at: any = ko.observable();
 
     constructor (request: IRequest) {
+        super(request.id.toString(), request);
         this.request_id(request.id);
         this.description(request.description);
         this.target_date(request.target_date);
@@ -29,20 +33,20 @@ class TicketRequestModel {
         };
         createTicket(ticket)
             .then((t: ITicketBase) => {
-                alert('created');
+                makeMessage(MessageTypes.SUCCESS, 'Ticket created');
+                alert('success');
             })
             .catch((err: any) => {
-                console.log(err.data.detail);
-                alert(err.toString());
+                makeMessage(MessageTypes.DANGER, err.toString());
+
             });
+
     }
 
     public cancel(): void {
         dialog.close(this);
     }
 
-
-
 }
 
-export = TicketRequestModel;
+export = TicketCreate;
