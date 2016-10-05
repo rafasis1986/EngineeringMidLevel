@@ -14,6 +14,7 @@ import {getClients} from "../services/clientServices";
 import {IClient} from "clientInterfaces";
 import {getAreas} from "../services/utils";
 import {IArea} from "areaInterfaces";
+import {navigate} from "plugins/history";
 
 
 class RequestCreate extends BaseView{
@@ -66,7 +67,8 @@ class RequestCreate extends BaseView{
             };
             createRequest(request)
                 .then((req: any) => {
-                    makeMessage(MessageTypes.SUCCESS, 'Request created');
+                    makeMessage(MessageTypes.SUCCESS, 'Created the request number ' + req.id);
+                    navigate('#requests');
                 })
                 .catch((err: any) => {
                     makeMessage(MessageTypes.DANGER, err.toString());

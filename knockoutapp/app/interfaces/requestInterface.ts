@@ -23,6 +23,7 @@ declare module 'requestInterface' {
     }
 
     export interface ICreateRequest{
+        id?: number,
         client: string,
         client_priority: string,
         details: string,

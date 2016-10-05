@@ -105,13 +105,14 @@ export function createRequest(request: ICreateRequest):  Promise<ICreateRequest>
     $.ajax(ajaxSettings)
         .then((response: any) => {
             deferred.resolve({
-                client: '',
-                client_priority: '',
-                details: response.data.attributes.details,
-                product_area: '',
-                target_date: '',
-                title: '',
-                ticket_url:  ''
+                client: response.data.relationships.client.data.id,
+                client_priority: response.data.attributes.client_priority.toString(),
+                details: response.data.attributes.description,
+                product_area: response.data.attributes.product_area,
+                target_date: response.data.attributes.target_date,
+                title: response.data.attributes.title,
+                ticket_url: response.data.attributes.ticket_url,
+                id: response.data.id
             });
         })
         .fail((error: Error) => {
