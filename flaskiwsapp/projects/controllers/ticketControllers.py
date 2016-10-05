@@ -2,7 +2,8 @@ import datetime
 
 from sqlalchemy.orm.exc import NoResultFound
 
-from flaskiwsapp.projects.controllers.requestControllers import update_request, remove_request_from_priority_list
+from flaskiwsapp.projects.controllers.requestControllers import update_request, remove_request_from_priority_list,\
+    update_checked_request
 from flaskiwsapp.projects.models.ticket import Ticket
 from flaskiwsapp.snippets.exceptions.requestExceptions import RequestDoesnotExistsException
 
@@ -70,10 +71,7 @@ def create_ticket(request, user, detail):
     ticket.request = request
     ticket.detail = detail
     ticket = ticket.save()
-    request = update_request(request.id, {'attended': True,
-                                          'attended_date': datetime.datetime.utcnow()
-                                          })
-    request = remove_request_from_priority_list(request)
+    request = update_checked_request(request.id)
     return ticket
 
 

@@ -57,6 +57,7 @@ class TicketsAPI(Resource):
         except Exception as e:
             raise JWTError(e, e.args[0])
         else:
+            ticket = get_ticket_by_id(ticket.id)
             return ticket_schema.dump(ticket).data
 
 

@@ -3,6 +3,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from flaskiwsapp.projects.models.request import Request
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.snippets.exceptions.requestExceptions import RequestDoesnotExistsException
+import datetime
 
 
 def get_all_requests():
@@ -67,6 +68,27 @@ def update_request(request_id, kwargs):
     try:
         request = Request.query.get(request_id)
         request.update(**kwargs)
+    except NoResultFound:
+        raise RequestDoesnotExistsException(request_id)
+    except Exception as e:
+        raise BaseIWSExceptions(arg=e.arg[0])
+    return request
+
+
+def update_checked_request(request_id):
+    """
+    Checked a request.
+
+    :request_id: an integer object. Indicates an update.
+    :kwargs: dictionary with the fields keys and values
+    :returns: request updated
+
+    """
+    try:
+        request = Request.query.get(request_id)
+        request.attended = True
+        request.attended_date = datetime.datetime.utcnow()
+        request = remove_request_from_priority_list(request)
     except NoResultFound:
         raise RequestDoesnotExistsException(request_id)
     except Exception as e:

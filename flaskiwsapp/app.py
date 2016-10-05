@@ -5,7 +5,7 @@
 from flask import Flask, render_template
 from flask_admin import Admin
 
-from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, RequestView
+from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, RequestView, TicketView
 from flaskiwsapp.main.views import load_user, main_blueprint
 from flaskiwsapp.api.v1.views.clientViews import clients_api_blueprint
 from flaskiwsapp.api.v1.views.requestViews import requests_api_blueprint
@@ -17,6 +17,7 @@ from flaskiwsapp.projects.models.request import Request
 from flaskiwsapp.settings.baseConfig import BaseConfig
 from flaskiwsapp.users.models.client import Client
 from flaskiwsapp.users.models.user import User
+from flaskiwsapp.projects.models.ticket import Ticket
 
 
 def create_app(config_object=BaseConfig):
@@ -77,6 +78,7 @@ def init_admin(app):
     admin.add_view(UserView(User, db.session))
     admin.add_view(ClientView(Client, db.session))
     admin.add_view(RequestView(Request, db.session))
+    admin.add_view(TicketView(Ticket, db.session))
     return None
 
 
