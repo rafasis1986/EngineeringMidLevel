@@ -22,7 +22,7 @@ class Request(SurrogatePK, Model):
     client_priority = Column(db.SmallInteger(), nullable=False)
     created_at = Column(db.DateTime(), default=datetime.datetime.utcnow)
     product_area = Column(ENUM(*AREAS, name='areas', create_type=False), nullable=False)
-    target_date = Column(db.DateTime(), nullable=False)
+    target_date = Column(db.Date(), nullable=False)
     ticket_url = Column(db.String(256), nullable=False)
     attended = Column(db.Boolean(), default=False)
     attended_date = Column(db.DateTime(), nullable=True)

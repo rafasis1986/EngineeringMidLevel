@@ -6,6 +6,8 @@ Created on Sep 24, 2016
 from inflection import underscore
 from flaskiwsapp.settings.baseConfig import BaseConfig
 from flaskiwsapp.api.v1.schemas.userSchemas import BaseUserJsonSchema, UserDetailJsonSchema
+from marshmallow_jsonapi.schema import Schema
+from marshmallow_jsonapi import fields
 
 
 class BaseClientJsonSchema(BaseUserJsonSchema):
@@ -22,3 +24,10 @@ class BaseClientJsonSchema(BaseUserJsonSchema):
 class ClientDetailJsonSchema(UserDetailJsonSchema, BaseClientJsonSchema):
     """A Schema for client model."""
     pass
+
+
+class ClientsEmailsJsonSchema(Schema):
+    email = fields.Str()
+
+    class Meta:
+        type_ = 'client'

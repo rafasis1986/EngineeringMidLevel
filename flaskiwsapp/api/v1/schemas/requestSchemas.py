@@ -18,7 +18,7 @@ class BaseRequestJsonSchema(Schema):
     id = fields.Int()
     title = fields.Str()
     product_area = fields.Str()
-    target_date = fields.Time()
+    target_date = fields.Date()
     attended = fields.Boolean()
     client_priority = fields.Int()
     client = fields.Relationship(

@@ -29,6 +29,17 @@ def get_all_clients():
     return Client.query.all()
 
 
+def get_all_email_clients():
+    """
+    Get all emails from clients
+
+    :returns: a dict with the operation result
+
+    """
+    # filter(Client.email.like('%rafa%')).all()
+    return Client.query.with_entities(User.email).all()
+
+
 def get_client_by_email(email=None):
     """
     Get client info by email

@@ -6,7 +6,7 @@ from flask import Flask, render_template
 from flask_admin import Admin
 
 from flaskiwsapp.admin.views import MyAdminIndexView, UserView, ClientView, RequestView, TicketView
-from flaskiwsapp.main.views import load_user, main_blueprint
+from flaskiwsapp.main.views import main_blueprint
 from flaskiwsapp.api.v1.views.clientViews import clients_api_blueprint
 from flaskiwsapp.api.v1.views.requestViews import requests_api_blueprint
 from flaskiwsapp.api.v1.views.ticketViews import tickets_api_blueprint
@@ -18,6 +18,7 @@ from flaskiwsapp.settings.baseConfig import BaseConfig
 from flaskiwsapp.users.models.client import Client
 from flaskiwsapp.users.models.user import User
 from flaskiwsapp.projects.models.ticket import Ticket
+from flaskiwsapp.api.v1.views.utilsViews import utils_api_blueprint
 
 
 def create_app(config_object=BaseConfig):
@@ -54,6 +55,7 @@ def register_blueprints(app):
     app.register_blueprint(requests_api_blueprint, url_prefix=url_api.format(api='requests'))
     app.register_blueprint(tickets_api_blueprint, url_prefix=url_api.format(api='tickets'))
     app.register_blueprint(auth_blueprint, url_prefix='/auth/')
+    app.register_blueprint(utils_api_blueprint, url_prefix='/utils/')
     return None
 
 

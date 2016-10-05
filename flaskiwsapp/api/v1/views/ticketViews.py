@@ -4,7 +4,7 @@ from flask import request
 from flask.blueprints import Blueprint
 from flask_cors.extension import CORS
 from flask_jwt import jwt_required, current_identity, JWTError
-from flask_restful import Resource, reqparse, fields, marshal_with
+from flask_restful import Resource, reqparse, fields
 
 from flaskiwsapp.api.v1.schemas.ticketSchemas import BaseTicketJsonSchema
 from flaskiwsapp.projects.controllers.requestControllers import get_request_by_id
@@ -45,7 +45,6 @@ class TicketsAPI(Resource):
         return request_schema.dump(tickets).data
 
     @jwt_required()
-    @marshal_with(ticket_fields)
     def post(self):
         try:
             args = ticket_parser.parse_args()
@@ -57,7 +56,6 @@ class TicketsAPI(Resource):
         except Exception as e:
             raise JWTError(e, e.args[0])
         else:
-            ticket = get_ticket_by_id(ticket.id)
             return ticket_schema.dump(ticket).data
 
 

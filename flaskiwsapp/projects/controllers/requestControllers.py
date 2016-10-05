@@ -6,6 +6,13 @@ from flaskiwsapp.snippets.exceptions.requestExceptions import RequestDoesnotExis
 import datetime
 
 
+def create_request(kwargs):
+    request = Request(kwargs['title'])
+    request = request.update(**kwargs)
+    request = insert_request_priority(request)
+    return request
+
+
 def get_all_requests():
     """
     Get all requests info
@@ -51,7 +58,7 @@ def get_request_by_id(request_id=None):
 
 
 def get_first_priority_client(client_id):
-    request = Request.query.filter(Request.client_id == client_id, Request.attended == False)\
+    request = Request.query.filter(Request.client_id == client_id, Request.attended==False)\
         .order_by(Request.client_priority).first()
     return request
 
@@ -88,6 +95,7 @@ def update_checked_request(request_id):
         request = Request.query.get(request_id)
         request.attended = True
         request.attended_date = datetime.datetime.utcnow()
+        request.save()
         request = remove_request_from_priority_list(request)
     except NoResultFound:
         raise RequestDoesnotExistsException(request_id)

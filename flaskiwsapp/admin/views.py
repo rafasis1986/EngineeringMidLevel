@@ -95,29 +95,20 @@ class ClientView(MyModelView):
 class RequestView(MyModelView):
     """Flask Request model view."""
     create_modal = True
-    form_excluded_columns = ('ticket_url')
     list_template = 'admin/request/list.html'
 
-    # Add dummy password field
-    form_extra_fields = {
-        'url_dummy': URLField('Ticket url', validators=[validators.DataRequired()]),
-        'priority_dummy': IntegerField('Client Priority', validators=[validators.NumberRange(min=1)])
-    }
     form_columns = (
         'title',
         'description',
         'client',
-        'priority_dummy',
+        'client_priority',
         'product_area',
-        'url_dummy',
+        'ticket_url',
         'target_date'
     )
 
-    def on_model_change(self, form, model, is_created):
-        MyModelView.on_model_change(self, form, model, is_created)
-        model.set_ticket_url(form.url_dummy.data)
-        model.set_client_priority(form.priority_dummy.data)
-
+    
+    
     def after_model_change(self, form, model, is_created):
         MyModelView.after_model_change(self, form, model, is_created)
         if is_created:
