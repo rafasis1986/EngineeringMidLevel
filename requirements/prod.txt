@@ -24,6 +24,7 @@ SQLAlchemy==1.0.15
 Flask-SQLAlchemy==2.1
 psycopg2==2.6.2
 sqlalchemy-utils==0.32.9
+phonenumbers==7.7.1
 
 # Database migration
 Flask-Migrate==2.0.0
@@ -58,3 +59,4 @@ gunicorn==19.6.0
 
 # SMS
 twilio==5.6.0
+rabbitpy==0.27.1
