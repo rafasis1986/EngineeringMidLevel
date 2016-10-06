@@ -3,12 +3,17 @@ Created on Sep 24, 2016
 
 @author: rtorres
 '''
-from flaskiwsapp.database import Model, SurrogatePK, db
+from flaskiwsapp.database import Model, SurrogatePK, db, Column
 from flaskiwsapp.users.customMixins import UserCustomMixion
+from sqlalchemy import orm
+from sqlalchemy_utils.types.phone_number import PhoneNumberType
 
 
 class Client(UserCustomMixion, SurrogatePK, Model):
     """A user of the app."""
+    # phone_number = orm.composite(PhoneNumberType())
+    #phone_number = Column(db.String(16), unique=True)
+    phone_number = Column(PhoneNumberType(), unique=True)
 
     __tablename__ = 'clients'
 

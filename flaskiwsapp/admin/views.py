@@ -5,8 +5,7 @@ from flask import redirect, url_for, abort
 from flask.globals import request
 from flask_admin import expose, helpers
 from flask_admin.contrib import sqla
-from wtforms import PasswordField, validators
-from wtforms.fields.html5 import URLField, IntegerField
+from wtforms import PasswordField
 
 import flask_admin as admin
 import flask_login as login
@@ -18,9 +17,6 @@ from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.users.validators import get_user
 from flaskiwsapp.projects.controllers.requestControllers import insert_request_priority,\
     remove_request_from_priority_list, update_request_on_priority_list, update_checked_request
-from flaskiwsapp.projects.controllers.ticketControllers import create_ticket
-from flask.helpers import flash
-from flask_admin.babel import gettext
 
 
 log = logging.getLogger("flask-admin.sqla")
@@ -49,6 +45,7 @@ class UserView(MyModelView):
 
     # Remove password field from form
     form_excluded_columns = ('password')
+    column_searchable_list = ('email')
 
     # Add dummy password field
     form_extra_fields = {
@@ -85,10 +82,12 @@ class ClientView(MyModelView):
     edit_modal = True
     list_template = 'admin/client/list.html'
     form_excluded_columns = ('password', 'active')
+    column_searchable_list = ('email')
     form_columns = (
         'email',
         'first_name',
-        'last_name'
+        'last_name',
+        'phone_number'
     )
 
 
@@ -107,8 +106,7 @@ class RequestView(MyModelView):
         'target_date'
     )
 
-    
-    
+
     def after_model_change(self, form, model, is_created):
         MyModelView.after_model_change(self, form, model, is_created)
         if is_created:

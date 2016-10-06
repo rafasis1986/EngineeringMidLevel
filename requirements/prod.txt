@@ -54,3 +54,7 @@ inflection==0.3.1
 
 # server
 gunicorn==19.6.0
+
+
+# SMS
+twilio==5.6.0
