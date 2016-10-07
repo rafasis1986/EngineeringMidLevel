@@ -9,7 +9,7 @@ from wtforms import PasswordField
 
 import flask_admin as admin
 import flask_login as login
-from flaskiwsapp.admin.forms import AdminLoginForm
+from flaskiwsapp.admin.forms import AdminLoginForm, AdminClientForm, AdminRequestForm
 from flaskiwsapp.auth.snippets.authExceptions import AuthBaseException
 from flaskiwsapp.auth.snippets.dbconections import auth0_user_signup, \
     auth0_user_change_password
@@ -45,7 +45,6 @@ class UserView(MyModelView):
 
     # Remove password field from form
     form_excluded_columns = ('password')
-    column_searchable_list = ('email')
 
     # Add dummy password field
     form_extra_fields = {
@@ -81,31 +80,14 @@ class ClientView(MyModelView):
     create_modal = True
     edit_modal = True
     list_template = 'admin/client/list.html'
-    form_excluded_columns = ('password', 'active')
-    column_searchable_list = ('email')
-    form_columns = (
-        'email',
-        'first_name',
-        'last_name',
-        'phone_number'
-    )
+    form = AdminClientForm
 
 
 class RequestView(MyModelView):
     """Flask Request model view."""
     create_modal = True
     list_template = 'admin/request/list.html'
-
-    form_columns = (
-        'title',
-        'description',
-        'client',
-        'client_priority',
-        'product_area',
-        'ticket_url',
-        'target_date'
-    )
-
+    form = AdminRequestForm
 
     def after_model_change(self, form, model, is_created):
         MyModelView.after_model_change(self, form, model, is_created)

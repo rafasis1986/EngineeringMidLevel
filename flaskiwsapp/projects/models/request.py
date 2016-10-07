@@ -9,6 +9,9 @@ from sqlalchemy.dialects.postgresql.base import ENUM
 
 from flaskiwsapp.database import SurrogatePK, Model, db, reference_col, relationship, Column
 from flaskiwsapp.projects.snippets.constants import AREAS
+from sqlalchemy.sql.schema import ForeignKey
+from flaskiwsapp.users.models.client import Client
+from sqlalchemy import orm
 
 
 class Request(SurrogatePK, Model):
@@ -17,8 +20,8 @@ class Request(SurrogatePK, Model):
     __tablename__ = 'requests'
     title = Column(db.String(80), nullable=False)
     description = Column(db.Text(), nullable=False)
-    client_id = reference_col('clients', nullable=False)
-    client = relationship('Client', backref='request')
+    client_id = Column(db.Integer, ForeignKey(Client.id), nullable=False)
+    client = orm.relationship(Client)
     client_priority = Column(db.SmallInteger(), nullable=False)
     created_at = Column(db.DateTime(), default=datetime.datetime.utcnow)
     product_area = Column(ENUM(*AREAS, name='areas', create_type=False), nullable=False)
