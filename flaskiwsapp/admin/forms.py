@@ -35,5 +35,4 @@ class AdminRequestForm(ModelForm):
         model = Request
         exclude = ['attended', 'attended_date']
 
-
     ticket_url = StringField(validators=[DataRequired(), URL()])
