@@ -23,10 +23,11 @@ services:
     build:
       context: .
       dockerfile: ./container/compose/flask/Dockerfile
-    user: flask
+    volumes:
+      - ./container/compose/log:/var/log/supervisor
     depends_on:
       - postgres
-    command: /gunicorn.sh
+    command: /start.sh
     env_file: .env
 
   nginx:
