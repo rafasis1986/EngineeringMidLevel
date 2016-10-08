@@ -42,13 +42,13 @@ def create_request_sms(request_id):
 
 
 @celery.task
-def create_ticket_sms(request_id):
+def create_ticket_sms(ticket_id):
     try:
-        ticket = get_ticket_by_id(request_id)
+        ticket = get_ticket_by_id(ticket_id)
         created = "{:%d, %b %Y}".format(ticket.created_at)
         twilio = TwilioRestClient(current_app.config['TWILIO_SID'], current_app.config['TWILIO_TOKEN'])
         message = twilio.messages.create(to=ticket.request.client.phone_number.e164, from_=current_app.config['TWILIO_PHONE'],
-            body='Feture %s attended with ticket %s, by %s the date %s' % (ticket.request.id, ticket.id, ticket.user.email, created))
+            body='Feture %s attended with ticket %s , by %s the date %s' % (ticket.request.id, ticket.id, ticket.user.email, created))
     except Exception as e:
         iws_logger.error(MSG_ERROR % (type(e), e.args[0]))
     else:

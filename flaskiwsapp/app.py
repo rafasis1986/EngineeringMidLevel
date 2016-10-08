@@ -74,7 +74,7 @@ def init_admin(app):
     """Adds ModelViews to flask-admin."""
     admin = Admin(
         app,
-        name="flaskiwsapp-Admin",
+        name="IWS-Admin",
         index_view=MyAdminIndexView(),
         base_template='my_master.html',
         endpoint="admin"

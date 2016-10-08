@@ -11,7 +11,6 @@ from wtforms.fields import StringField
 from wtforms_alchemy import ModelForm
 from flaskiwsapp.projects.models.request import Request
 
-
 class AdminLoginForm(LoginForm):
     """
     Admin login form. Only users with the 'is_admin' flag pass the form
@@ -36,3 +35,5 @@ class AdminRequestForm(ModelForm):
         exclude = ['attended', 'attended_date']
 
     ticket_url = StringField(validators=[DataRequired(), URL()])
+    
+
