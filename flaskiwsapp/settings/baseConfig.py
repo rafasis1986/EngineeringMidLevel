@@ -23,3 +23,5 @@ class BaseConfig(object):
     JWT_EXPIRATION_DELTA = datetime.timedelta(days=1)
     JWT_AUTH_HEADER_PREFIX = 'Bearer'
     API_VERSION = 'v1.0'
+    CELERY_BACKEND = ''
+    CELERY_BROKER_URL = ''

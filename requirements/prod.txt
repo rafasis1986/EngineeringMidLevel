@@ -33,7 +33,6 @@ alembic==0.8.7
 # Admin panel
 Flask-Admin==1.4.2
 
-
 # Forms
 Flask-WTF==0.12
 WTForms==2.1
@@ -58,7 +57,9 @@ marshmallow-sqlalchemy==0.10.0
 # server
 gunicorn==19.6.0
 
-
 # SMS
 twilio==5.6.0
-rabbitpy==0.27.1
+celery==3.1.24
+
+# LOGGER
+loggly-python-handler==1.0.0

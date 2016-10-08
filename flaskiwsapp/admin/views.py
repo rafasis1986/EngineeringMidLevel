@@ -1,5 +1,4 @@
 """Admin views."""
-import logging
 
 from flask import redirect, url_for, abort
 from flask.globals import request
@@ -17,9 +16,8 @@ from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.users.validators import get_user
 from flaskiwsapp.projects.controllers.requestControllers import insert_request_priority,\
     remove_request_from_priority_list, update_request_on_priority_list, update_checked_request
-
-
-log = logging.getLogger("flask-admin.sqla")
+from flaskiwsapp.workers.queueManager import create_welcome_client_job
+from flaskiwsapp.snippets.logger import iws_logger
 
 
 # Create customized model view class
@@ -82,6 +80,13 @@ class ClientView(MyModelView):
     list_template = 'admin/client/list.html'
     form = AdminClientForm
 
+    def after_model_change(self, form, model, is_created):
+        MyModelView.after_model_change(self, form, model, is_created)
+        try:
+            create_welcome_client_job(model.id)
+        except Exception as e:
+            iws_logger.error('Error: %s, Messages: %s' % (type(e), e.args[0]))
+
 
 class RequestView(MyModelView):
     """Flask Request model view."""
@@ -137,9 +142,7 @@ class MyAdminIndexView(admin.AdminIndexView):
             user = get_user(form)
             login.login_user(user)
         if login.current_user.is_authenticated:
-
             return redirect(url_for('.index'))
-
         self._template_args['form'] = form
         return super(MyAdminIndexView, self).index()
 
