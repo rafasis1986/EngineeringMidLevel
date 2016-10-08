@@ -28,7 +28,7 @@ phonenumbers==7.7.1
 
 # Database migration
 Flask-Migrate==2.0.0
-alembic==0.8.7
+alembic==0.8.8
 
 # Admin panel
 Flask-Admin==1.4.2
