@@ -8,7 +8,7 @@ from wtforms import PasswordField
 
 import flask_admin as admin
 import flask_login as login
-from flaskiwsapp.admin.forms import AdminLoginForm, AdminClientForm, AdminRequestForm
+from flaskiwsapp.admin.forms import AdminLoginForm, AdminClientForm
 from flaskiwsapp.auth.snippets.authExceptions import AuthBaseException
 from flaskiwsapp.auth.snippets.dbconections import auth0_user_signup, \
     auth0_user_change_password
@@ -135,7 +135,7 @@ class TicketView(MyModelView):
 
     def after_model_change(self, form, model, is_created):
         MyModelView.after_model_change(self, form, model, is_created)
-        model = update_checked_request(model.request.id)
+        model.request = update_checked_request(model.request.id)
         create_ticket_sms_job(model.id)
         create_ticket_email_job(model.id)
 
