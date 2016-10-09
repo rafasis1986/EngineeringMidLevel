@@ -14,7 +14,7 @@ class CustomModal {
         dialog.close(this, this.model);
     }
 
-    public show () {
+    public show (): JQueryPromise<any> {
         return dialog.show(this);
     }
 }
