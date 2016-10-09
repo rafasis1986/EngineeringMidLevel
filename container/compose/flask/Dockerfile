@@ -4,12 +4,6 @@ MAINTAINER Rafael Torres <rdtr.sis@gmail.com>
 
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y supervisor
-
-RUN mkdir -p /var/log/supervisor
-
-COPY ./container/compose/flask/supervisord.conf  /etc/supervisor/conf.d/supervisord.conf
-
 # Requirements have to be pulled and installed here, otherwise caching won't work
 COPY ./requirements /requirements
 
@@ -18,9 +12,21 @@ RUN pip install -r /requirements/prod.txt \
     && useradd -r -g flask flask
 
 COPY . /app
+RUN chown -R flask /app
 
-COPY ./container/compose/flask/start.sh /start.sh
+COPY ./container/compose/flask/gunicorn.sh /gunicorn.sh
+COPY ./container/compose/flask/celery.sh /celery.sh
 COPY ./container/compose/flask/entrypoint.sh /entrypoint.sh
+
+RUN sed -i 's/\r//' /entrypoint.sh \
+    && sed -i 's/\r//' /gunicorn.sh \
+    && sed -i 's/\r//' /celery.sh \
+    && chmod +x /entrypoint.sh \
+    && chown flask /entrypoint.sh \
+    && chmod +x /gunicorn.sh \
+    && chown flask /gunicorn.sh \
+    && chmod +x /celery.sh \
+    && chown flask /celery.sh
 
 WORKDIR /app
 
