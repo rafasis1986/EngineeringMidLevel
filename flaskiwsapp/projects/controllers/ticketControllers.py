@@ -1,11 +1,9 @@
-import datetime
-
 from sqlalchemy.orm.exc import NoResultFound
 
-from flaskiwsapp.projects.controllers.requestControllers import update_request, remove_request_from_priority_list,\
-    update_checked_request
+from flaskiwsapp.projects.controllers.requestControllers import update_checked_request
 from flaskiwsapp.projects.models.ticket import Ticket
 from flaskiwsapp.snippets.exceptions.requestExceptions import RequestDoesnotExistsException
+from flaskiwsapp.workers.queueManager import create_ticket_sms_job, create_ticket_email_job
 
 
 def get_all_tickets():
@@ -72,6 +70,8 @@ def create_ticket(request, user, detail):
     ticket.detail = detail
     ticket = ticket.save()
     request = update_checked_request(request.id)
+    create_ticket_sms_job(ticket.id)
+    create_ticket_email_job(ticket.id)
     return ticket
 
 

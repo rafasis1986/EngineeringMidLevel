@@ -5,6 +5,7 @@ from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.snippets.exceptions.clientExceptions import ClientDoesnotExistsException, \
     ClientExistsException
 from flaskiwsapp.users.models.client import Client
+from flaskiwsapp.workers.queueManager import create_welcome_client_job
 
 
 def is_an_available_email(email):
@@ -79,6 +80,7 @@ def create_client(email, password=None):
     client = None
     try:
         client = Client(password=password, email=email).save()
+        create_welcome_client_job(client.id)
     except IntegrityError:
         raise ClientExistsException(email)
     return client

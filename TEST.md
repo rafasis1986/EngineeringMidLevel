@@ -14,6 +14,9 @@
 - Travis
 - Sphinix
 - Auth0
+- Twilio
+- Sendgrid
+- Celery
 
 ## Origins
 
@@ -68,10 +71,22 @@ $ vim flaskiwsapp/settings/productionConfig.py
     AUTH0_CLIENT_SECRET = 'your_auth0_client_secret'
     AUTH0_DOMAIN = 'your_auth0_domain'
     APP_URL = 'http://web.your_domain'
+    TWILIO_SID = 'your_twilio_sid'
+    TWILIO_TOKEN = 'your_twilio_token'
+    TWILIO_PHONE = 'your_twilio_phone_number'
+    SENDGRID_EMAIL = 'your_email'
+    SENDGRID_TOKEN = 'sendgrid_email_token'
 
 ```
 
 Remember setting the auth0 callback url in https://auth0.com/
+
+Twilio is a SMS provider, I use this provider because this let me create a free account, 
+to send emails i used sendgrid service go to https://sendgrid.com , 
+in other hand i used a external queue service from https://www.cloudamqp.com and 
+finally to watch the logs you can move to https://rdtr.loggly.com/login and login with 
+login **admin** and password **Admin123**
+
 
 
 ## Setting FE application

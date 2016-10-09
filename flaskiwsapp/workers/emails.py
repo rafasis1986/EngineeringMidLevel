@@ -29,8 +29,9 @@ def ticket_created_email(ticket_id):
         response = sg.client.mail.send.post(request_body=mail.get())
     except Exception as e:
         iws_logger.error(MSG_ERROR % (type(e), e.args[0]))
-    else:
+    if response and response.status:
         iws_logger.info('Send email status: %s' % response.status)
+
 
 @celery.task
 def welcome_user_email(user_id):
@@ -46,8 +47,5 @@ def welcome_user_email(user_id):
         response = sg.client.mail.send.post(request_body=mail.get())
     except Exception as e:
         iws_logger.error(MSG_ERROR % (type(e), e.args[0]))
-    else:
+    if response and response.status:
         iws_logger.info('Send email status: %s' % response.status)
-
-
-
