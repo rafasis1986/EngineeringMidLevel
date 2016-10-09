@@ -135,7 +135,7 @@ class TicketView(MyModelView):
 
     def after_model_change(self, form, model, is_created):
         MyModelView.after_model_change(self, form, model, is_created)
-        model.request = update_checked_request(model.request.id)
+        request = update_checked_request(model.request.id)
         create_ticket_sms_job(model.id)
         create_ticket_email_job(model.id)
 

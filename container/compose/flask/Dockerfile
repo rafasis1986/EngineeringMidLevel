@@ -12,6 +12,7 @@ RUN pip install -r /requirements/prod.txt \
     && useradd -r -g flask flask
 
 COPY . /app
+
 RUN chown -R flask /app
 
 COPY ./container/compose/flask/gunicorn.sh /gunicorn.sh
