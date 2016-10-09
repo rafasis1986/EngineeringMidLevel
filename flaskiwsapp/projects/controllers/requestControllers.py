@@ -4,14 +4,12 @@ from flaskiwsapp.projects.models.request import Request
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.snippets.exceptions.requestExceptions import RequestDoesnotExistsException
 import datetime
-from flaskiwsapp.workers.queueManager import create_request_sms_job
 
 
 def create_request(kwargs):
     request = Request(kwargs['title'])
     request = request.update(**kwargs)
     request = insert_request_priority(request)
-    create_request_sms_job(request.id)
     return request
 
 
