@@ -1,16 +1,14 @@
 """Admin views."""
-import logging
 
 from flask import redirect, url_for, abort
 from flask.globals import request
 from flask_admin import expose, helpers
 from flask_admin.contrib import sqla
-from wtforms import PasswordField, validators
-from wtforms.fields.html5 import URLField, IntegerField
+from wtforms import PasswordField
 
 import flask_admin as admin
 import flask_login as login
-from flaskiwsapp.admin.forms import AdminLoginForm
+from flaskiwsapp.admin.forms import AdminLoginForm, AdminClientForm
 from flaskiwsapp.auth.snippets.authExceptions import AuthBaseException
 from flaskiwsapp.auth.snippets.dbconections import auth0_user_signup, \
     auth0_user_change_password
@@ -18,12 +16,10 @@ from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.users.validators import get_user
 from flaskiwsapp.projects.controllers.requestControllers import insert_request_priority,\
     remove_request_from_priority_list, update_request_on_priority_list, update_checked_request
-from flaskiwsapp.projects.controllers.ticketControllers import create_ticket
-from flask.helpers import flash
-from flask_admin.babel import gettext
-
-
-log = logging.getLogger("flask-admin.sqla")
+from flaskiwsapp.workers.queueManager import create_welcome_client_job, create_request_sms_job, create_ticket_sms_job,\
+    create_ticket_email_job, create_welcome_user_email_job
+from wtforms.fields.core import StringField
+from wtforms.validators import DataRequired, URL
 
 
 # Create customized model view class
@@ -61,7 +57,6 @@ class UserView(MyModelView):
         'first_name',
         'last_name',
         'password_dummy',
-        'created_at',
         'active',
         'admin'
     )
@@ -73,6 +68,7 @@ class UserView(MyModelView):
                 model.set_password(form.password_dummy.data)
                 if is_created:
                     auth0_user_signup(form.email.data, form.password_dummy.data)
+                    create_welcome_user_email_job(model.id)
                 else:
                     auth0_user_change_password(form.email.data, form.password_dummy.data)
         except (BaseIWSExceptions, AuthBaseException):
@@ -84,35 +80,42 @@ class ClientView(MyModelView):
     create_modal = True
     edit_modal = True
     list_template = 'admin/client/list.html'
-    form_excluded_columns = ('password', 'active')
-    form_columns = (
-        'email',
-        'first_name',
-        'last_name'
-    )
+    form = AdminClientForm
+
+    def after_model_change(self, form, model, is_created):
+        MyModelView.after_model_change(self, form, model, is_created)
+        create_welcome_client_job(model.id)
 
 
 class RequestView(MyModelView):
     """Flask Request model view."""
     create_modal = True
     list_template = 'admin/request/list.html'
+    form_excluded_columns = ('ticket_url')
 
+    # Add dummy password field
+    form_extra_fields = {
+        'url_dummy': StringField('Ticket url', validators=[DataRequired(), URL()])
+    }
     form_columns = (
         'title',
         'description',
         'client',
         'client_priority',
         'product_area',
-        'ticket_url',
+        'url_dummy',
         'target_date'
     )
 
-    
-    
+    def on_model_change(self, form, model, is_created):
+        MyModelView.on_model_change(self, form, model, is_created)
+        model.ticket_url = form.url_dummy.data
+
     def after_model_change(self, form, model, is_created):
         MyModelView.after_model_change(self, form, model, is_created)
         if is_created:
             model = insert_request_priority(model)
+            create_request_sms_job(model.id)
         else:
             model = update_request_on_priority_list(model)
 
@@ -127,13 +130,14 @@ class TicketView(MyModelView):
     form_columns = (
         'request',
         'user',
-        'detail',
-        'created_at'
+        'detail'
     )
 
     def after_model_change(self, form, model, is_created):
         MyModelView.after_model_change(self, form, model, is_created)
-        model = update_checked_request(model.request.id)
+        request = update_checked_request(model.request.id)
+        create_ticket_sms_job(model.id)
+        create_ticket_email_job(model.id)
 
 
 # Create customized index view class taht handles login & registration
@@ -157,9 +161,7 @@ class MyAdminIndexView(admin.AdminIndexView):
             user = get_user(form)
             login.login_user(user)
         if login.current_user.is_authenticated:
-
             return redirect(url_for('.index'))
-
         self._template_args['form'] = form
         return super(MyAdminIndexView, self).index()
 

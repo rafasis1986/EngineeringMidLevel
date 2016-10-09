@@ -18,6 +18,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - postgres_backup:/backups
     env_file: .env
+    ports:
+      - "0.0.0.0:15432:5432"
 
   flask:
     build:
@@ -28,6 +30,20 @@ services:
       - postgres
     command: /gunicorn.sh
     env_file: .env
+    volumes:
+      - ./flaskiwsapp:/app/flaskiwsapp
+
+  celery:
+    build:
+      context: .
+      dockerfile: ./container/compose/flask/Dockerfile
+    user: flask
+    depends_on:
+      - postgres
+    command: /celery.sh
+    env_file: .env
+    volumes:
+      - ./flaskiwsapp:/app/flaskiwsapp
 
   nginx:
     build:

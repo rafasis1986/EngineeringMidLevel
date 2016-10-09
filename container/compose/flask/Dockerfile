@@ -12,16 +12,22 @@ RUN pip install -r /requirements/prod.txt \
     && useradd -r -g flask flask
 
 COPY . /app
+
 RUN chown -R flask /app
 
 COPY ./container/compose/flask/gunicorn.sh /gunicorn.sh
+COPY ./container/compose/flask/celery.sh /celery.sh
 COPY ./container/compose/flask/entrypoint.sh /entrypoint.sh
+
 RUN sed -i 's/\r//' /entrypoint.sh \
     && sed -i 's/\r//' /gunicorn.sh \
+    && sed -i 's/\r//' /celery.sh \
     && chmod +x /entrypoint.sh \
     && chown flask /entrypoint.sh \
     && chmod +x /gunicorn.sh \
-    && chown flask /gunicorn.sh
+    && chown flask /gunicorn.sh \
+    && chmod +x /celery.sh \
+    && chown flask /celery.sh
 
 WORKDIR /app
 

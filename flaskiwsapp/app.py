@@ -12,7 +12,7 @@ from flaskiwsapp.api.v1.views.requestViews import requests_api_blueprint
 from flaskiwsapp.api.v1.views.ticketViews import tickets_api_blueprint
 from flaskiwsapp.api.v1.views.userViews import users_api_blueprint
 from flaskiwsapp.auth.views import auth_blueprint
-from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma
+from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma, celery
 from flaskiwsapp.projects.models.request import Request
 from flaskiwsapp.settings.baseConfig import BaseConfig
 from flaskiwsapp.users.models.client import Client
@@ -21,7 +21,7 @@ from flaskiwsapp.projects.models.ticket import Ticket
 from flaskiwsapp.api.v1.views.utilsViews import utils_api_blueprint
 
 
-def create_app(config_object=BaseConfig):
+def create_app(config_object=BaseConfig, blueprints=True):
     """An application factory, as explained here:
     http://flask.pocoo.org/docs/patterns/appfactories.
 
@@ -31,8 +31,10 @@ def create_app(config_object=BaseConfig):
     app = Flask(__name__)
     app.config.from_object(config_object)
     register_extensions(app)
-    register_blueprints(app)
+    if blueprints:
+        register_blueprints(app)
     init_admin(app)
+    init_celery(app)
     return app
 
 
@@ -72,7 +74,7 @@ def init_admin(app):
     """Adds ModelViews to flask-admin."""
     admin = Admin(
         app,
-        name="flaskiwsapp-Admin",
+        name="IWS-Admin",
         index_view=MyAdminIndexView(),
         base_template='my_master.html',
         endpoint="admin"
@@ -82,6 +84,10 @@ def init_admin(app):
     admin.add_view(RequestView(Request, db.session))
     admin.add_view(TicketView(Ticket, db.session))
     return None
+
+
+def init_celery(app):
+    celery.conf.update(app.config)
 
 
 ####################

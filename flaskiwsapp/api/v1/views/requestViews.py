@@ -12,6 +12,7 @@ from werkzeug.exceptions import BadRequest
 from flask_cors.decorator import cross_origin
 from dateutil import parser
 from flask import jsonify
+from flaskiwsapp.workers.queueManager import create_request_sms_job
 
 
 requests_api_blueprint = Blueprint('requests_api_blueprint', __name__)
@@ -74,6 +75,7 @@ class RequestsAPI(Resource):
             request = create_request(req_dict)
             request_schema = RequestDetailJsonSchema()
             response = request_schema.dump(get_request_by_id(request.id)).data
+            create_request_sms_job(request.id)
         except BadRequest as e:
             raise JWTError(e, e.description)
         except Exception as e:

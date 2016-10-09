@@ -23,3 +23,5 @@ class BaseConfig(object):
     JWT_EXPIRATION_DELTA = datetime.timedelta(days=1)
     JWT_AUTH_HEADER_PREFIX = 'Bearer'
     API_VERSION = 'v1.0'
+    CELERY_BROKER_URL = 'amqp://oghhwozm:E50Pt5-Qua-k_uIestJZ0_wylZVmGzYF@wildboar.rmq.cloudamqp.com/oghhwozm'
+    CELERY_IMPORTS = ()

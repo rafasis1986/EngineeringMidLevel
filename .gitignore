@@ -204,7 +204,7 @@ crashlytics-build.properties
 
 # experimental
 Makefile
-migrations/*
+migrations/versions/*
 /doc/*
 
 ###### Node ########

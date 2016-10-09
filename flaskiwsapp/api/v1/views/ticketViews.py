@@ -11,6 +11,7 @@ from flaskiwsapp.projects.controllers.requestControllers import get_request_by_i
 from flaskiwsapp.projects.controllers.ticketControllers import create_ticket, delete_ticket, \
     get_ticket_by_id, get_tickets_user, get_all_tickets
 from flaskiwsapp.snippets.customApi import CustomApi
+from flaskiwsapp.workers.queueManager import create_ticket_email_job, create_ticket_sms_job
 
 
 tickets_api_blueprint = Blueprint('tickets_api_blueprint', __name__)
@@ -51,6 +52,8 @@ class TicketsAPI(Resource):
             request = get_request_by_id(args.request_id)
             ticket = create_ticket(request, current_identity, args.detail)
             ticket_schema = BaseTicketJsonSchema()
+            create_ticket_email_job(ticket.id)
+            create_ticket_sms_job(ticket.id)
         except BadRequest as e:
             raise JWTError(e, e.description)
         except Exception as e:
