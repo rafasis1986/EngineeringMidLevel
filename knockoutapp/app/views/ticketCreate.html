@@ -29,19 +29,13 @@
         <div class="col-md-12">
             <form>
               <div class="form-group form-group-sm">
-                  <label for="detailInput" class="col-md-2 control-label"><h2>Details</h2></label>
-                  <textarea class="col-md-10 form-control" placeholder="Detail" rows="3" id="detailInput"
-                            data-bind="value: detail, valueUpdate: 'afterkeydown'"></textarea>
-                  <span class="help-block">Please enter a detail</span>
+                  <div class="form-group">
+                      <div class="col-md-10 col-md-offset-1">
+                          <textarea rows="2" type="text" class="form-control" placeholder="Details" data-bind="value: detail"></textarea>
+                      </div>
+                  </div>
               </div>
             </form>
         </div>
     </div>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-raised btn-success" type="button" data-bind="click: success"  data-dismiss="modal">Submit</button>
-</div>
-
-<div class="modal-body">
-
 </div>

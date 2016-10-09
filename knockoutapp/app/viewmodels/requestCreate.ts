@@ -10,11 +10,11 @@ import {createRequest} from '../services/requestServices';
 import BaseView = require('./baseView');
 import {makeMessage} from '../services/messageService';
 import {MessageTypes} from '../constants/messageTypes';
-import {getClients} from "../services/clientServices";
-import {IClient} from "clientInterfaces";
-import {getAreas} from "../services/utils";
-import {IArea} from "areaInterfaces";
-import {navigate} from "plugins/history";
+import {getClients} from '../services/clientServices';
+import {IClient} from 'clientInterfaces';
+import {getAreas} from '../services/utils';
+import {IArea} from 'areaInterfaces';
+import {navigate} from 'plugins/history';
 
 
 class RequestCreate extends BaseView{
