@@ -4,6 +4,7 @@ import {UrlSingleton} from '../singletons/urlSingleton';
 import {Constant} from '../constants/enviroment';
 import {AuthSingleton} from '../singletons/authSingleton';
 import Deferred = Q.Deferred;
+import {setSession} from "./utils";
 
 export function getMeInfo():  Promise<IUser> {
     let deferred: Deferred<IUser> = Q.defer<IUser>();
@@ -21,6 +22,9 @@ export function getMeInfo():  Promise<IUser> {
             user.first_name = response.data.attributes.first_name;
             user.last_name = response.data.attributes.last_name;
             user.full_name = response.data.attributes.full_name;
+            user.roles = response.data.relationships.roles.data.map( (role: any) => {
+                return role.id;
+            });
             deferred.resolve(user);
         })
         .fail((error: Error) => {

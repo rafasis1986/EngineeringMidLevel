@@ -4,6 +4,7 @@
             <thead>
             <tr data-bind="foreach: columns">
                 <th>
+
                     <!-- ko if: rowText != 'link' -->
                     <a href="" data-bind="click: function(data, event) { $root.sortBy(rowText, data, event)}">
                         <span data-bind="text: headerText"></span>
@@ -22,13 +23,12 @@
                     <a href="" data-bind="click: function(data, event) { $root.showDetailModal($parent[rowText], data, event)}">
                         <span class="glyphicon glyphicon-modal-window "></span>
                     </a>
-                    <!-- ko if: $parent.attended === false -->
+                    <!-- ko if: ( ! $parent.attended && $root.isEmployee() ) -->
                     <a href="" data-bind="click: function(data, event) { $root.showTicketModal($parent[rowText], data, event)}">
                         <span class="glyphicon glyphicon-edit" alt="show details"></span>
                     </a>
                     <!-- /ko -->
 
-                    <!-- /ko -->
 
                 </td>
                 <!-- /ko -->
