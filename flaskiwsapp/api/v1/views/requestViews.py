@@ -1,13 +1,13 @@
 from flask.blueprints import Blueprint
 from flask_cors.extension import CORS
-from flask_jwt import jwt_required, JWTError
+from flask_jwt import jwt_required, JWTError, current_identity
 from flask_restful import Resource, reqparse, fields
 
 from flaskiwsapp.api.v1.schemas.requestSchemas import BaseRequestJsonSchema, RequestDetailJsonSchema
 from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, update_request, delete_request,\
-    get_request_by_id, create_request
+    get_request_by_id, create_request, get_client_pending_requests
 from flaskiwsapp.snippets.customApi import CustomApi
-from flaskiwsapp.users.controllers.clientControllers import get_client_by_email
+from flaskiwsapp.users.controllers.clientControllers import get_client_by_email, get_client_by_id
 from werkzeug.exceptions import BadRequest
 from flask_cors.decorator import cross_origin
 from dateutil import parser
@@ -21,7 +21,6 @@ request_api = CustomApi(requests_api_blueprint)
 
 request_parser = reqparse.RequestParser(bundle_errors=True)
 
-request_parser.add_argument('client', type=str, location='json', required=True, help="Choose a client")
 request_parser.add_argument('client_priority', type=str, location='json', required=True, help="Send priority")
 request_parser.add_argument('details', type=str, location='json', required=True, help="send a details")
 request_parser.add_argument('ticket_url', type=str, location='json', required=True, help="send a ticket_url")
@@ -56,13 +55,50 @@ class RequestsAPI(Resource):
 
         return request_schema.dump(requests).data
 
+
+class RequestAPI(Resource):
+    """An API to update or delete an request. """
+
     @jwt_required()
-    @cross_origin()
+    def delete(self, request_id):
+        """
+        HTTP DELETE. Delete an request.
+        :returns:
+        """
+        return delete_request(request_id)
+
+    @jwt_required()
+    def get(self, request_id):
+        """
+        HTTP DELETE. Get specific Request.
+        :returns:
+        """
+        request = get_request_by_id(request_id)
+        return RequestDetailJsonSchema().dump(request).data
+
+
+class RequestsMeAPI(Resource):
+    """An API to get or create requests by a client."""
+
+    @jwt_required()
+    def get(self):
+        """HTTP GET. Get one or all requests.
+
+        :email: a string valid as object id.
+        :returns: One or all available requests.
+
+        """
+        requests = get_client_pending_requests(current_identity.id)
+        request_schema = BaseRequestJsonSchema(many=True)
+
+        return request_schema.dump(requests).data
+
+    @jwt_required()
     def post(self):
         try:
             response = None
+            client = get_client_by_id(current_identity.id)
             args = request_parser.parse_args()
-            client = get_client_by_email(args.client)
             date = parser.parse(args.target_date)
             req_dict = dict()
             req_dict.update({'title': args.title})
@@ -83,19 +119,6 @@ class RequestsAPI(Resource):
         else:
             return jsonify(response)
 
-
-class RequestAPI(Resource):
-    """An API to update or delete an request. """
-
-    @jwt_required()
-    def put(self, request_id):
-        """
-        HTTP PUT. Update an target.
-        :returns:
-        """
-
-        return update_request(request_id)
-
     @jwt_required()
     def delete(self, request_id):
         """
@@ -104,15 +127,7 @@ class RequestAPI(Resource):
         """
         return delete_request(request_id)
 
-    @jwt_required()
-    def get(self, request_id):
-        """
-        HTTP DELETE. Get specific Request.
-        :returns:
-        """
-        request = get_request_by_id(request_id)
-        return RequestDetailJsonSchema().dump(request).data
-
 
 request_api.add_resource(RequestsAPI, '', endpoint='list')
 request_api.add_resource(RequestAPI, '<request_id>', endpoint='detail')
+request_api.add_resource(RequestsMeAPI, 'me', endpoint='me')

@@ -35,12 +35,12 @@ def get_all_client_requests(client_id):
 
 def get_client_pending_requests(client_id):
     """
-    Get all requests info by client_id
+    Get all pending requests info by client_id
 
     :returns: a dict with the operation result
 
     """
-    return Request.query.filter(Request.client_id == client_id, Request.attended).order_by(Request.client_priority).all()
+    return Request.query.filter(Request.client_id == client_id, Request.attended == False ).order_by(Request.client_priority).all()
 
 
 def get_request_by_id(request_id=None):

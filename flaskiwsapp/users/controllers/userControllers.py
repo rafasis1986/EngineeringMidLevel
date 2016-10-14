@@ -5,6 +5,8 @@ from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesNotExistsExce
     UserExistsException
 from sqlalchemy.exc import IntegrityError
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
+from flaskiwsapp.users.controllers.roleControllers import get_role_by_name
+from flaskiwsapp.snippets.constants import ROLE_CLIENT
 
 
 def is_an_available_email(email):
@@ -104,6 +106,28 @@ def update_user_password(user_id, password):
     try:
         user = User.query.get(user_id)
         user.set_password(password)
+        user.save()
+    except NoResultFound:
+        raise UserDoesNotExistsException(user_id)
+    except Exception as e:
+        raise BaseIWSExceptions()
+    return user
+
+
+def append_user_role(user_id, role_name):
+    """
+    Creates an user.
+
+    :user_id: a integer object. Indicates an update.
+    :role_name: a string object
+    :password: string object
+    :returns: user updated
+
+    """
+    try:
+        user = User.query.get(user_id)
+        role = get_role_by_name(role_name)
+        user.roles.append(role)
         user.save()
     except NoResultFound:
         raise UserDoesNotExistsException(user_id)

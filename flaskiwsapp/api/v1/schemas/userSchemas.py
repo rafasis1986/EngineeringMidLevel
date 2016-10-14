@@ -28,3 +28,10 @@ class UserDetailJsonSchema(BaseUserJsonSchema):
     first_name = fields.Str()
     last_name = fields.Str()
     created_at = fields.DateTime()
+    roles = fields.Relationship(
+        '/users/{role_id}/roles',
+        related_url_kwargs={'role_id': '<id>'},
+        # Include resource linkage
+        many=True, include_resource_linkage=True,
+        type_='role',
+        id_field='name')

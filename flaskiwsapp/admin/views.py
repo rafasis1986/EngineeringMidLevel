@@ -4,11 +4,10 @@ from flask import redirect, url_for, abort
 from flask.globals import request
 from flask_admin import expose, helpers
 from flask_admin.contrib import sqla
-from wtforms import PasswordField
 
 import flask_admin as admin
 import flask_login as login
-from flaskiwsapp.admin.forms import AdminLoginForm, AdminClientForm
+from flaskiwsapp.admin.forms import AdminLoginForm, AdminUserForm
 from flaskiwsapp.auth.snippets.authExceptions import AuthBaseException
 from flaskiwsapp.auth.snippets.dbconections import auth0_user_signup, \
     auth0_user_change_password
@@ -16,7 +15,7 @@ from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.users.validators import get_user
 from flaskiwsapp.projects.controllers.requestControllers import insert_request_priority,\
     remove_request_from_priority_list, update_request_on_priority_list, update_checked_request
-from flaskiwsapp.workers.queueManager import create_welcome_client_job, create_request_sms_job, create_ticket_sms_job,\
+from flaskiwsapp.workers.queueManager import create_request_sms_job, create_ticket_sms_job,\
     create_ticket_email_job, create_welcome_user_email_job
 from wtforms.fields.core import StringField
 from wtforms.validators import DataRequired, URL
@@ -24,6 +23,8 @@ from wtforms.validators import DataRequired, URL
 
 # Create customized model view class
 class MyModelView(sqla.ModelView):
+    create_modal = True
+    edit_modal = True
 
     def is_accessible(self):
         return login.current_user.is_authenticated and login.current_user.is_admin
@@ -40,26 +41,9 @@ class MyModelView(sqla.ModelView):
 # Create customized view for user models
 class UserView(MyModelView):
     """Flask user model view."""
-    create_modal = True
-    edit_modal = True
-
-    # Remove password field from form
-    form_excluded_columns = ('password')
-
-    # Add dummy password field
-    form_extra_fields = {
-        'password_dummy': PasswordField('Password')
-    }
-
-    # Set the form fields to use
-    form_columns = (
-        'email',
-        'first_name',
-        'last_name',
-        'password_dummy',
-        'active',
-        'admin'
-    )
+    form = AdminUserForm
+    list_template = 'admin/users/list.html'
+    column_searchable_list = ('email', 'phone_number', 'id')
 
     def after_model_change(self, form, model, is_created):
         # Set password if password_dummy is set
@@ -75,21 +59,8 @@ class UserView(MyModelView):
             self.session.rollback()
 
 
-class ClientView(MyModelView):
-    """Flask client model view."""
-    create_modal = True
-    edit_modal = True
-    list_template = 'admin/client/list.html'
-    form = AdminClientForm
-
-    def after_model_change(self, form, model, is_created):
-        MyModelView.after_model_change(self, form, model, is_created)
-        create_welcome_client_job(model.id)
-
-
 class RequestView(MyModelView):
     """Flask Request model view."""
-    create_modal = True
     list_template = 'admin/request/list.html'
     form_excluded_columns = ('ticket_url')
 
@@ -126,7 +97,6 @@ class RequestView(MyModelView):
 
 class TicketView(MyModelView):
     """Flask Request model view."""
-    create_modal = True
     form_columns = (
         'request',
         'user',

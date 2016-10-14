@@ -16,7 +16,7 @@
         var AUTH0_CALLBACK_URL = '{{env.AUTH0_CALLBACK_URL}}';
         </script>
         <link href="{{url_for('static', filename='auth.css')}}" rel="stylesheet">
-         <script src="{{url_for('static', filename='auth.js')}}" type="text/javascript"></script>
+        <script src="{{url_for('static', filename='auth.js')}}" type="text/javascript"></script>
         
     </head>
     <body class="home">
@@ -28,16 +28,29 @@
 	                   <div class='row'>
 		                   <div class="col-md-8 col-md-offset-2">
 		                      <div class='row'>
-			                       <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
-			                           <img src="/static/images/test.png" />
-			                       </div>
-			                       <div class="col-md-12">
-			                           <h3 class="text-center">IWS test</h3>
-	                                </div>
+		                          <div class="col-md-12">
+		                            <h2 class="text-center"><strong>IWS test</strong></h2>
+                                  </div>
+			                      <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2">
+			                        <img src="/static/images/test.png" />
+			                      </div>
                                 </div>
 	                        </div>
-	                        <div class="col-md-8 col-md-offset-2">
-				                <a class="btn btn-primary btn-lg btn-login btn-block">SignIn</a>
+	                        
+	                        <div class="col-md-12">
+	                           <hr />
+	                           <div class="btn-group">
+				                <a class="btn btn-success btn-md" id="btn-employee">
+				                    <span class="glyphicon glyphicon-log-in" aria-hidden="true">
+				                    Employee
+				                    </span>
+				                </a>
+				                <button class="btn btn-primary btn-md" id="btn-client">
+				                    <span class="glyphicon glyphicon-user" aria-hidden="true">
+				                    Client
+				                    </span>
+				                </button>
+				                </div>
 	                        </div>
 	                    </div>
                     </div>

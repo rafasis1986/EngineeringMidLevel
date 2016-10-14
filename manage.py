@@ -15,6 +15,9 @@ from flaskiwsapp.settings.prodConfig import ProdConfig
 from flaskiwsapp.settings.devConfig import DevConfig
 from flaskiwsapp.users.controllers.userControllers import update_user, create_user
 from flaskiwsapp.snippets.exceptions.userExceptions import UserExistsException
+from flaskiwsapp.users.controllers.roleControllers import create_role
+from flaskiwsapp.snippets.constants import ROLE_CLIENT, ROLE_EMPLOYEE
+from flaskiwsapp.snippets.exceptions.roleExceptions import RoleExistsException
 
 
 CONFIG = ProdConfig if os.environ.get('IWS_BE') == 'prod' else DevConfig
@@ -51,6 +54,16 @@ def create_admin():
         print('Admin user already exists. Try to login with: \n',
               'email: admin \n',
               'password: admin')
+
+
+@manager.command
+def init_roles():
+    """Create a default user roles."""
+    try:
+        create_role(ROLE_CLIENT)
+        create_role(ROLE_EMPLOYEE)
+    except RoleExistsException as e:
+        print(e.message)
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))
