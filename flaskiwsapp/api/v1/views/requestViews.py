@@ -4,12 +4,10 @@ from flask_jwt import jwt_required, JWTError, current_identity
 from flask_restful import Resource, reqparse, fields
 
 from flaskiwsapp.api.v1.schemas.requestSchemas import BaseRequestJsonSchema, RequestDetailJsonSchema
-from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, update_request, delete_request,\
+from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, delete_request,\
     get_request_by_id, create_request, get_client_pending_requests
 from flaskiwsapp.snippets.customApi import CustomApi
-from flaskiwsapp.users.controllers.clientControllers import get_client_by_email, get_client_by_id
-from werkzeug.exceptions import BadRequest
-from flask_cors.decorator import cross_origin
+from flaskiwsapp.users.controllers.clientControllers import get_client_by_id
 from dateutil import parser
 from flask import jsonify
 from flaskiwsapp.workers.queueManager import create_request_sms_job

@@ -26,7 +26,7 @@ class BaseTicketJsonSchema(Schema):
         related_url=REQUEST_URL,
         related_url_kwargs={'id': '<request.id>'},
         include_resource_linkage=True,
-        type_='rquest',
+        type_='request',
         schema=BaseRequestJsonSchema)
     user = fields.Relationship(
         related_url=USER_URL,

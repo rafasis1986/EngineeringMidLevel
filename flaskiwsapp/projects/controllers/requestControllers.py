@@ -23,6 +23,16 @@ def get_all_requests():
     return Request.query.order_by(Request.id).all()
 
 
+def get_all_requests_attended(status=False):
+    """
+    Get all requests grouped by status
+
+    :returns: a dict with the operation result
+
+    """
+    return Request.query.filter(Request.attended == status).order_by(Request.id).all()
+
+
 def get_all_client_requests(client_id):
     """
     Get all requests info by client_id
@@ -40,7 +50,7 @@ def get_client_pending_requests(client_id):
     :returns: a dict with the operation result
 
     """
-    return Request.query.filter(Request.client_id == client_id, Request.attended == False ).order_by(Request.client_priority).all()
+    return Request.query.filter(Request.client_id == client_id, Request.attended == False).order_by(Request.client_priority).all()
 
 
 def get_request_by_id(request_id=None):
@@ -117,7 +127,7 @@ def insert_request_priority(request):
         next = None
         prev = Request.query.filter(Request.client == request.client, Request.attended == False,
             Request.client_priority < request.client_priority).order_by(- Request.client_priority).first()
-        if not prev :
+        if not prev:
             next = Request.query.filter(Request.client == request.client, Request.attended == False,
                 Request.client_priority >= request.client_priority).order_by(Request.client_priority).first()
             if not next:

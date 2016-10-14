@@ -8,8 +8,8 @@ from flask.blueprints import Blueprint
 from flask.globals import current_app
 from flask_jwt import _default_jwt_encode_handler
 from flaskiwsapp.snippets.utils import split_name, get_api_urls
-from flaskiwsapp.users.controllers.userControllers import is_an_available_email, create_user, \
-    update_user, get_user_by_email
+from flaskiwsapp.users.controllers.userControllers import is_an_available_email, update_user, get_user_by_email
+from flaskiwsapp.users.controllers.clientControllers import create_client
 
 
 auth_blueprint = Blueprint('auth', __name__,)
@@ -43,7 +43,7 @@ def call_back():
     user_info = requests.get(user_url).json()
 
     if is_an_available_email(user_info.get('email')):
-        user = create_user(user_info['email'], None)
+        user = create_client(user_info['email'], None)
     else:
         user = get_user_by_email(user_info.get('email'))
     social = user_info['identities'][0]['connection']
@@ -64,5 +64,5 @@ def call_back():
     expire_date = datetime.datetime.now() + current_app.config['JWT_EXPIRATION_DELTA']
     response.set_cookie('Authorization', value=token, expires=expire_date)
     response.set_cookie('Env', value=current_app.config['ENV'], expires=expire_date)
-    response.set_cookie('urls', value=get_api_urls(current_app), expires=expire_date)
+    response.set_cookie('urls', value=get_api_urls(current_app, user), expires=expire_date)
     return response
