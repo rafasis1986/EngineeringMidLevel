@@ -8,6 +8,8 @@ import SimpleGridRequest = require('../widgets/simpleGridRequest');
 import {getRequests} from '../services/requestServices';
 import {IRequestBase} from 'requestInterface';
 import BaseView = require('./baseView');
+import {UserSingleton} from "../singletons/userSingleton";
+import {Constant} from "../constants/enviroment";
 
 
 const columns = [{ headerText: 'Id', rowText: 'id' },
@@ -25,9 +27,13 @@ class Requests extends BaseView {
     private requests: any = ko.observableArray();
     private isLoading: any = ko.observable();
     private gridViewModel: any;
+    private isClient: any = ko.observable(false);
 
-    public activate(){
+    public activate() {
         this.isLoading(true);
+        if (UserSingleton.getRoles().search(Constant.ROLE_CLIENT) != -1) {
+            this.isClient(true);
+        }
         return  this.loadRequests().then((data) => {
                 this.requests(data);
                 this.gridViewModel = new SimpleGridRequest(data, columns);

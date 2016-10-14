@@ -9,7 +9,7 @@ class SimpleGrid {
     protected currentPageIndex: any  = ko.observable(0);
     protected pageSize: number =  Constant.PAGINATE_LIMIT;
     protected columns: any = [];
-    protected itemsOnCurrentPage;
+    protected itemsOnCurrentPage: any;
     protected maxPageIndex: any;
     protected dialog: any = null;
 

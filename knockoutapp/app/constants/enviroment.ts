@@ -21,6 +21,11 @@ export class Constant {
     public static get REQUESTS_API(): string { return 'request_list'; };
     public static get TICKETS_API(): string { return 'tickets_list'; };
     public static get TYPE_TOKEN(): string { return 'Bearer'; };
+    public static get ROLE_CLIENT(): string { return 'client'; };
+    public static get ROLE_EMPLOYEE(): string { return 'employee'; };
+    public static get SESSION_FULL_NAME(): string { return 'full_name'; };
+    public static get SESSION_EMAIL(): string { return 'email'; };
+    public static get SESSION_ROLES(): string { return 'roles'; };
     public static get USERS_API(): string { return 'user_list'; };
     public static get USERS_API_ME(): string { return 'me'; };
     public static get URLS_LABEL(): string { return 'urls'; };

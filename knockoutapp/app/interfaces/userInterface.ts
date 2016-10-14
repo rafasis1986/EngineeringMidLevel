@@ -7,6 +7,7 @@ declare module 'userInterfaces' {
         first_name: string,
         last_name: string,
         full_name?: string,
+        roles?: string[],
         id: string
     }
 }
