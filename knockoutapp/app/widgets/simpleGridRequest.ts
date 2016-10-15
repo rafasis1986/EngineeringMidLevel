@@ -10,12 +10,14 @@ import TicketRequestModel = require('../viewmodels/ticketCreate');
 import TicketModal = require('./ticketModal');
 import {navigate} from 'plugins/history';
 import {Constant} from '../constants/enviroment';
+import RequestDeleteModal = require("./requestDeleteModal");
 
 
 
 class SimpleGridRequest extends SimpleGrid {
 
     protected isEmployee: any = ko.observable(false);
+    protected isClient: any = ko.observable(false);
     protected checkTitle: any = ko.observable(true);
     protected checkId: any = ko.observable(true);
     protected checkPriority: any = ko.observable(true);
@@ -28,6 +30,8 @@ class SimpleGridRequest extends SimpleGrid {
 
         if (userSession.getUserRoles().search(Constant.ROLE_EMPLOYEE) != -1) {
             this.isEmployee(true);
+        } else if (userSession.getUserRoles().search(Constant.ROLE_CLIENT) != -1){
+            this.isClient(true);
         }
     }
 
@@ -65,12 +69,26 @@ class SimpleGridRequest extends SimpleGrid {
         });
     }
 
-    public showTicketModal(requestPath: any) {
+    public showTicketModal(requestPath: any): void {
         getRequestDetails(requestPath)
             .then((request: IRequest) => {
                 this.dialog = new TicketModal(request.title, new TicketRequestModel(request));
                 this.dialog.show().then((resp:any) =>{
                     navigate('#tickets');
+                });
+            }).catch((error: Error) => {
+            console.log(error.toString());
+        });
+    }
+
+    public deleteRequestModal(requestPath: any): void {
+        getRequestDetails(requestPath)
+            .then((request: IRequest) => {
+                console.log('creo modal');
+                console.log(request);
+                this.dialog = new RequestDeleteModal(request.title, new RequestDetails(request));
+                this.dialog.show().then((resp: any) =>{
+                    navigate('#');
                 });
             }).catch((error: Error) => {
             console.log(error.toString());

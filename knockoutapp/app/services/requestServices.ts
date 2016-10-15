@@ -121,3 +121,24 @@ export function createRequest(request: ICreateRequest):  Promise<ICreateRequest>
 
     return deferred.promise;
 }
+
+export function deleteRequest(requestPath: string):  Promise<boolean> {
+    let deferred: Deferred<boolean> = Q.defer<boolean>(),
+        ajaxSettings: any = {
+            'url': UrlSingleton.getInstance().getApiBase() + requestPath,
+            'method': 'DELETE',
+            'headers': {
+                'Authorization': AuthSingleton.getInstance().getToken()
+            }};
+    $.ajax(ajaxSettings)
+        .then((response: any) => {
+            console.log('borrado');
+            console.log(response);
+            deferred.resolve(true);
+        })
+        .fail((error: Error) => {
+            deferred.reject(error);
+        });
+
+    return deferred.promise;
+}

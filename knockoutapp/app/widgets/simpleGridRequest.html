@@ -41,15 +41,18 @@
                 <!-- ko if: rowText == 'link' -->
                 <td>
                     <a href="" data-bind="click: function(data, event) { $root.showDetailModal($parent[rowText], data, event)}">
-                        <span class="glyphicon glyphicon-modal-window "></span>
+                        <span class="glyphicon glyphicon-modal-window"  title="Show request's info"></span>
                     </a>
                     <!-- ko if: ( ! $parent.attended && $root.isEmployee() ) -->
                     <a href="" data-bind="click: function(data, event) { $root.showTicketModal($parent[rowText], data, event)}">
-                        <span class="glyphicon glyphicon-edit" alt="show details"></span>
+                        <span class="glyphicon glyphicon-trash" alt="Process request"></span>
                     </a>
                     <!-- /ko -->
-
-
+                    <!-- ko if: ( ! $parent.attended && $root.isClient() ) -->
+                    <a href="" data-bind="click: function(data, event) { $root.deleteRequestModal($parent[rowText], data, event)}">
+                        <span class="glyphicon glyphicon-trash" title="Remove request" ></span>
+                    </a>
+                    <!-- /ko -->
                 </td>
                 <!-- /ko -->
 
