@@ -8,8 +8,8 @@ import RequestDetails = require('../viewmodels/requestDetails');
 import TicketRequestModel = require('../viewmodels/ticketCreate');
 import TicketModal = require('./ticketModal');
 import {navigate} from 'plugins/history';
-import {Constant} from "../constants/enviroment";
-import {UserSingleton} from "../singletons/userSingleton";
+import {Constant} from '../constants/enviroment';
+import {UserSingleton} from '../singletons/userSingleton';
 
 
 class SimpleGridRequest extends SimpleGrid {
@@ -17,13 +17,25 @@ class SimpleGridRequest extends SimpleGrid {
     protected isEmployee: any = ko.observable(false);
 
     constructor (data: any[], colums?: any[], pageSize?: number) {
-        super(data, colums, pageSize);
+        super(data, colums, 4);
 
         if (UserSingleton.getRoles().search(Constant.ROLE_EMPLOYEE) != -1) {
             this.isEmployee(true);
         }
     }
 
+    public filterCompare(item: any): boolean {
+        let flag: boolean = false,
+            filter: string = this.currentFilter().toUpperCase();
+
+        if (item.title.toUpperCase().indexOf(filter) != -1) {
+            flag = true;
+        }
+        else if (item.id.toString().indexOf(filter) != -1) {
+            flag = true;
+        }
+        return flag;
+    }
 
     public showDetailModal(requestPath: any) {
         getRequestDetails(requestPath)
@@ -31,8 +43,8 @@ class SimpleGridRequest extends SimpleGrid {
                 this.dialog = new CustomDialog(request.title, new RequestDetails(request));
                 this.dialog.show();
             }).catch((error: Error) => {
-                console.log(error.toString());
-            });
+            console.log(error.toString());
+        });
     }
 
     public showTicketModal(requestPath: any) {
@@ -43,8 +55,17 @@ class SimpleGridRequest extends SimpleGrid {
                     navigate('#tickets');
                 });
             }).catch((error: Error) => {
-                console.log(error.toString());
-            });
+            console.log(error.toString());
+        });
+    }
+
+    public filter() {
+        this.initGrid();
+    }
+
+    public reset() {
+        this.currentFilter('');
+        this.initGrid();
     }
 }
 export = SimpleGridRequest;

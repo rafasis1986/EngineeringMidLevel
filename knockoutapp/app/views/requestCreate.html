@@ -11,6 +11,12 @@
                 <form class="form-horizontal" role="form">
                     <fieldset>
                         <div class="form-group">
+                            <label class="col-md-2 col-md-offset-2 control-label">Client</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" data-bind="value: client" readonly disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-md-2 col-md-offset-2 control-label">Title</label>
                             <div class="col-md-8">
                                 <input type="text" class="form-control" placeholder="title" data-bind="value: title">
@@ -20,12 +26,6 @@
                             <label class="col-md-2 col-md-offset-2 control-label">Description</label>
                             <div class="col-md-8">
                                 <textarea rows="3" type="text" class="form-control" placeholder="description" data-bind="value: details"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-2 col-md-offset-2 control-label">Client</label>
-                            <div class="col-md-8">
-                                <select class="form-control" type="select" data-bind="options: emailClients, value: client"></select>
                             </div>
                         </div>
                         <div class="form-group">
