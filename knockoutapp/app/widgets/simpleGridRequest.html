@@ -9,12 +9,16 @@
                     <th colspan="2">
                         <input type="checkbox" data-bind="checked: checkId"> Id
                         <input type="checkbox" data-bind="checked: checkTitle"> Title
+                        <input type="checkbox" data-bind="checked: checkClient"> Client
                         <input type="checkbox" data-bind="checked: checkPriority"> Priority
                         <input type="checkbox" data-bind="checked: checkArea"> Area
                     </th>
                     <th colspan="2">
                         <div class="btn-group">
-                            <button class="btn btn-raised btn-primary" data-bind="click: function() { filter() }">Filter</button>
+                            <button class="btn btn-raised btn-primary" data-bind="click: function() { filter() }">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"/>
+                                Search
+                            </button>
                             <button class="btn btn-raised btn-warning" data-bind="click: function() { reset() }">Reset</button>
                         </div>
                     </th>

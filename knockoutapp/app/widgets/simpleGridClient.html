@@ -4,7 +4,7 @@
             <thead>
                 <tr>
                     <th colspan="2">
-                        <input type="text" class="form-control" placeholder="filter" data-bind="value: currentFilter">
+                        <input type="text" class="form-control" placeholder="search" data-bind="value: currentFilter">
                     </th>
                     <th>
                         <input type="checkbox" data-bind="checked: checkId"> Id
@@ -13,7 +13,10 @@
                     </th>
                     <th>
                         <div class="btn-group">
-                            <button class="btn btn-raised btn-primary" data-bind="click: function() { filter() }">Filter</button>
+                            <button class="btn btn-raised btn-primary" data-bind="click: function() { filter() }">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"/>
+                                Search
+                            </button>
                             <button class="btn btn-raised btn-warning" data-bind="click: function() { reset() }">Reset</button>
                         </div>
                     </th>

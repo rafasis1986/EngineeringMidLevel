@@ -19,6 +19,7 @@ class SimpleGridRequest extends SimpleGrid {
     protected checkId: any = ko.observable(true);
     protected checkPriority: any = ko.observable(true);
     protected checkArea: any = ko.observable(true);
+    protected checkClient: any = ko.observable(true);
 
 
     constructor (data: any[], colums?: any[], pageSize?: number) {
@@ -32,8 +33,10 @@ class SimpleGridRequest extends SimpleGrid {
     public filterCompare(item: any): boolean {
         let flag: boolean = false,
             filter: string = this.currentFilter().toUpperCase();
-
         if (this.checkTitle() && item.title.toUpperCase().indexOf(filter) != -1) {
+            flag = true;
+        }
+        if (this.checkClient() && item.client_id.toUpperCase().indexOf(filter) != -1) {
             flag = true;
         }
         else if ( this.checkId() && item.id.toString().indexOf(filter) != -1) {
@@ -42,7 +45,7 @@ class SimpleGridRequest extends SimpleGrid {
         else if ( this.checkPriority() && item.client_priority.toString().indexOf(filter) != -1) {
             flag = true;
         }
-        else if ( this.checkId() && item.area.toUpperCase().indexOf(filter) != -1) {
+        else if ( this.checkArea() && item.product_area.toUpperCase().indexOf(filter) != -1) {
             flag = true;
         }
         else if (! (this.checkId() || this.checkPriority() || this.checkArea() || this.checkTitle())){
