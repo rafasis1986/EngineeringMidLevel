@@ -8,7 +8,7 @@ import SimpleGridRequest = require('../widgets/simpleGridRequest');
 import {getRequests} from '../services/requestServices';
 import {IRequestBase} from 'requestInterface';
 import BaseView = require('./baseView');
-import {UserSingleton} from "../singletons/userSingleton";
+import * as userSession from "../singletons/userSession";
 import {Constant} from "../constants/enviroment";
 
 
@@ -31,7 +31,7 @@ class Requests extends BaseView {
 
     public activate() {
         this.isLoading(true);
-        if (UserSingleton.getRoles().search(Constant.ROLE_CLIENT) != -1) {
+        if (userSession.getUserRoles().search(Constant.ROLE_CLIENT) != -1) {
             this.isClient(true);
         }
         return  this.loadRequests().then((data) => {

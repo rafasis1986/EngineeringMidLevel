@@ -10,12 +10,10 @@ import {createRequest} from '../services/requestServices';
 import BaseView = require('./baseView');
 import {makeMessage} from '../services/messageService';
 import {MessageTypes} from '../constants/messageTypes';
-import {getClients} from '../services/clientServices';
-import {IClient} from 'clientInterfaces';
 import {getAreas} from '../services/utils';
 import {IArea} from 'areaInterfaces';
 import {navigate} from 'plugins/history';
-import {UserSingleton} from '../singletons/userSingleton';
+import * as userSession from '../singletons/userSession';
 
 
 class RequestCreate extends BaseView{
@@ -34,7 +32,7 @@ class RequestCreate extends BaseView{
 
     public activate(){
         this.isLoading(true);
-        this.client(UserSingleton.getEmail());
+        this.client(userSession.getUserEmail());
         return getAreas().then((resp: IArea[]) => {
             this.areas = resp.map((area: IArea) => {
                 return area.name;
@@ -53,7 +51,7 @@ class RequestCreate extends BaseView{
         } else {
 
             let request: any = {
-                client: UserSingleton.getEmail(),
+                client: userSession.getUserEmail(),
                 client_priority: this.client_priority(),
                 details: this.details(),
                 product_area: this.product_area(),

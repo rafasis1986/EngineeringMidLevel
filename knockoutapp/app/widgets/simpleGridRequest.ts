@@ -1,5 +1,6 @@
 import * as ko from 'knockout';
 import * as app from 'durandal/app';
+import * as userSession from '../singletons/userSession';
 import SimpleGrid = require('./simpleGrid');
 import CustomDialog = require('./customModal');
 import {IRequest} from 'requestInterface';
@@ -9,7 +10,7 @@ import TicketRequestModel = require('../viewmodels/ticketCreate');
 import TicketModal = require('./ticketModal');
 import {navigate} from 'plugins/history';
 import {Constant} from '../constants/enviroment';
-import {UserSingleton} from '../singletons/userSingleton';
+
 
 
 class SimpleGridRequest extends SimpleGrid {
@@ -25,7 +26,7 @@ class SimpleGridRequest extends SimpleGrid {
     constructor (data: any[], colums?: any[], pageSize?: number) {
         super(data, colums, pageSize);
 
-        if (UserSingleton.getRoles().search(Constant.ROLE_EMPLOYEE) != -1) {
+        if (userSession.getUserRoles().search(Constant.ROLE_EMPLOYEE) != -1) {
             this.isEmployee(true);
         }
     }
