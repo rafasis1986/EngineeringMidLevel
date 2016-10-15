@@ -15,9 +15,14 @@ import {UserSingleton} from '../singletons/userSingleton';
 class SimpleGridRequest extends SimpleGrid {
 
     protected isEmployee: any = ko.observable(false);
+    protected checkTitle: any = ko.observable(true);
+    protected checkId: any = ko.observable(true);
+    protected checkPriority: any = ko.observable(true);
+    protected checkArea: any = ko.observable(true);
+
 
     constructor (data: any[], colums?: any[], pageSize?: number) {
-        super(data, colums, 4);
+        super(data, colums, pageSize);
 
         if (UserSingleton.getRoles().search(Constant.ROLE_EMPLOYEE) != -1) {
             this.isEmployee(true);
@@ -28,10 +33,19 @@ class SimpleGridRequest extends SimpleGrid {
         let flag: boolean = false,
             filter: string = this.currentFilter().toUpperCase();
 
-        if (item.title.toUpperCase().indexOf(filter) != -1) {
+        if (this.checkTitle() && item.title.toUpperCase().indexOf(filter) != -1) {
             flag = true;
         }
-        else if (item.id.toString().indexOf(filter) != -1) {
+        else if ( this.checkId() && item.id.toString().indexOf(filter) != -1) {
+            flag = true;
+        }
+        else if ( this.checkPriority() && item.client_priority.toString().indexOf(filter) != -1) {
+            flag = true;
+        }
+        else if ( this.checkId() && item.area.toUpperCase().indexOf(filter) != -1) {
+            flag = true;
+        }
+        else if (! (this.checkId() || this.checkPriority() || this.checkArea() || this.checkTitle())){
             flag = true;
         }
         return flag;

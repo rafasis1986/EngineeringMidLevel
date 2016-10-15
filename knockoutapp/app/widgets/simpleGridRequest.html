@@ -2,30 +2,35 @@
     <div class="col-md-12" >
         <table class="table table-striped table-hover ">
             <thead>
-            <tr>
-                <th colspan="6">
-                    <input type="text" class="form-control" placeholder="filter" data-bind="value: currentFilter">
-                </th>
-                <th colspan="2">
-                    <div class="btn-group btn-group-raised">
-                        <button class="btn btn-raised btn-primary" data-bind="click: function() { filter() }">Filter</button>
-                        <button class="btn btn-raised btn-warning" data-bind="click: function() { reset() }">Reset</button>
-                    </div>
-                </th>
-
-            </tr>
-            <tr data-bind="foreach: columns">
-                <th>
-                    <!-- ko if: rowText != 'link' -->
-                    <a href="" data-bind="click: function(data, event) { $root.sortBy(rowText, data, event)}">
-                        <span data-bind="text: headerText"></span>
-                    </a>
-                    <!-- /ko -->
-                    <!-- ko if: rowText == 'link' -->
-                    <a><span data-bind="text: headerText"></span></a>
-                    <!-- /ko -->
-                </th>
-            <tr>
+                <tr>
+                    <th colspan="4">
+                        <input type="text" class="form-control" placeholder="filter" data-bind="value: currentFilter">
+                    </th>
+                    <th colspan="2">
+                        <input type="checkbox" data-bind="checked: checkId"> Id
+                        <input type="checkbox" data-bind="checked: checkTitle"> Title
+                        <input type="checkbox" data-bind="checked: checkPriority"> Priority
+                        <input type="checkbox" data-bind="checked: checkArea"> Area
+                    </th>
+                    <th colspan="2">
+                        <div class="btn-group">
+                            <button class="btn btn-raised btn-primary" data-bind="click: function() { filter() }">Filter</button>
+                            <button class="btn btn-raised btn-warning" data-bind="click: function() { reset() }">Reset</button>
+                        </div>
+                    </th>
+                </tr>
+                <tr data-bind="foreach: columns">
+                    <th>
+                        <!-- ko if: rowText != 'link' -->
+                        <a href="" data-bind="click: function(data, event) { $root.sortBy(rowText, data, event)}">
+                            <span data-bind="text: headerText"></span>
+                        </a>
+                        <!-- /ko -->
+                        <!-- ko if: rowText == 'link' -->
+                        <a><span data-bind="text: headerText"></span></a>
+                        <!-- /ko -->
+                    </th>
+                <tr>
             </thead>
             <tbody class="table table-hover" data-bind="foreach: itemsOnCurrentPage">
             <tr data-bind="foreach: $parent.columns">

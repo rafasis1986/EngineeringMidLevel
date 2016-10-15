@@ -10,6 +10,10 @@ import {getClientDetails} from '../services/clientServices';
 
 class SimpleGridClient extends SimpleGrid {
 
+    protected checkName: any = ko.observable(true);
+    protected checkId: any = ko.observable(true);
+    protected checkEmail: any = ko.observable(true);
+
     public showCustomModal(clientPath: any){
         let clientInfo: IClient;
         getClientDetails(clientPath)
@@ -20,6 +24,25 @@ class SimpleGridClient extends SimpleGrid {
             .catch((error: Error) => {
                 console.log(error.toString());
             });
+    }
+
+    public filterCompare(item: any): boolean {
+        let flag: boolean = false,
+            filter: string = this.currentFilter().toUpperCase();
+
+        if (this.checkName() && item.full_name.toUpperCase().indexOf(filter) != -1) {
+            flag = true;
+        }
+        else if ( this.checkId() && item.id.toString().indexOf(filter) != -1) {
+            flag = true;
+        }
+        else if ( this.checkEmail() && item.email.toUpperCase().indexOf(filter) != -1) {
+            flag = true;
+        }
+        else if (! (this.checkId() || this.checkName() || this.checkEmail())){
+            flag = true;
+        }
+        return flag;
     }
 }
 
