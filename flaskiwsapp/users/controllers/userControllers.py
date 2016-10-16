@@ -139,6 +139,27 @@ def update_user_password(user_id, password):
     return user
 
 
+def update_user_phone(user_id, phone):
+    """
+    Update the user phone for a user.
+
+    :user_id: a integer object. Indicates an update.
+    :phone: a string object. Indicates the phone number.
+    :kwargs: dictionary with the fields keys and values
+    :returns: user updated
+
+    """
+    try:
+        user = User.query.get(user_id)
+        user.phone_number = phone
+        user.save()
+    except NoResultFound:
+        raise UserDoesNotExistsException(user_id)
+    except Exception as e:
+        raise BaseIWSExceptions(arg=e.arg[0])
+    return user
+
+
 def append_user_role(user_id, role_name):
     """
     Creates an user.

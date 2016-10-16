@@ -95,7 +95,7 @@ class UserMeAPI(Resource):
             key = save_client_phone_cache(current_identity.id, args.phone_number)
             task_email = create_confirm_email_job(current_identity.id, key)
             task_sms = create_confirm_sms_job(current_identity.id, key)
-            iws_logger.info('We sent confirmations sms %s and email %s to user' % (task_sms, task_email, current_identity.id))
+            iws_logger.info('We sent confirmations sms %s and email %s to user %s' % (task_sms, task_email, current_identity.id))
             return {'message': 'please verify the code in your phone or email'}, HTTP_206_PARTIAL_CONTENT
 
 

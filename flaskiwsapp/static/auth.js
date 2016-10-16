@@ -32,6 +32,9 @@ $(document).ready(function() {
     });
      
     var employee = new Auth0Lock(AUTH0_CLIENT_ID, AUTH0_DOMAIN, {
+    	languageDictionary: {
+    	    title: "IWS Employees"
+    	},
 		theme: {
 			logo: '/static/images/test-icon.png',
 			primaryColor: ' blue'

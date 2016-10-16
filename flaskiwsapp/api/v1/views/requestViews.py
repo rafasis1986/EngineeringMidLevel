@@ -10,7 +10,7 @@ from flask_restful import Resource, reqparse
 
 from flaskiwsapp.api.v1.schemas.requestSchemas import BaseRequestJsonSchema, RequestDetailJsonSchema
 from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, delete_request, \
-    get_request_by_id, create_request, get_client_pending_requests, delete_me_request
+    get_request_by_id, create_request, delete_me_request, get_all_client_requests
 from flaskiwsapp.snippets.constants import ROLE_CLIENT
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.snippets.helpers import roles_required
@@ -84,7 +84,7 @@ class RequestsMeAPI(Resource):
         :returns: One or all available requests.
 
         """
-        requests = get_client_pending_requests(current_identity.id)
+        requests = get_all_client_requests(current_identity.id)
         request_schema = BaseRequestJsonSchema(many=True)
 
         return request_schema.dump(requests).data

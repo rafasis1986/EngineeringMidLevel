@@ -69,4 +69,5 @@ def create_confirm_email(client_id, key):
     except Exception as e:
         iws_logger.error(MSG_ERROR % (type(e), e.args[0]))
     if response and response.status:
+        iws_logger.info('key' % key)
         iws_logger.info('Send email status: %s' % response.status)
