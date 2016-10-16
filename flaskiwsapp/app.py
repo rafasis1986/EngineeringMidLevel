@@ -12,7 +12,7 @@ from flaskiwsapp.api.v1.views.ticketViews import tickets_api_blueprint
 from flaskiwsapp.api.v1.views.userViews import users_api_blueprint
 from flaskiwsapp.api.v1.views.utilsViews import utils_api_blueprint
 from flaskiwsapp.auth.views import auth_blueprint
-from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma, celery
+from flaskiwsapp.extensions import bcrypt, db, migrate, login_manager, ma, celery, cache
 from flaskiwsapp.main.views import main_blueprint
 from flaskiwsapp.projects.models.request import Request
 from flaskiwsapp.projects.models.ticket import Ticket
@@ -45,6 +45,8 @@ def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
+    cache.init_app(app, config={'CACHE_TYPE': app.config['CACHE_TYPE'],
+                                'CACHE_DEFAULT_TIMEOUT': app.config['CACHE_DEFAULT_TIMEOUT']})
     return None
 
 
