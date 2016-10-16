@@ -6,7 +6,7 @@ from flask.blueprints import Blueprint
 from flask_api.status import HTTP_202_ACCEPTED
 from flask_cors.extension import CORS
 from flask_jwt import jwt_required, JWTError, current_identity
-from flask_restful import Resource, reqparse, fields
+from flask_restful import Resource, reqparse
 
 from flaskiwsapp.api.v1.schemas.requestSchemas import BaseRequestJsonSchema, RequestDetailJsonSchema
 from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, delete_request, \
@@ -31,16 +31,6 @@ request_parser.add_argument('ticket_url', type=str, location='json', required=Tr
 request_parser.add_argument('product_area', type=str, location='json', required=True, help="send product_area")
 request_parser.add_argument('title', type=str, location='json', required=True, help="send a title")
 request_parser.add_argument('target_date', type=str, location='json', required=True, help="send a datetime")
-
-ticket_fields = {
-    'client': fields.String,
-    'client_priority': fields.String,
-    'details': fields.String,
-    'product_area': fields.String,
-    'target_date': fields.String,
-    'ticket_url': fields.String,
-    'title': fields.String
-}
 
 
 class RequestsAPI(Resource):

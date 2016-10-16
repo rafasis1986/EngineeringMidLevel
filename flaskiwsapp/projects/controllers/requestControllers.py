@@ -129,9 +129,9 @@ def insert_request_priority(request):
             Request.client_priority < request.client_priority).order_by(- Request.client_priority).first()
         if not prev:
             next = Request.query.filter(Request.client == request.client, Request.attended == False,
-                Request.client_priority >= request.client_priority).order_by(Request.client_priority).first()
+                Request.client_priority >= request.client_priority, Request.id != request.id).order_by(Request.client_priority).first()
             if not next:
-                return
+                return request
         if next:
             request.next = next
             request = request.save()

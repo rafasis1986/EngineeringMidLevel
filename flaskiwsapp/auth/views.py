@@ -61,9 +61,9 @@ def call_back():
         app_domain = current_app.config['SERVER_NAME']
         response = redirect(response_url, code=302)
         expire_date = datetime.datetime.now() + current_app.config['JWT_EXPIRATION_DELTA']
-        response.set_cookie('Authorization', value=token, expires=expire_date)
-        response.set_cookie('Env', value=current_app.config['ENV'], expires=expire_date)
-        response.set_cookie('urls', value=get_api_urls(current_app, user), expires=expire_date)
+        response.set_cookie('Authorization', domain='.%s' % app_domain, value=token, expires=expire_date)
+        response.set_cookie('Env', domain='.%s' % app_domain, value=current_app.config['ENV'], expires=expire_date)
+        response.set_cookie('urls', domain='.%s' % app_domain, value=get_api_urls(current_app), expires=expire_date)
         return response
 
 
@@ -105,7 +105,7 @@ def call_back_employee():
         app_domain = current_app.config['SERVER_NAME']
         response = redirect(response_url, code=302)
         expire_date = datetime.datetime.now() + current_app.config['JWT_EXPIRATION_DELTA']
-        response.set_cookie('Authorization', value=token, expires=expire_date)
-        response.set_cookie('Env', value=current_app.config['ENV'], expires=expire_date)
-        response.set_cookie('urls', value=get_api_urls(current_app, user), expires=expire_date)
+        response.set_cookie('Authorization', domain='.%s' % app_domain, value=token, expires=expire_date)
+        response.set_cookie('Env', domain='.%s' % app_domain, value=current_app.config['ENV'], expires=expire_date)
+        response.set_cookie('urls', domain='.%s' % app_domain, value=get_api_urls(current_app), expires=expire_date)
         return response

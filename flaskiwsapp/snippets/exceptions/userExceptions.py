@@ -32,3 +32,17 @@ class EmployeeDoesNotExistsException(LogicalException):
     def __init__(self, argument=None):
         super(EmployeeDoesNotExistsException, self).__init__()
         self.message = 'The employee %s does not exists' % argument
+
+
+class UserPhoneNotAvaliableException(LogicalException):
+
+    def __init__(self, argument=None):
+        super(UserPhoneNotAvaliableException, self).__init__()
+        self.message = 'The phone number %s is not avaliable' % argument
+
+
+class UserBadKeyException(LogicalException):
+
+    def __init__(self):
+        super(UserBadKeyException, self).__init__()
+        self.message = 'wrong key'

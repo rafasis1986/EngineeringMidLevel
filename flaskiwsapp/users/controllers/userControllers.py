@@ -21,6 +21,16 @@ def is_an_available_email(email):
     return False if User.query.filter(User.email == email).count() else True
 
 
+def is_an_available_phone(phone):
+    """
+    Verify if a phone is available.
+
+    :email: a phone string in e164 format
+    :returns: True or False
+    """
+    return False if User.query.filter(User.phone_number == phone).count() else True
+
+
 def get_all_users():
     """
     Get all users info

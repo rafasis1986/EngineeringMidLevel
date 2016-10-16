@@ -3,6 +3,9 @@ Created on Sep 23, 2016
 
 @author: rtorres
 '''
+import random
+import string
+
 from flask.helpers import url_for
 from flaskiwsapp.users.controllers.roleControllers import get_role_by_name
 from flaskiwsapp.snippets.constants import ROLE_EMPLOYEE, ROLE_CLIENT
@@ -54,3 +57,10 @@ def make_payload(app, code, call_back_url):
             'redirect_uri': call_back_url,
             'code': code,
             'grant_type': 'authorization_code'}
+
+
+def generate_key(length=8):
+    ret = []
+    for i in range(0, length):
+        ret.extend(random.sample(string.hexdigits, 1))
+    return ''.join(ret)

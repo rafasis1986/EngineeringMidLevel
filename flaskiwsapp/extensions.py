@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from celery import Celery
 from flaskiwsapp.settings.baseConfig import BaseConfig
+from flask_cache import Cache
 
 
 # Brypt
@@ -24,6 +25,10 @@ jwt = None
 
 # Marshmallow
 ma = Marshmallow()
+
+# Cache
+
+cache = Cache()
 
 ###############################
 # Login manager configuration #

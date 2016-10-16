@@ -13,6 +13,7 @@ class BaseUserJsonSchema(Schema):
     id = fields.Int()
     email = fields.Str()
     full_name = fields.Str()
+    phone_number = fields.Str()
 
     class Meta:
         type_ = 'user'
