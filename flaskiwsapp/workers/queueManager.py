@@ -4,8 +4,7 @@ Created on Oct 7, 2016
 @author: rtorres
 '''
 from flaskiwsapp.workers import sms, emails
-from flaskiwsapp.snippets.logger import iws_logger
-from flaskiwsapp.workers.constants import MSG_ERROR, MSG_TASK
+from flaskiwsapp.snippets.logger import iws_logger, MSG_ERROR, MSG_TASK
 
 
 def create_welcome_client_job(client_id):

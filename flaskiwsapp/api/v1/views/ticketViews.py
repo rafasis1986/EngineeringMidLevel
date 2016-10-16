@@ -9,9 +9,11 @@ from flask_restful import Resource, reqparse, fields
 from flaskiwsapp.api.v1.schemas.ticketSchemas import BaseTicketJsonSchema
 from flaskiwsapp.projects.controllers.requestControllers import get_request_by_id
 from flaskiwsapp.projects.controllers.ticketControllers import create_ticket, delete_ticket, \
-    get_ticket_by_id, get_tickets_user, get_all_tickets
+    get_ticket_by_id, get_tickets_user
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.workers.queueManager import create_ticket_email_job, create_ticket_sms_job
+from flaskiwsapp.snippets.constants import ROLE_EMPLOYEE
+from flaskiwsapp.snippets.helpers import roles_required
 
 
 tickets_api_blueprint = Blueprint('tickets_api_blueprint', __name__)
@@ -33,6 +35,7 @@ class TicketsAPI(Resource):
     """An API to get or create tickets."""
 
     @jwt_required()
+    @roles_required(ROLE_EMPLOYEE)
     def get(self):
         """
         HTTP GET. Get all requests.
@@ -41,11 +44,12 @@ class TicketsAPI(Resource):
         :returns: One or all available requests.
 
         """
-        tickets = get_all_tickets()
+        tickets = get_tickets_user(current_identity.id)
         request_schema = BaseTicketJsonSchema(many=True)
         return request_schema.dump(tickets).data
 
     @jwt_required()
+    @roles_required(ROLE_EMPLOYEE)
     def post(self):
         try:
             args = ticket_parser.parse_args()
@@ -83,14 +87,5 @@ class TicketAPI(Resource):
         return BaseTicketJsonSchema().dump(ticket).data
 
 
-class TicketMeAPI(Resource):
-    """An API to get me tickets. """
-
-    @jwt_required()
-    def get(self):
-        tickets = get_tickets_user(current_identity.id)
-        return BaseTicketJsonSchema(many=True).dump(tickets).data
-
 tickets_api.add_resource(TicketsAPI, '', endpoint='list')
-tickets_api.add_resource(TicketMeAPI, 'me', endpoint='me')
 tickets_api.add_resource(TicketAPI, '<ticket_id>', endpoint='detail')

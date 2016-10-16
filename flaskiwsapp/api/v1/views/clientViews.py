@@ -9,8 +9,6 @@ from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.snippets.helpers import roles_required, is_admin_user
 from flaskiwsapp.users.controllers.clientControllers import get_all_clients, get_client_by_id
 from flaskiwsapp.users.controllers.userControllers import delete_user
-from flaskiwsapp.projects.controllers.requestControllers import get_all_client_requests, get_client_pending_requests
-from flaskiwsapp.api.v1.schemas.requestSchemas import BaseRequestJsonSchema
 from flaskiwsapp.api.v1.schemas.ticketSchemas import BaseTicketJsonSchema
 from flaskiwsapp.projects.controllers.ticketControllers import get_tickets_by_client
 
@@ -62,20 +60,6 @@ class ClientAPI(Resource):
         return ClientDetailJsonSchema().dump(client).data
 
 
-class ClientMeRequestAPI(Resource):
-    """An API to get all clients request. """
-
-    @jwt_required()
-    @roles_required(ROLE_CLIENT)
-    def get(self):
-        """
-        HTTP GET Client Requests pending
-        :returns: json object
-        """
-        requests = get_client_pending_requests(current_identity.id)
-        return BaseRequestJsonSchema(many=True).dump(requests).data
-
-
 class ClientMeTicketsAPI(Resource):
     """An API to get all clients request. """
 
@@ -91,5 +75,4 @@ class ClientMeTicketsAPI(Resource):
 
 client_api.add_resource(ClientsAPI, '', endpoint='list')
 client_api.add_resource(ClientMeTicketsAPI, 'me/tickets', endpoint='tickets')
-client_api.add_resource(ClientMeRequestAPI, 'me/requests', endpoint='requests')
 client_api.add_resource(ClientAPI, '<client_id>', endpoint='detail')

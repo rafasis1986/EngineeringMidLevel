@@ -37,7 +37,7 @@ def get_client_by_email(email=None):
     :returns: a client object
     """
     try:
-        client = Client.query.filter(Client.email == email).one()
+        client = User.query.filter(User.email == email, User.roles.any(Role.name == ROLE_CLIENT)).one()
     except NoResultFound:
         raise ClientDoesnotExistsException(email)
     return client
@@ -51,7 +51,7 @@ def get_client_by_id(client_id=None):
     :returns: a User object
     """
     try:
-        client = User.query.filter(User.id == client_id, User.roles.any(Role.name == ROLE_CLIENT))
+        client = User.query.filter(User.id == client_id, User.roles.any(Role.name == ROLE_CLIENT)).one()
     except NoResultFound:
         raise ClientDoesnotExistsException(client_id)
     return client
@@ -65,10 +65,10 @@ def create_client(email, password=None):
     :password: a string object (plaintext)
     :returns: a dict with the operation result
     """
-    user = None
+    client = None
     try:
         client = create_user(email, password)
         client = append_user_role(client.id, ROLE_CLIENT)
     except IntegrityError:
         raise UserExistsException(email)
-    return user
+    return client

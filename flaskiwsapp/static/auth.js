@@ -38,7 +38,7 @@ $(document).ready(function() {
 		},
 		allowSignUp: false,
 		auth: {
-	    	redirectUrl: AUTH0_CALLBACK_URL,
+	    	redirectUrl: AUTH0_CALLBACK_EMP_URL,
 	    	responseType: 'code',
 	    	params: {
 	    		api: true

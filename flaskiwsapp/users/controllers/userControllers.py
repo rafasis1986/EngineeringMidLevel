@@ -2,11 +2,12 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from flaskiwsapp.users.models.user import User
 from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesNotExistsException,\
-    UserExistsException
+    UserExistsException, EmployeeDoesNotExistsException
 from sqlalchemy.exc import IntegrityError
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
 from flaskiwsapp.users.controllers.roleControllers import get_role_by_name
-from flaskiwsapp.snippets.constants import ROLE_CLIENT
+from flaskiwsapp.snippets.constants import ROLE_EMPLOYEE
+from flaskiwsapp.users.models.role import Role
 
 
 def is_an_available_email(email):
@@ -57,6 +58,20 @@ def get_user_by_id(user_id=None):
     except NoResultFound:
         raise UserDoesNotExistsException(user_id)
     return user
+
+
+def get_employee_by_email(email=None):
+    """
+    Get employee info by email
+
+    :email: a string object
+    :returns: a client object
+    """
+    try:
+        employee = User.query.filter(User.email == email, User.roles.any(Role.name == ROLE_EMPLOYEE)).one()
+    except NoResultFound:
+        raise EmployeeDoesNotExistsException(email)
+    return employee
 
 
 def create_user(email, password=None):

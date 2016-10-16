@@ -204,3 +204,20 @@ def delete_request(request_id):
     except NoResultFound:
         raise RequestDoesnotExistsException(request_id)
     return True
+
+
+def delete_me_request(request_id, client_id):
+    """
+    Delete a request for a client by id.
+
+    :request_id: a int object
+    :client_id: a int object
+    :returns: boolean
+    """
+    try:
+        request = Request.query.filter(Request.client_id == client_id, Request.id == request_id)
+        request = remove_request_from_priority_list(request)
+        request.delete()
+    except NoResultFound:
+        raise RequestDoesnotExistsException(request_id)
+    return True

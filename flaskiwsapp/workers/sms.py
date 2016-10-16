@@ -10,9 +10,8 @@ from twilio.rest.client import TwilioRestClient
 from flaskiwsapp.extensions import celery
 from flaskiwsapp.projects.controllers.requestControllers import get_request_by_id
 from flaskiwsapp.projects.controllers.ticketControllers import get_ticket_by_id
-from flaskiwsapp.snippets.logger import iws_logger
+from flaskiwsapp.snippets.logger import iws_logger, MSG_ERROR
 from flaskiwsapp.users.controllers.clientControllers import get_client_by_id
-from flaskiwsapp.workers.constants import MSG_ERROR
 
 
 @celery.task

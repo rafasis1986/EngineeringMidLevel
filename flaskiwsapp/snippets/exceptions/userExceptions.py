@@ -25,3 +25,10 @@ class UserInactiveException(LogicalException):
     def __init__(self, argument=None):
         super(UserInactiveException, self).__init__()
         self.message = 'The user %s has benn inactive' % argument
+
+
+class EmployeeDoesNotExistsException(LogicalException):
+
+    def __init__(self, argument=None):
+        super(EmployeeDoesNotExistsException, self).__init__()
+        self.message = 'The employee %s does not exists' % argument

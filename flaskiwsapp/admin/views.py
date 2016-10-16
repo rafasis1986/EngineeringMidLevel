@@ -63,6 +63,7 @@ class RequestView(MyModelView):
     """Flask Request model view."""
     list_template = 'admin/request/list.html'
     form_excluded_columns = ('ticket_url')
+    column_searchable_list = ('client_id', 'product_area', 'client_priority', 'target_date')
 
     # Add dummy password field
     form_extra_fields = {
@@ -102,6 +103,7 @@ class TicketView(MyModelView):
         'user',
         'detail'
     )
+    column_searchable_list = ('user_id', 'request_id', 'created_at')
 
     def after_model_change(self, form, model, is_created):
         MyModelView.after_model_change(self, form, model, is_created)

@@ -10,9 +10,8 @@ from sendgrid.sendgrid import SendGridAPIClient
 
 from flaskiwsapp.extensions import celery
 from flaskiwsapp.projects.controllers.ticketControllers import get_ticket_by_id
-from flaskiwsapp.snippets.logger import iws_logger
+from flaskiwsapp.snippets.logger import iws_logger, MSG_ERROR
 from flaskiwsapp.users.controllers.userControllers import get_user_by_id
-from flaskiwsapp.workers.constants import MSG_ERROR
 
 
 @celery.task
