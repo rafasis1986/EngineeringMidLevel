@@ -13,3 +13,5 @@ class TestConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/iws_test'
     BCRYPT_LOG_ROUNDS = 4  # For faster tests; needs at keast 4 to avoid "Value Error: Invalid rounds"
     WTF_CSRF_ENABLED = False  # Allows form testing
+    CACHE_DEFAULT_TIMEOUT = 120
+    CACHE_TYPE = 'simple'
