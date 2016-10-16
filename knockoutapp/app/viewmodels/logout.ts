@@ -8,7 +8,7 @@ class Logout {
 
     public activate() {
         removeAuthToken();
-        clearSession()
+        clearSession();
         window.location.assign(UrlSingleton.getInstance().getAuthUrl());
     }
 }

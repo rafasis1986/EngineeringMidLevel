@@ -23,6 +23,7 @@ class Tickets extends BaseView {
 
     public activate(){
         this.isLoading(true);
+        this.showMessage();
         return  this.loadTickets().then((data) => {
                 this.clients(data);
                 this.gridViewModel = new SimpleGridTicket(data, columns);
