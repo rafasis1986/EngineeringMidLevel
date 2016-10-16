@@ -67,6 +67,7 @@ $ vim flaskiwsapp/settings/productionConfig.py
     SQLALCHEMY_DATABASE_URI = 'postgresql://POSTGRES_USER:test@POSTGRES_PASSWORD:5432/POSTGRES_USER'
     SERVER_NAME= 'your_domain'
     AUTH0_CALLBACK_URL = 'http://%s/auth/callback' % (SERVER_NAME)
+    AUTH0_CALLBACK_EMP_URL = 'http://%s/auth/callback' % (SERVER_NAME)
     AUTH0_CLIENT_ID = 'your_auth0_client_id'
     AUTH0_CLIENT_SECRET = 'your_auth0_client_secret'
     AUTH0_DOMAIN = 'your_auth0_domain'
@@ -76,17 +77,18 @@ $ vim flaskiwsapp/settings/productionConfig.py
     TWILIO_PHONE = 'your_twilio_phone_number'
     SENDGRID_EMAIL = 'your_email'
     SENDGRID_TOKEN = 'sendgrid_email_token'
+    CACHE_DEFAULT_TIMEOUT = 120
+    CACHE_TYPE = 'simple'
 
 ```
 
-Remember setting the auth0 callback url in https://auth0.com/
+Remember setting the auth0 callback urls on https://auth0.com/
 
 Twilio is a SMS provider, I use this provider because this let me create a free account, 
 to send emails i used sendgrid service go to https://sendgrid.com , 
 in other hand i used a external queue service from https://www.cloudamqp.com and 
 finally to watch the logs you can move to https://rdtr.loggly.com/login and login with 
 login **admin** and password **Admin123**
-
 
 
 ## Setting FE application
@@ -112,6 +114,11 @@ export class Constant {
     public static get REQUESTS_API(): string { return 'request_list'; };
     public static get TICKETS_API(): string { return 'tickets_list'; };
     public static get TYPE_TOKEN(): string { return 'Bearer'; };
+    public static get ROLE_CLIENT(): string { return 'client'; };
+    public static get ROLE_EMPLOYEE(): string { return 'employee'; };
+    public static get SESSION_FULL_NAME(): string { return 'full_name'; };
+    public static get SESSION_EMAIL(): string { return 'email'; };
+    public static get SESSION_ROLES(): string { return 'roles'; };
     public static get USERS_API(): string { return 'user_list'; };
     public static get USERS_API_ME(): string { return 'me'; };
     public static get URLS_LABEL(): string { return 'urls'; };
@@ -164,6 +171,37 @@ $ docker-compose stop
 $ docker-compose start
 
 ```
+
+
+## Starting database
+
+Rename the folder with verions file
+
+```
+$ cp -r migrations/versions_ migrations/versions
+```
+
+Later use the flask container to migrate the models
+
+```
+$ docker-compose run flask db upgrade
+```
+
+
+Finally initialize the database with:
+
+```
+$ docker-compose run flask create_admin
+
+$ docker-compose run flask init_roles
+```
+
+You can watch all manage comands using
+
+```
+$ docker-compose run --help
+```
+
 
 ## Starting with the application
 
