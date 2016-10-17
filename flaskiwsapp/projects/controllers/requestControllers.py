@@ -23,6 +23,16 @@ def get_all_requests():
     return Request.query.order_by(Request.id).all()
 
 
+def get_all_requests_attended(status=False):
+    """
+    Get all requests grouped by status
+
+    :returns: a dict with the operation result
+
+    """
+    return Request.query.filter(Request.attended == status).order_by(Request.id).all()
+
+
 def get_all_client_requests(client_id):
     """
     Get all requests info by client_id
@@ -35,12 +45,12 @@ def get_all_client_requests(client_id):
 
 def get_client_pending_requests(client_id):
     """
-    Get all requests info by client_id
+    Get all pending requests info by client_id
 
     :returns: a dict with the operation result
 
     """
-    return Request.query.filter(Request.client_id == client_id, Request.attended).order_by(Request.client_priority).all()
+    return Request.query.filter(Request.client_id == client_id, Request.attended == False).order_by(Request.client_priority).all()
 
 
 def get_request_by_id(request_id=None):
@@ -117,11 +127,11 @@ def insert_request_priority(request):
         next = None
         prev = Request.query.filter(Request.client == request.client, Request.attended == False,
             Request.client_priority < request.client_priority).order_by(- Request.client_priority).first()
-        if not prev :
+        if not prev:
             next = Request.query.filter(Request.client == request.client, Request.attended == False,
-                Request.client_priority >= request.client_priority).order_by(Request.client_priority).first()
+                Request.client_priority >= request.client_priority, Request.id != request.id).order_by(Request.client_priority).first()
             if not next:
-                return
+                return request
         if next:
             request.next = next
             request = request.save()
@@ -189,6 +199,23 @@ def delete_request(request_id):
     """
     try:
         request = Request.query.get(request_id)
+        request = remove_request_from_priority_list(request)
+        request.delete()
+    except NoResultFound:
+        raise RequestDoesnotExistsException(request_id)
+    return True
+
+
+def delete_me_request(request_id, client_id):
+    """
+    Delete a request for a client by id.
+
+    :request_id: a int object
+    :client_id: a int object
+    :returns: boolean
+    """
+    try:
+        request = Request.query.filter(Request.client_id == client_id, Request.id == request_id)
         request = remove_request_from_priority_list(request)
         request.delete()
     except NoResultFound:

@@ -20,6 +20,7 @@ declare module 'requestInterface' {
         created_at: string,
         description: string,
         ticket_url:  string,
+        link: string;
     }
 
     export interface ICreateRequest{

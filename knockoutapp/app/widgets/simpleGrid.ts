@@ -9,21 +9,41 @@ class SimpleGrid {
     protected currentPageIndex: any  = ko.observable(0);
     protected pageSize: number =  Constant.PAGINATE_LIMIT;
     protected columns: any = [];
-    protected itemsOnCurrentPage;
+    protected itemsOnCurrentPage: any;
     protected maxPageIndex: any;
     protected dialog: any = null;
+    protected currentFilter: any = ko.observable();
 
     constructor (data: any[], colums?: any[], pageSize?: number) {
         this.data(data);
         this.columns = colums || [];
         this.pageSize = pageSize || this.pageSize;
+        this.initGrid();
+    }
+
+    public initGrid(): void {
         this.itemsOnCurrentPage = ko.computed(() => {
             let startIndex = this.pageSize * this.currentPageIndex();
             return this.data.slice(startIndex, startIndex + this.pageSize);
         });
+        this.itemsOnCurrentPage = ko.computed(() => {
+            let auxData: any = ko.observableArray();
+            if (typeof this.currentFilter() === 'undefined' || this.currentFilter() === ''){
+                auxData = this.data;
+                let startIndex = this.pageSize * this.currentPageIndex();
+                return auxData.slice(startIndex, startIndex + this.pageSize);
+            } else {
+                auxData = ko.utils.arrayFilter(this.data(), (item: any) => {
+                    return this.filterCompare(item);
+                });
+                let startIndex = this.pageSize * this.currentPageIndex();
+                return auxData.slice(startIndex, startIndex + this.pageSize);
+            }
+        });
         this.maxPageIndex =  ko.computed(() => {
             return Math.ceil(ko.utils.unwrapObservable(this.data).length / this.pageSize) -1;
         });
+        this.currentPageIndex(0);
     }
 
     public setData(data: any[]) {
@@ -111,6 +131,19 @@ class SimpleGrid {
                 }
             });
         }
+    }
+
+    public filter() {
+        this.initGrid();
+    }
+
+    public reset() {
+        this.currentFilter('');
+        this.initGrid();
+    }
+
+    public filterCompare(item: any): boolean {
+        return item == this.currentFilter();
     }
 }
 

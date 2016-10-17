@@ -6,9 +6,9 @@ import * as Cookies from 'js-cookie';
 
 import Deferred = Q.Deferred;
 
-import {IArea} from "areaInterfaces";
-import {UrlSingleton} from "../singletons/urlSingleton";
-import {AuthSingleton} from "../singletons/authSingleton";
+import {IArea} from 'areaInterfaces';
+import {UrlSingleton} from '../singletons/urlSingleton';
+import {AuthSingleton} from '../singletons/authSingleton';
 
 export function getCookie(cname: string): string {
     return Cookies.get(cname);
@@ -16,6 +16,22 @@ export function getCookie(cname: string): string {
 
 export function deleteCookie(cname: string): void {
     Cookies.remove(cname);
+}
+
+export function getSession(name: string): string {
+    return sessionStorage.getItem(name);
+}
+
+export function setSession(name: string, value: string): void{
+    return sessionStorage.setItem(name, value);
+}
+
+export function deleteSession(name: string): void {
+    return sessionStorage.removeItem(name);
+}
+
+export function clearSession(): void {
+    return sessionStorage.clear();
 }
 
 export function getAreas():  Promise<IArea[]> {

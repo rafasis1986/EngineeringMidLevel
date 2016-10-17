@@ -11,7 +11,7 @@ import {ITicketBase} from 'ticketInterface';
 export function getTickets():  Promise<ITicketBase[]> {
     let deferred: Deferred<ITicketBase[]> = Q.defer<ITicketBase[]>(),
         ajaxSettings: any = {
-        'url': UrlSingleton.getInstance().getApiTickets() + 'me',
+        'url': UrlSingleton.getInstance().getApiTickets(),
         'method': 'GET',
         'headers': {
             'Authorization': AuthSingleton.getInstance().getToken()

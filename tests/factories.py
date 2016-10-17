@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 """Factories to help in tests."""
 from factory import PostGenerationMethodCall, Sequence
+import factory
 from factory.alchemy import SQLAlchemyModelFactory
 
 from flaskiwsapp.database import db
-from flaskiwsapp.users.models.user import User
-from flaskiwsapp.users.models.client import Client
-import factory
 from flaskiwsapp.projects.models.request import Request
-import datetime
-from flaskiwsapp.projects.snippets.constants import AREAS
+from flaskiwsapp.users.models.user import User
+from flaskiwsapp.users.models.role import Role
+from flaskiwsapp.snippets.constants import ROLE_EMPLOYEE, ROLE_CLIENT
 
 
 class BaseFactory(SQLAlchemyModelFactory):
@@ -21,6 +20,18 @@ class BaseFactory(SQLAlchemyModelFactory):
         abstract = True
         sqlalchemy_session = db.session
 
+
+class RoleClientFactory(BaseFactory):
+    name = ROLE_CLIENT
+
+    class Meta:
+        model = Role
+
+class RoleEmployeeFactory(BaseFactory):
+    name = ROLE_EMPLOYEE
+
+    class Meta:
+        model = Role
 
 class UserFactory(BaseFactory):
     """User factory."""
@@ -49,7 +60,7 @@ class ClientFactory(BaseFactory):
 
     class Meta:
         """Factory configuration"""
-        model = Client
+        model = User
 
 
 class RequestFactory(BaseFactory):

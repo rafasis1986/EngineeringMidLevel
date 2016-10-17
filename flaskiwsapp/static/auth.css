@@ -38,16 +38,12 @@ input[type=checkbox]:focus + label:before {
   outline: 0;
 }
 .btn {
-  font-size: 140%;
+  font-size: 120%;
   text-transform: uppercase;
   letter-spacing: 1px;
   border: 0;
-  background-color: #16214D;
-  color: white;
 }
-.btn:hover {
-  background-color: #44C7F4;
-}
+
 .btn:focus {
   outline: none !important;
 }

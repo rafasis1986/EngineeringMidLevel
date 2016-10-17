@@ -1,11 +1,9 @@
-import datetime
-
 from sqlalchemy.orm.exc import NoResultFound
 
-from flaskiwsapp.projects.controllers.requestControllers import update_request, remove_request_from_priority_list,\
-    update_checked_request
+from flaskiwsapp.projects.controllers.requestControllers import update_checked_request
 from flaskiwsapp.projects.models.ticket import Ticket
 from flaskiwsapp.snippets.exceptions.requestExceptions import RequestDoesnotExistsException
+from flaskiwsapp.projects.models.request import Request
 
 
 def get_all_tickets():
@@ -26,6 +24,17 @@ def get_tickets_user(user_id):
 
     """
     return Ticket.query.filter(Ticket.user_id == user_id).order_by(Ticket.id).all()
+
+
+def get_tickets_by_client(client_id):
+    """
+    Get all the tickets to specific client
+
+    :client_id: a integer object
+    :returns: an ticket object
+    """
+    ticket = Ticket.query.join(Request).filter(Request.client_id == client_id).order_by(Ticket.id).all()
+    return ticket
 
 
 def get_ticket_by_id(ticket_id):

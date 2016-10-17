@@ -10,36 +10,30 @@ import {createRequest} from '../services/requestServices';
 import BaseView = require('./baseView');
 import {makeMessage} from '../services/messageService';
 import {MessageTypes} from '../constants/messageTypes';
-import {getClients} from '../services/clientServices';
-import {IClient} from 'clientInterfaces';
 import {getAreas} from '../services/utils';
 import {IArea} from 'areaInterfaces';
 import {navigate} from 'plugins/history';
+import * as userSession from '../singletons/userSession';
 
 
 class RequestCreate extends BaseView{
 
     private title: any = ko.observable().extend({required: true});
     private details: any = ko.observable().extend({required: true});
-    private client: any = ko.observable().extend({required: true});
+    private client: any = ko.observable();
     private client_priority: any = ko.observable().extend({required: true, number: true, step: 1, min: 1 });
     private product_area: any = ko.observable().extend({required: true});
     private ticket_url: any = ko.observable().extend({required: true});
     private target_date: any = ko.observable().extend({required: true});
     private isLoading: any = ko.observable().extend({required: true});
-    private emailClients: string[];
     private areas: string[];
     private errors: any = validation.group(this);
 
 
     public activate(){
         this.isLoading(true);
-        return getClients().then((iclients: IClient[]) => {
-            this.emailClients = iclients.map( (client: IClient) =>  {
-                return client.email;
-            });
-            return getAreas();
-        }).then((resp: IArea[]) => {
+        this.client(userSession.getUserEmail());
+        return getAreas().then((resp: IArea[]) => {
             this.areas = resp.map((area: IArea) => {
                 return area.name;
             });
@@ -52,12 +46,12 @@ class RequestCreate extends BaseView{
         value = this.title() && this.details() && this.ticket_url() &&  this.target_date();
         if (! value){
             makeMessage(MessageTypes.WARNING, 'Please check the form');
-            this.showMessage()
+            this.showMessage();
             this.errors.showAllMessages();
         } else {
 
             let request: any = {
-                client: this.client(),
+                client: userSession.getUserEmail(),
                 client_priority: this.client_priority(),
                 details: this.details(),
                 product_area: this.product_area(),

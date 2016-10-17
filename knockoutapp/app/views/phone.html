@@ -1,0 +1,55 @@
+<section id="page-clients" class="page">
+    <div class="page-header">
+        <div data-bind="if: displayMessage">
+            <div data-bind="alert: { message: message, type: type }" class="alert-dismissible"></div>
+        </div>
+        <h1>Change Phone</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <!-- ko if: ! showConfirmation() -->
+            <div class="col-md-8 col-md-offset-2 well" >
+                <form class="form-horizontal" role="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-2 control-label">Phone Number</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="phone in e164 format" data-bind="value: phone">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-10 col-md-offset-2">
+                            <a type="submit" class="btn btn-raised btn-success" data-bind="click: update">Update</a>
+                            <a href="#" class="btn btn-raised btn-warning">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: showConfirmation() -->
+            <div class="col-md-8 col-md-offset-2 well" >
+                <form class="form-horizontal" role="form">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-2 col-md-offset-2 control-label">Code</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" placeholder="your code" data-bind="value: code">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-10 col-md-offset-2">
+                            <a href="#"  type="submit" class="btn btn-raised btn-success" data-bind="click: confirm">Confirm</a>
+                            <a href="#" class="btn btn-raised btn-warning">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+    </div>
+</section>
