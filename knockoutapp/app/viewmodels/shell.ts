@@ -24,6 +24,7 @@ let activate = function() {
         }
         if ( userSession.getUserRoles().search(Constant.ROLE_CLIENT) != -1) {
             nav = nav.concat({ route: 'request_create', moduleId: 'viewmodels/requestCreate' });
+            nav = nav.concat({ route: 'pendings', moduleId: 'viewmodels/pendings', title: 'Pendings', nav: true });
         }
         nav = nav.concat({ route: 'requests', moduleId: 'viewmodels/requests', title: 'Requests', nav: true });
         nav = nav.concat({ route: 'tickets', moduleId: 'viewmodels/tickets', title: 'Tickets', nav: true });

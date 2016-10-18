@@ -45,6 +45,9 @@ export function setApiUrls (): Promise<boolean> {
             if (urlObject[Constant.AREAS_API]) {
                 singleton.setApiAreas(urlObject[Constant.AREAS_API]);
             }
+            if (urlObject[Constant.PENDINGS_API]) {
+                singleton.setApiPendings(urlObject[Constant.PENDINGS_API]);
+            }
 
             deferred.resolve(true);
         } else {

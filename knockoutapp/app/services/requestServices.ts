@@ -77,6 +77,41 @@ export function getRequestDetails(requestPath: string):  Promise<IRequest> {
     return deferred.promise;
 }
 
+export function getPendingRequests():  Promise<IRequestBase[]> {
+    let deferred: Deferred<IRequestBase[]> = Q.defer<IRequestBase[]>(),
+        ajaxSettings: any = {
+            'url': UrlSingleton.getInstance().getApiPendings(),
+            'method': 'GET',
+            'headers': {
+                'Authorization': AuthSingleton.getInstance().getToken()
+            }};
+    $.ajax(ajaxSettings)
+        .then((response: any) => {
+            let resp: IRequestBase[];
+            resp = response.data.map( (request: any) => {
+                if (request.type === 'request') {
+                    let aux: any = {};
+                    aux.id = request.id;
+                    aux.attended = request.attributes.attended;
+                    aux.client_id = request.relationships.client.data.id;
+                    aux.client_link = request.relationships.client.links.related;
+                    aux.client_priority = request.attributes.client_priority;
+                    aux.link = request.links.self;
+                    aux.product_area = request.attributes.product_area;
+                    aux.target_date = request.attributes.target_date;
+                    aux.title = request.attributes.title;
+                    return aux;
+                }
+            });
+            deferred.resolve(resp);
+        })
+        .fail((error: Error) => {
+            deferred.reject(error);
+        });
+
+    return deferred.promise;
+}
+
 export function createRequest(request: ICreateRequest):  Promise<ICreateRequest> {
     let deferred: Deferred<ICreateRequest> = Q.defer<ICreateRequest>(),
         data: any,

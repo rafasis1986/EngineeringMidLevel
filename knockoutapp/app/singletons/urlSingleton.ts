@@ -16,6 +16,8 @@ class UrlSingleton {
 
     private _api_areas: string = null;
 
+    private _api_pendings: string = null;
+
     constructor() {
         if(UrlSingleton._instance){
             throw new Error("Error: Instantiation failed: Use UrlSingleton.getInstance() instead of new.");
@@ -77,6 +79,14 @@ class UrlSingleton {
 
     public getApiAreas(): string {
         return this._api_areas;
+    }
+
+    public setApiPendings(value: string): void{
+        this._api_pendings = this._api_base + value;
+    }
+
+    public getApiPendings(): string {
+        return this._api_pendings;
     }
 }
 
