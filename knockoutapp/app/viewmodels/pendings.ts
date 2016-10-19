@@ -25,6 +25,7 @@ const columns = [{ headerText: 'Id', rowText: 'id' },
 class Pendings extends BaseView {
 
     private pendings: any[];
+    private pendingsArray: any = ko.observableArray();
     private isLoading: any = ko.observable();
     private isClient: any = ko.observable(false);
 
@@ -36,6 +37,7 @@ class Pendings extends BaseView {
         }
         return  this.loadPendings().then((data) => {
                 this.pendings = data;
+                this.pendingsArray(data);
                 this.isLoading(false);
         });
     }
@@ -60,6 +62,7 @@ class Pendings extends BaseView {
             nodeIcon: 'glyphicon glyphicon-tasks',
             showTags: true,
             data: [root]});
+
     }
 
     public loadPendings(): JQueryDeferred<IRequestBase[]> {

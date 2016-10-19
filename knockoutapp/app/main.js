@@ -11,7 +11,9 @@ requirejs.config({
         'js-cookie': '../node_modules/js-cookie/src/js.cookie',
         'q': '../node_modules/q/q',
         'knockout.validation': '../node_modules/knockout.validation/dist/knockout.validation.min',
-        'bootstrap_treeview': '../node_modules/bootstrap-treeview/dist/bootstrap-treeview.min'
+        'bootstrap_treeview': '../node_modules/bootstrap-treeview/dist/bootstrap-treeview.min',
+        'Sortable': '../node_modules/sortablejs/Sortable.min',
+        'ko_sortable': '../node_modules/knockout-sortablejs/knockout-sortable'
     },
   shim: {
     bootstrap: {
@@ -20,11 +22,15 @@ requirejs.config({
         },
     bootstrap_treeview: {
           deps: ['jquery']
+      },
+      ko_sortable:{
+          deps: ['Sortable']
       }
     },
+
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'bootstrap', 'bootstrap-datepicker', 'bootstrap_treeview'],
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'bootstrap', 'bootstrap-datepicker', 'bootstrap_treeview', 'Sortable', 'ko_sortable'],
     function (system, app, viewLocator) {
 
     system.debug(true);

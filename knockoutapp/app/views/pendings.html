@@ -22,6 +22,21 @@
                     <div id="tree" class="col-md-12"></div>
                 </div>
             </div>
+            <div class="col-md-12 well" >
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div data-bind="sortable: {foreach: pendingsArray, options: {/* sortable options here */}}">
+                            <span data-bind="text: title"></span><br>
+                        </div>
+                        <ul id="items">
+                            <li>item 1</li>
+                            <li>item 2</li>
+                            <li>item 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
