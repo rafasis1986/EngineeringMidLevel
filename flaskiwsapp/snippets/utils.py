@@ -34,6 +34,7 @@ def get_api_urls(app, user):
     elif role2 in user.roles:
         res.update({'request_list': url_for('requests_api_blueprint.me')})
         res.update({'tickets_list': url_for('clients_api_blueprint.tickets')})
+        res.update({'pending_list': url_for('requests_api_blueprint.pending')})
     res.update({'user_list': url_for('users_api_blueprint.list')})
     res.update({'utils_areas': url_for('utils_api_blueprint.areas')})
     str_resp = ''
