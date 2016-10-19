@@ -18,7 +18,7 @@
                     <div class="form-group">
                         <label class="col-md-2 col-md-offset-2 control-label">Client Priority</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" placeholder="client priority" data-bind="value: priority">
+                            <input type="number" class="form-control" placeholder="client priority" data-bind="value: priority" step="1">
                         </div>
                     </div>
                     <div class="form-group">
@@ -31,6 +31,12 @@
                         <label class="col-md-2 col-md-offset-2 control-label">Product Area</label>
                         <div class="col-md-8">
                             <select class="form-control" type="select" data-bind="options: areas, value: product_area"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-2 control-label">Ticket Url</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" placeholder="ticket url" data-bind="value: ticket_url">
                         </div>
                     </div>
                     <div class="form-group">
@@ -49,7 +55,9 @@
             </form>
         </div>
     <div class="modal-footer">
-        <button class="btn btn-raised btn-primary" type="button" data-bind="click: success"  data-dismiss="modal">Update</button>
-        <button class="btn btn-raised btn-warning" type="button" data-bind="click: success"  data-dismiss="modal">Close</button>
+        <div class="btn-group">
+            <button class="btn btn-raised btn-primary" type="button" data-bind="click: submit"  data-dismiss="modal">Update</button>
+            <button class="btn btn-raised btn-warning" type="button" data-bind="click: close"  data-dismiss="modal">Close</button>
+        </div>
     </div>
 </div>

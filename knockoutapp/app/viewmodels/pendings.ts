@@ -42,19 +42,19 @@ class Pendings extends BaseView {
 
     public attached() {
         this.pendings.reverse();
-        let root: INode;
-        for(var i=0;i<this.pendings.length ; i++){
+        let root: INode,
+            i: number = 0;
+        for(i; i<this.pendings.length ; i++) {
             let auxNode: INode = {
-            text : this.pendings[i].id + ': '  + this.pendings[i].title,
-            href : '#pendig' + this.pendings[i].id,
-            tags : [ '' + this.pendings[i].client_priority]}
+                text : this.pendings[i].id + ': '  + this.pendings[i].title,
+                href : '#pendig' + this.pendings[i].id,
+                tags : [ '' + this.pendings[i].client_priority]};
             if ( i>0 ){
                 auxNode.nodes = [root];
             }
             root = auxNode;
         }
         $('#tree').treeview({
-            color: '#428bca',
             expandIcon: 'glyphicon glyphicon-menu-right',
             collapseIcon: 'glyphicon glyphicon-menu-up',
             nodeIcon: 'glyphicon glyphicon-tasks',
@@ -68,7 +68,6 @@ class Pendings extends BaseView {
                 getPendingRequests().then((requests: IRequest[]) => {
                     dfd.resolve(requests); })
                     .catch((err: Error) => {
-                        console.log(err.toString());
                         window.location.assign('#');
                     });
             }, 500);

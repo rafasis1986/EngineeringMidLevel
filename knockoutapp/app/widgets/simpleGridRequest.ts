@@ -11,7 +11,8 @@ import TicketModal = require('./ticketModal');
 import {navigate} from 'plugins/history';
 import {Constant} from '../constants/enviroment';
 import RequestDeleteModal = require('./requestDeleteModal');
-import UpdateRequestModal = require('./updateRequestModal');
+import RequestUpdateModal = require('./requestUpdateModal');
+
 
 
 class SimpleGridRequest extends SimpleGrid {
@@ -23,7 +24,6 @@ class SimpleGridRequest extends SimpleGrid {
     protected checkPriority: any = ko.observable(true);
     protected checkArea: any = ko.observable(true);
     protected checkClient: any = ko.observable(true);
-
 
     constructor (data: any[], colums?: any[], pageSize?: number) {
         super(data, colums, pageSize);
@@ -96,9 +96,9 @@ class SimpleGridRequest extends SimpleGrid {
     public updateRequestModal(requestPath: any): void {
         getRequestDetails(requestPath)
             .then((request: IRequest) => {
-                this.dialog = new UpdateRequestModal('Updating the request #' + request.id, new RequestDetails(request));
+                this.dialog = new RequestUpdateModal('Updating the request #' + request.id, new RequestDetails(request));
                 this.dialog.show().then((resp: any) => {
-                    navigate('#requests');
+                    navigate('#');
                 });
             }).catch((error: Error) => {
             console.log(error.toString());

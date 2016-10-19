@@ -6,6 +6,7 @@ import {AuthSingleton} from '../singletons/authSingleton';
 import Deferred = Q.Deferred;
 import {IRequestBase, IRequest} from 'requestInterface';
 import {ICreateRequest} from "requestInterface";
+import {IUpdateRequest} from "requestInterface";
 
 
 export function getRequests():  Promise<IRequestBase[]> {
@@ -127,7 +128,6 @@ export function createRequest(request: ICreateRequest):  Promise<ICreateRequest>
         title: request.title
 
     };
-    console.log(UrlSingleton.getInstance().getApiRequests());
     ajaxSettings = {
         'url': UrlSingleton.getInstance().getApiRequests(),
         'method': 'POST',
@@ -157,6 +157,47 @@ export function createRequest(request: ICreateRequest):  Promise<ICreateRequest>
     return deferred.promise;
 }
 
+export function updateRequest(request: IUpdateRequest, requestPath: string):  Promise<ICreateRequest> {
+    let deferred: Deferred<ICreateRequest> = Q.defer<ICreateRequest>(),
+        data: any,
+        ajaxSettings: any;
+
+    data = {
+        client_priority: request.client_priority,
+        details: request.details,
+        product_area: request.product_area,
+        target_date: request.target_date,
+        ticket_url: request.ticket_url,
+        title: request.title
+    };
+    ajaxSettings = {
+        'url': UrlSingleton.getInstance().getApiBase() + requestPath,
+        'method': 'PUT',
+        'headers': {
+            'Authorization': AuthSingleton.getInstance().getToken(),
+            'Content-Type': 'application/json'
+        },
+        'data' : JSON.stringify(data)
+    };
+    $.ajax(ajaxSettings)
+        .then((response: any) => {
+            deferred.resolve({
+                client: response.data.relationships.client.data.id,
+                client_priority: response.data.attributes.client_priority.toString(),
+                details: response.data.attributes.description,
+                product_area: response.data.attributes.product_area,
+                target_date: response.data.attributes.target_date,
+                title: response.data.attributes.title,
+                ticket_url: response.data.attributes.ticket_url,
+                id: response.data.id
+            });
+        })
+        .fail((error: Error) => {
+            deferred.reject(error);
+        });
+
+    return deferred.promise;
+}
 export function deleteRequest(requestPath: string):  Promise<boolean> {
     let deferred: Deferred<boolean> = Q.defer<boolean>(),
         ajaxSettings: any = {
