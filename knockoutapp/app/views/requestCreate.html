@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label class="col-md-2 col-md-offset-2 control-label">Client Priority</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" placeholder="client priority" data-bind="value: client_priority">
+                                <input type="number" class="form-control" placeholder="client priority" data-bind="value: client_priority" step="1">
                             </div>
                         </div>
                         <div class="form-group">
@@ -59,10 +59,10 @@
                         </div>
                         </fieldset>
                         <hr />
-                        <div class="form-group">
-                            <div class="col-md-10 col-md-offset-2">
-                                <button type="submit" class="btn btn-raised btn-success" data-bind="click: submit"  >Submit</button>
-                                <button href="#requests" class="btn btn-raised btn-warning">Cancel</button>
+                        <div class="col-md-10 col-md-offset-2">
+                            <div class="btn-group">
+                                <a href="#requests" type="submit" class="btn btn-raised btn-success" data-bind="click: submit" >Submit</a>
+                                <a href="#requests" class="btn btn-raised btn-warning">Cancel</a>
                             </div>
                         </div>
                     </form>

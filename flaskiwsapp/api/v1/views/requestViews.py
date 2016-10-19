@@ -3,14 +3,15 @@ from werkzeug.exceptions import BadRequest
 from dateutil import parser
 from flask import jsonify
 from flask.blueprints import Blueprint
-from flask_api.status import HTTP_202_ACCEPTED
+from flask_api.status import HTTP_202_ACCEPTED, HTTP_205_RESET_CONTENT
 from flask_cors.extension import CORS
 from flask_jwt import jwt_required, JWTError, current_identity
 from flask_restful import Resource, reqparse
 
 from flaskiwsapp.api.v1.schemas.requestSchemas import BaseRequestJsonSchema, RequestDetailJsonSchema
 from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, delete_request, \
-    get_request_by_id, create_request, delete_me_request, get_all_client_requests
+    get_request_by_id, create_request, delete_me_request, get_all_client_requests, get_client_pending_requests,\
+    update_request
 from flaskiwsapp.snippets.constants import ROLE_CLIENT
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.snippets.helpers import roles_required
@@ -71,6 +72,33 @@ class RequestAPI(Resource):
         request = get_request_by_id(request_id)
         return RequestDetailJsonSchema().dump(request).data
 
+    @jwt_required()
+    @roles_required(ROLE_CLIENT)
+    def put(self, request_id):
+        try:
+            response = None
+            args = request_parser.parse_args()
+            date = parser.parse(args.target_date)
+            req_dict = dict()
+            req_dict.update({'title': args.title})
+            req_dict.update({'description': args.details})
+            req_dict.update({'ticket_url': args.ticket_url})
+            req_dict.update({'client_priority': int(args.client_priority)})
+            req_dict.update({'product_area': args.product_area})
+            req_dict.update({'target_date': date})
+            request = update_request(request_id, req_dict)
+            request_schema = RequestDetailJsonSchema()
+            response = request_schema.dump(get_request_by_id(request.id)).data
+            create_request_sms_job(request.id)
+        except BadRequest as e:
+            iws_logger.error(MSG_ERROR % (type(e), e.description))
+            raise JWTError(e, e.description)
+        except Exception as e:
+            iws_logger.error(MSG_ERROR % (type(e), e.args[0]))
+            raise JWTError(e, e.args[0])
+        else:
+            return jsonify(response), HTTP_205_RESET_CONTENT
+
 
 class RequestsMeAPI(Resource):
     """An API to get or create requests by a client."""
@@ -128,6 +156,24 @@ class RequestsMeAPI(Resource):
         return delete_me_request(request_id, current_identity.id), HTTP_202_ACCEPTED
 
 
+class RequestsPendingMeAPI(Resource):
+    """An API to get all requests pending by a client."""
+
+    @jwt_required()
+    @roles_required(ROLE_CLIENT)
+    def get(self):
+        """HTTP GET. Get all pending requests.
+
+        :email: a string valid as object id.
+        :returns: One or all available requests.
+
+        """
+        requests = get_client_pending_requests(current_identity.id)
+        request_schema = BaseRequestJsonSchema(many=True)
+
+        return request_schema.dump(requests).data
+
 request_api.add_resource(RequestsAPI, '', endpoint='list')
 request_api.add_resource(RequestAPI, '<request_id>', endpoint='detail')
 request_api.add_resource(RequestsMeAPI, 'me', endpoint='me')
+request_api.add_resource(RequestsPendingMeAPI, 'pending', endpoint='pending')

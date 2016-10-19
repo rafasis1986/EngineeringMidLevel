@@ -18,6 +18,7 @@ class Home extends BaseView {
     private full_name: any = ko.observable();
 
     public activate() {
+        this.showMessage();
         this.isLoading(true);
         this.full_name(getUserFullName());
         this.messages(this.loadMessages());

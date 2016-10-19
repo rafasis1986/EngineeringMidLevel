@@ -5,12 +5,12 @@ import * as Q from 'q';
 import Deferred = Q.Deferred;
 import {IRequest} from 'requestInterface';
 import SimpleGridRequest = require('../widgets/simpleGridRequest');
-import {getRequests} from '../services/requestServices';
+import {getPendingRequests} from '../services/requestServices';
 import {IRequestBase} from 'requestInterface';
 import BaseView = require('./baseView');
 import * as userSession from '../singletons/userSession';
 import {Constant} from '../constants/enviroment';
-
+import {INode} from 'treeNodeInterfaces';
 
 const columns = [{ headerText: 'Id', rowText: 'id' },
     { headerText: 'Title', rowText: 'title' },
@@ -22,32 +22,52 @@ const columns = [{ headerText: 'Id', rowText: 'id' },
     { headerText: 'Details', rowText: 'link' },
 ];
 
-class Requests extends BaseView {
+class Pendings extends BaseView {
 
-    private requests: any = ko.observableArray();
+    private pendings: any[];
     private isLoading: any = ko.observable();
-    private gridViewModel: any;
     private isClient: any = ko.observable(false);
 
     public activate() {
         this.isLoading(true);
+
         if (userSession.getUserRoles().search(Constant.ROLE_CLIENT) != -1) {
             this.isClient(true);
         }
-        return  this.loadRequests().then((data) => {
-                this.requests(data);
-                this.gridViewModel = new SimpleGridRequest(data, columns);
+        return  this.loadPendings().then((data) => {
+                this.pendings = data;
                 this.isLoading(false);
         });
     }
 
-    public loadRequests(): JQueryDeferred<IRequestBase[]> {
+    public attached() {
+        this.pendings.reverse();
+        let root: INode,
+            i: number = 0;
+        for(i; i<this.pendings.length ; i++) {
+            let auxNode: INode = {
+                text : this.pendings[i].id + ': '  + this.pendings[i].title,
+                href : '#pendig' + this.pendings[i].id,
+                tags : [ '' + this.pendings[i].client_priority]};
+            if ( i>0 ){
+                auxNode.nodes = [root];
+            }
+            root = auxNode;
+        }
+        $('#tree').treeview({
+            expandIcon: 'glyphicon glyphicon-menu-right',
+            collapseIcon: 'glyphicon glyphicon-menu-up',
+            nodeIcon: 'glyphicon glyphicon-tasks',
+            showTags: true,
+            data: [root]});
+    }
+
+    public loadPendings(): JQueryDeferred<IRequestBase[]> {
         return system.defer((dfd) => {
             setTimeout( () => {
-                getRequests().then((requests: IRequest[]) => {
+                getPendingRequests().then((requests: IRequest[]) => {
                     dfd.resolve(requests); })
                     .catch((err: Error) => {
-                        console.log(err.toString());
                         window.location.assign('#');
                     });
             }, 500);
@@ -55,4 +75,4 @@ class Requests extends BaseView {
     }
 }
 
-export = Requests;
+export = Pendings;

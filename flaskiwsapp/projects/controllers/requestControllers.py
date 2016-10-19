@@ -84,7 +84,10 @@ def update_request(request_id, kwargs):
     """
     try:
         request = Request.query.get(request_id)
+        legacy_priority = request.client_priority
         request.update(**kwargs)
+        if (request.client_priority != legacy_priority):
+            request = update_request_on_priority_list(request)
     except NoResultFound:
         raise RequestDoesnotExistsException(request_id)
     except Exception as e:
@@ -174,19 +177,19 @@ def update_request_on_priority_list(request):
 
     """
     request = remove_request_from_priority_list(request)
-    if request.attended:
+    if not request.attended:
         request = insert_request_priority(request)
     return request
 
 
 def remove_request_from_priority_list(request):
-    if request.next:
-        if request.previous:
-            prev = get_request_by_id(request.previous)
-            prev.next = request.next
-            prev.save()
+    if request.previous:
+        prev = get_request_by_id(request.previous)
+        prev.next = request.next
+        request.previous = None
         request.next = None
-        request = request.save()
+        request.save()
+        prev.save()
     return request
 
 

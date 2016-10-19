@@ -10,7 +10,8 @@ import TicketRequestModel = require('../viewmodels/ticketCreate');
 import TicketModal = require('./ticketModal');
 import {navigate} from 'plugins/history';
 import {Constant} from '../constants/enviroment';
-import RequestDeleteModal = require("./requestDeleteModal");
+import RequestDeleteModal = require('./requestDeleteModal');
+import RequestUpdateModal = require('./requestUpdateModal');
 
 
 
@@ -23,7 +24,6 @@ class SimpleGridRequest extends SimpleGrid {
     protected checkPriority: any = ko.observable(true);
     protected checkArea: any = ko.observable(true);
     protected checkClient: any = ko.observable(true);
-
 
     constructor (data: any[], colums?: any[], pageSize?: number) {
         super(data, colums, pageSize);
@@ -84,10 +84,20 @@ class SimpleGridRequest extends SimpleGrid {
     public deleteRequestModal(requestPath: any): void {
         getRequestDetails(requestPath)
             .then((request: IRequest) => {
-                console.log('creo modal');
-                console.log(request);
-                this.dialog = new RequestDeleteModal(request.title, new RequestDetails(request));
-                this.dialog.show().then((resp: any) =>{
+                this.dialog = new RequestDeleteModal('Deleting ' + request.title, new RequestDetails(request));
+                this.dialog.show().then((resp: any) => {
+                    navigate('#');
+                });
+            }).catch((error: Error) => {
+            console.log(error.toString());
+        });
+    }
+
+    public updateRequestModal(requestPath: any): void {
+        getRequestDetails(requestPath)
+            .then((request: IRequest) => {
+                this.dialog = new RequestUpdateModal('Updating the request #' + request.id, new RequestDetails(request));
+                this.dialog.show().then((resp: any) => {
                     navigate('#');
                 });
             }).catch((error: Error) => {

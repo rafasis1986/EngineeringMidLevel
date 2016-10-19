@@ -7,7 +7,7 @@ from flask import request, redirect, render_template
 from flask.blueprints import Blueprint
 from flask.globals import current_app
 from flask_jwt import _default_jwt_encode_handler
-from flaskiwsapp.snippets.utils import split_name, get_api_urls, set_enviroment, make_payload
+from flaskiwsapp.snippets.utils import split_name, set_enviroment, make_payload, make_auth_response
 from flaskiwsapp.users.controllers.userControllers import is_an_available_email, update_user, get_employee_by_email
 from flaskiwsapp.users.controllers.clientControllers import create_client, get_client_by_email
 from flaskiwsapp.snippets.exceptions.userExceptions import EmployeeDoesNotExistsException, UserDoesNotExistsException
@@ -58,12 +58,9 @@ def call_back():
                                      'last_name': last_name})
         token = _default_jwt_encode_handler(user)
         response_url = current_app.config['APP_URL']
-        app_domain = current_app.config['SERVER_NAME']
         response = redirect(response_url, code=302)
         expire_date = datetime.datetime.now() + current_app.config['JWT_EXPIRATION_DELTA']
-        response.set_cookie('Authorization', domain='.%s' % app_domain, value=token, expires=expire_date)
-        response.set_cookie('Env', domain='.%s' % app_domain, value=current_app.config['ENV'], expires=expire_date)
-        response.set_cookie('urls', domain='.%s' % app_domain, value=get_api_urls(current_app, user), expires=expire_date)
+        response = make_auth_response(current_app, response, user, token, expire_date)
         return response
 
 
@@ -102,10 +99,7 @@ def call_back_employee():
                                      'last_name': last_name})
         token = _default_jwt_encode_handler(user)
         response_url = current_app.config['APP_URL']
-        app_domain = current_app.config['SERVER_NAME']
         response = redirect(response_url, code=302)
         expire_date = datetime.datetime.now() + current_app.config['JWT_EXPIRATION_DELTA']
-        response.set_cookie('Authorization', domain='.%s' % app_domain, value=token, expires=expire_date)
-        response.set_cookie('Env', domain='.%s' % app_domain, value=current_app.config['ENV'], expires=expire_date)
-        response.set_cookie('urls', domain='.%s' % app_domain, value=get_api_urls(current_app, user), expires=expire_date)
+        response = make_auth_response(current_app, response, user, token, expire_date)
         return response

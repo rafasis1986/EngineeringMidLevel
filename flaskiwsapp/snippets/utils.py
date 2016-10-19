@@ -9,6 +9,7 @@ import string
 from flask.helpers import url_for
 from flaskiwsapp.users.controllers.roleControllers import get_role_by_name
 from flaskiwsapp.snippets.constants import ROLE_EMPLOYEE, ROLE_CLIENT
+import os
 
 
 def split_name(name):
@@ -34,6 +35,7 @@ def get_api_urls(app, user):
     elif role2 in user.roles:
         res.update({'request_list': url_for('requests_api_blueprint.me')})
         res.update({'tickets_list': url_for('clients_api_blueprint.tickets')})
+        res.update({'pending_list': url_for('requests_api_blueprint.pending')})
     res.update({'user_list': url_for('users_api_blueprint.list')})
     res.update({'utils_areas': url_for('utils_api_blueprint.areas')})
     str_resp = ''
@@ -64,3 +66,16 @@ def generate_key(length=8):
     for i in range(0, length):
         ret.extend(random.sample(string.hexdigits, 1))
     return ''.join(ret)
+
+
+def make_auth_response(app, response, user, token, expire_date):
+    if os.environ.get('IWS_BE') == 'prod':
+        app_domain = app.config['SERVER_NAME']
+        response.set_cookie('Authorization', domain='.%s' % app_domain, value=token, expires=expire_date)
+        response.set_cookie('Env', domain='.%s' % app_domain, value=app.config['ENV'], expires=expire_date)
+        response.set_cookie('urls', domain='.%s' % app_domain, value=get_api_urls(app, user), expires=expire_date)
+    else:
+        response.set_cookie('Authorization', value=token, expires=expire_date)
+        response.set_cookie('Env', value=app.config['ENV'], expires=expire_date)
+        response.set_cookie('urls', value=get_api_urls(app, user), expires=expire_date)
+    return response

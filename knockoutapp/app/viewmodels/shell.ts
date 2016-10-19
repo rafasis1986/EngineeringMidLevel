@@ -1,11 +1,12 @@
 import * as router from 'plugins/router';
 import * as app from 'durandal/app';
-import {setAuthToken} from '../services/authServices';
+import {setAuthToken, getAuthUrl} from '../services/authServices';
 import {Constant} from '../constants/enviroment';
 import {setApiUrls} from '../services/urlServices';
 import {getMeInfo} from '../services/userServices';
 import {IUser} from 'userInterfaces';
 import * as userSession from '../singletons/userSession';
+import {UrlSingleton} from "../singletons/urlSingleton";
 
 
 let activate = function() {
@@ -24,6 +25,7 @@ let activate = function() {
         }
         if ( userSession.getUserRoles().search(Constant.ROLE_CLIENT) != -1) {
             nav = nav.concat({ route: 'request_create', moduleId: 'viewmodels/requestCreate' });
+            nav = nav.concat({ route: 'pendings', moduleId: 'viewmodels/pendings', title: 'Pendings', nav: true });
         }
         nav = nav.concat({ route: 'requests', moduleId: 'viewmodels/requests', title: 'Requests', nav: true });
         nav = nav.concat({ route: 'tickets', moduleId: 'viewmodels/tickets', title: 'Tickets', nav: true });
@@ -33,7 +35,7 @@ let activate = function() {
         return router.activate();
     }).catch((err: Error) => {
         console.log(err.toString());
-        window.location.assign(Constant.DEFAULT_AUTH_URL);
+        window.location.assign(UrlSingleton.getInstance().getAuthUrl());
     });
 
 };
