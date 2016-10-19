@@ -11,24 +11,20 @@ requirejs.config({
         'js-cookie': '../node_modules/js-cookie/src/js.cookie',
         'q': '../node_modules/q/q',
         'knockout.validation': '../node_modules/knockout.validation/dist/knockout.validation.min',
-        'bootstrap_treeview': '../node_modules/bootstrap-treeview/dist/bootstrap-treeview.min',
-        'jstree': '../node_modules/jstree/dist/jstree.min'
+        'bootstrap_treeview': '../node_modules/bootstrap-treeview/dist/bootstrap-treeview.min'
     },
   shim: {
     bootstrap: {
             deps: ['jquery'],
             exports: 'jQuery'
         },
-    jstree: {
-          deps: ['jquery']
-      },
     bootstrap_treeview: {
           deps: ['jquery']
       }
     },
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'bootstrap', 'bootstrap-datepicker', 'jstree', 'bootstrap_treeview'],
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'bootstrap', 'bootstrap-datepicker', 'bootstrap_treeview'],
     function (system, app, viewLocator) {
 
     system.debug(true);

@@ -13,7 +13,7 @@ class DevConfig(BaseConfig):
     ENV = 'dev'
     DEBUG = True
     DEBUG_TB_ENABLED = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://test:test@localhost:5432/iws3'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://docker:docker@localhost:15432/iws'
     SERVER_HOST = "localhost:5000"
     AUTH_SUBDOMAIN = 'auth'
     AUTH0_CALLBACK_URL = 'http://%s/auth/callback' % (SERVER_HOST)
