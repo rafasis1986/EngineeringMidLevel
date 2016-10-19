@@ -1,4 +1,5 @@
 import {Constant} from '../constants/enviroment';
+import {getEnv} from '../services/envServices';
 
 class UrlSingleton {
 
@@ -38,7 +39,11 @@ class UrlSingleton {
     }
 
     public getAuthUrl(): string {
-        return this._api_base + Constant.AUTH_PATH;
+        if (getEnv() === Constant.PRODUCTION_ENV) {
+            return Constant.PRODUCTION_BE_URL + Constant.AUTH_PATH;
+        } else {
+            return Constant.DEVELOPMENT_BE_URL + Constant.AUTH_PATH;
+        }
     }
 
     public setApiUsers(value: string): void{

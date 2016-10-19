@@ -4,6 +4,7 @@ import {UrlSingleton} from '../singletons/urlSingleton';
 import {Constant} from '../constants/enviroment';
 import {getEnv} from './envServices';
 import Deferred = Q.Deferred;
+import {setAuthUrl} from './authServices';
 
 export function setApiUrls (): Promise<boolean> {
     let deferred: Deferred<boolean> = Q.defer<boolean>(),
@@ -12,15 +13,18 @@ export function setApiUrls (): Promise<boolean> {
         urlObject: any = {},
         singleton: any = UrlSingleton.getInstance();
 
+    if (getEnv() === Constant.PRODUCTION_ENV) {
+        singleton.setApiBase(Constant.PRODUCTION_BE_URL);
+        setAuthUrl(Constant.PRODUCTION_BE_URL + Constant.AUTH_PATH);
+    } else {
+        singleton.setApiBase(Constant.DEVELOPMENT_BE_URL);
+        setAuthUrl(Constant.DEVELOPMENT_BE_URL + Constant.AUTH_PATH);
+    }
     url = getCookie(Constant.URLS_LABEL);
     if (! url) {
         deferred.reject('Missed Api Urls');
     } else {
-        if (getEnv() === Constant.PRODUCTION_ENV) {
-            singleton.setApiBase(Constant.PRODUCTION_BE_URL);
-        } else {
-            singleton.setApiBase(Constant.DEVELOPMENT_BE_URL);
-        }
+
         url = url.replace('\"', '');
         urls = url.replace('"', '').split(Constant.CHARACTER_PARTITION);
         if (urls.length > 0) {

@@ -2,7 +2,7 @@
  * Created by rtorres on 9/24/16.
  */
 import * as Q from 'q';
-import {getCookie, deleteCookie} from './utils';
+import {getCookie, deleteCookie, setSession, getSession} from './utils';
 import {AuthSingleton} from '../singletons/authSingleton';
 import {Constant} from '../constants/enviroment';
 import Deferred = Q.Deferred;
@@ -26,4 +26,12 @@ export function setAuthToken ():  Promise<boolean> {
 
 export function removeAuthToken ():  void {
     deleteCookie(Constant.AUTH_LABEL);
+}
+
+export function setAuthUrl(path: string): void {
+    setSession(Constant.AUTH_PATH_LABEL, path);
+}
+
+export function getAuthUrl(): string {
+    return getSession(Constant.AUTH_PATH_LABEL);
 }
