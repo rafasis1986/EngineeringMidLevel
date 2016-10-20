@@ -34,7 +34,6 @@
     "bootstrap": "^3.3.7",
     "bootstrap-datepicker": "^1.6.4",
     "bootstrap-material-design": "^0.5.10",
-    "bootstrap-treeview": "^1.2.0",
     "durandal": "^2.1.0",
     "font-awesome": "^4.6.3",
     "jquery": "^2.2.4",

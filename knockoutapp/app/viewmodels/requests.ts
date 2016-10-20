@@ -34,24 +34,30 @@ class Requests extends BaseView {
         if (userSession.getUserRoles().search(Constant.ROLE_CLIENT) != -1) {
             this.isClient(true);
         }
-        return  this.loadRequests().then((data) => {
+        return  this.loadRequests()
+            .then((data) => {
                 this.requests(data);
                 this.gridViewModel = new SimpleGridRequest(data, columns);
                 this.isLoading(false);
-        });
+                this.showMessage();
+            })
+            .catch((err: Error) => {
+               window.location.assign('#');
+            });
     }
 
-    public loadRequests(): JQueryDeferred<IRequestBase[]> {
-        return system.defer((dfd) => {
-            setTimeout( () => {
-                getRequests().then((requests: IRequest[]) => {
-                    dfd.resolve(requests); })
-                    .catch((err: Error) => {
-                        console.log(err.toString());
-                        window.location.assign('#');
-                    });
-            }, 500);
-        });
+    public loadRequests(): Promise<IRequestBase[]> {
+        let deferred: Deferred<IRequestBase[]> = Q.defer<IRequestBase[]>();
+        getRequests()
+            .then((requests: IRequest[]) => {
+                deferred.resolve(requests);
+            })
+            .catch((err: Error) => {
+                console.log(err.toString());
+                deferred.reject(err);
+            });
+
+        return deferred.promise;
     }
 }
 

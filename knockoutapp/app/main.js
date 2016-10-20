@@ -11,7 +11,6 @@ requirejs.config({
         'js-cookie': '../node_modules/js-cookie/src/js.cookie',
         'q': '../node_modules/q/q',
         'knockout.validation': '../node_modules/knockout.validation/dist/knockout.validation.min',
-        'bootstrap_treeview': '../node_modules/bootstrap-treeview/dist/bootstrap-treeview.min',
         'Sortable': '../node_modules/sortablejs/Sortable.min',
         'ko_sortable': '../node_modules/knockout-sortablejs/knockout-sortable'
     },
@@ -20,9 +19,6 @@ requirejs.config({
             deps: ['jquery'],
             exports: 'jQuery'
         },
-    bootstrap_treeview: {
-          deps: ['jquery']
-      },
       ko_sortable:{
           deps: ['Sortable']
       }
@@ -30,10 +26,19 @@ requirejs.config({
 
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'bootstrap', 'bootstrap-datepicker', 'bootstrap_treeview', 'Sortable', 'ko_sortable'],
-    function (system, app, viewLocator) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator',  'q', 'bootstrap', 'bootstrap-datepicker', 'Sortable', 'ko_sortable'],
+    function (system, app, viewLocator, Q) {
 
     system.debug(true);
+    system.defer = function (action) {
+        var deferred = Q.defer();
+        action.call(deferred, deferred);
+        var promise = deferred.promise;
+        deferred.promise = function() {
+            return promise;
+        };
+        return deferred;
+    };
 
 
     app.title = "iws-test";

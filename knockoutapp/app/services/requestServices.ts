@@ -198,6 +198,51 @@ export function updateRequest(request: IUpdateRequest, requestPath: string):  Pr
 
     return deferred.promise;
 }
+
+export function updateRequestPriorityList(orderList: number[]):  Promise<IRequestBase[]> {
+    let deferred: Deferred<IRequestBase[]> = Q.defer<IRequestBase[]>(),
+        data: any,
+        ajaxSettings: any;
+
+    data = {
+        requests_id: orderList
+    };
+    ajaxSettings = {
+        'url': UrlSingleton.getInstance().getApiPendings(),
+        'method': 'POST',
+        'headers': {
+            'Authorization': AuthSingleton.getInstance().getToken(),
+            'Content-Type': 'application/json'
+        },
+        'data' : JSON.stringify(data)
+    };
+    $.ajax(ajaxSettings)
+        .then((response: any) => {
+            let resp: IRequestBase[];
+            resp = response.data.map( (request: any) => {
+                if (request.type === 'request') {
+                    let aux: any = {};
+                    aux.id = request.id;
+                    aux.attended = request.attributes.attended;
+                    aux.client_id = request.relationships.client.data.id;
+                    aux.client_link = request.relationships.client.links.related;
+                    aux.client_priority = request.attributes.client_priority;
+                    aux.link = request.links.self;
+                    aux.product_area = request.attributes.product_area;
+                    aux.target_date = request.attributes.target_date;
+                    aux.title = request.attributes.title;
+                    return aux;
+                }
+            });
+            deferred.resolve(resp);
+        })
+        .fail((error: Error) => {
+            deferred.reject(error);
+        });
+
+    return deferred.promise;
+}
+
 export function deleteRequest(requestPath: string):  Promise<boolean> {
     let deferred: Deferred<boolean> = Q.defer<boolean>(),
         ajaxSettings: any = {

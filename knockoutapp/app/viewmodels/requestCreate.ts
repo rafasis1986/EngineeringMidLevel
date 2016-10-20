@@ -23,7 +23,10 @@ class RequestCreate extends BaseView{
     private client: any = ko.observable();
     private client_priority: any = ko.observable().extend({required: true, number: true, step: 1, min: 1 });
     private product_area: any = ko.observable().extend({required: true});
-    private ticket_url: any = ko.observable().extend({required: true});
+    private ticket_url: any = ko.observable().extend({required: true}).extend({ pattern: {
+        message: 'This url doesnt match with a format like http://asdf.com',
+        params: '^http://[a-zA-Z0-9]{1,30}.[a-zA-Z0-9]{2,5}$'
+    }});
     private target_date: any = ko.observable().extend({required: true});
     private isLoading: any = ko.observable().extend({required: true});
     private areas: string[];

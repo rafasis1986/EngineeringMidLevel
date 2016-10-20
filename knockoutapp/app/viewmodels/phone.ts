@@ -17,7 +17,10 @@ import {IUser} from "userInterfaces";
 class Tickets extends BaseView {
 
     protected isLoading: any = ko.observable();
-    protected phone: any = ko.observable().extend({required: true});
+    protected phone: any = ko.observable().extend({required: true}).extend({ pattern: {
+        message: 'This phone number doesnt match with E.164 format +582742214598',
+        params: '^[+][0-9]{10,15}$'
+    }});
     protected code: any = ko.observable().extend({required: true});
     protected errors: any = validation.group(this);
     protected showConfirmation: any = ko.observable(false);
@@ -25,6 +28,7 @@ class Tickets extends BaseView {
     public activate(){
         this.isLoading(true);
         this.isLoading(false);
+        this.showMessage();
     }
 
     public update(): void {
