@@ -53,6 +53,17 @@ def get_client_pending_requests(client_id):
     return Request.query.filter(Request.client_id == client_id, Request.attended == False).order_by(Request.client_priority).all()
 
 
+def get_requests_by_ids(requests_id, client_id):
+    """
+    Get a list of requests from a client
+
+    :requests_id: a list of int with reqursts id
+    :client_id: a int with client id info
+    :returns: a dict with the operation result
+    """
+    return Request.query.filter(Request.client_id == client_id, Request.id.in_(requests_id)).all()
+
+
 def get_request_by_id(request_id=None):
     """
     Get request info by id
@@ -182,6 +193,30 @@ def update_request_on_priority_list(request):
     return request
 
 
+def update_client_priority_list(requests_id, client_id):
+    """
+    Update the client priority_list for a client
+
+    :requests_i: a list with integer objects.
+    :client_id: a integer with client_id
+
+    :returns: request updated
+    """
+    delete_request_priority_list(client_id)
+    requests = get_requests_by_ids(requests_id, client_id)
+    requests = sorted(requests, key=lambda request: requests_id.index(request.id))
+    total_requests = len(requests)
+    try:
+        for iter in range(total_requests):
+            requests[iter].client_priority = iter + 1
+            if iter < (total_requests - 1):
+                requests[iter].next = requests[iter + 1]
+            requests[iter] = requests[iter].save()
+    except Exception as e:
+        print(e)
+    return requests
+
+
 def remove_request_from_priority_list(request):
     if request.previous:
         prev = get_request_by_id(request.previous)
@@ -223,4 +258,17 @@ def delete_me_request(request_id, client_id):
         request.delete()
     except NoResultFound:
         raise RequestDoesnotExistsException(request_id)
+    return True
+
+
+def delete_request_priority_list(client_id):
+    """
+    Delete a priority_list to client id.
+
+    :client_id: a int
+    :returns: boolean
+    """
+    requests = get_client_pending_requests(client_id)
+    for item in requests:
+        item.update(next=None)
     return True

@@ -11,7 +11,7 @@ from flask_restful import Resource, reqparse
 from flaskiwsapp.api.v1.schemas.requestSchemas import BaseRequestJsonSchema, RequestDetailJsonSchema
 from flaskiwsapp.projects.controllers.requestControllers import get_all_requests, delete_request, \
     get_request_by_id, create_request, delete_me_request, get_all_client_requests, get_client_pending_requests,\
-    update_request
+    update_request, get_requests_by_ids, delete_request_priority_list, update_client_priority_list
 from flaskiwsapp.snippets.constants import ROLE_CLIENT
 from flaskiwsapp.snippets.customApi import CustomApi
 from flaskiwsapp.snippets.helpers import roles_required
@@ -25,13 +25,15 @@ cors = CORS(requests_api_blueprint)
 request_api = CustomApi(requests_api_blueprint)
 
 request_parser = reqparse.RequestParser(bundle_errors=True)
-
 request_parser.add_argument('client_priority', type=str, location='json', required=True, help="Send priority")
 request_parser.add_argument('details', type=str, location='json', required=True, help="send a details")
 request_parser.add_argument('ticket_url', type=str, location='json', required=True, help="send a ticket_url")
 request_parser.add_argument('product_area', type=str, location='json', required=True, help="send product_area")
 request_parser.add_argument('title', type=str, location='json', required=True, help="send a title")
 request_parser.add_argument('target_date', type=str, location='json', required=True, help="send a datetime")
+
+priority_parser = reqparse.RequestParser(bundle_errors=True)
+priority_parser.add_argument('requests_id', type=list, location='json', required=True, help="Send priority")
 
 
 class RequestsAPI(Resource):
@@ -164,13 +166,25 @@ class RequestsPendingMeAPI(Resource):
     def get(self):
         """HTTP GET. Get all pending requests.
 
-        :email: a string valid as object id.
-        :returns: One or all available requests.
+        :returns: all pendings request.
 
         """
         requests = get_client_pending_requests(current_identity.id)
         request_schema = BaseRequestJsonSchema(many=True)
 
+        return request_schema.dump(requests).data
+
+    @jwt_required()
+    @roles_required(ROLE_CLIENT)
+    def post(self):
+        """
+        HTTP POST. re order the priority list
+
+        :returns: One or all available requests.
+        """
+        args = priority_parser.parse_args()
+        requests = update_client_priority_list(args.requests_id, current_identity.id)
+        request_schema = BaseRequestJsonSchema(many=True)
         return request_schema.dump(requests).data
 
 request_api.add_resource(RequestsAPI, '', endpoint='list')
