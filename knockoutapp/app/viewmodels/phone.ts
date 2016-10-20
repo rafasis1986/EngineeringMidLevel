@@ -4,14 +4,12 @@ import * as system from 'durandal/system';
 import * as app from 'durandal/app';
 import * as Q from 'q';
 import Deferred = Q.Deferred;
-import {getTickets} from '../services/ticketServices';
-import {ITicketBase} from 'ticketInterface';
 import SimpleGridTicket = require('../widgets/simpleGridTicket');
 import BaseView = require('./baseView');
-import {makeMessage} from "../services/messageService";
-import {MessageTypes} from "../constants/messageTypes";
-import {updateUser, confirmUpdateUser} from "../services/userServices";
-import {IUser} from "userInterfaces";
+import {makeMessage} from '../services/messageService';
+import {MessageTypes} from '../constants/messageTypes';
+import {updateUser, confirmUpdateUser} from '../services/userServices';
+import {IUser} from 'userInterfaces';
 
 
 class Tickets extends BaseView {
@@ -28,7 +26,6 @@ class Tickets extends BaseView {
     public activate(){
         this.isLoading(true);
         this.isLoading(false);
-        this.showMessage();
     }
 
     public update(): void {
@@ -39,11 +36,12 @@ class Tickets extends BaseView {
         } else {
             updateUser(this.phone()).then((resp: string) => {
                 makeMessage(MessageTypes.SUCCESS, 'We sent your code confirmation ');
+                this.showMessage();
+                this.displayMessage(true);
                 this.showConfirmation(true);
             }).catch((err: Error) => {
                 makeMessage(MessageTypes.DANGER, err.toString());
             });
-            this.showMessage();
         }
     }
 

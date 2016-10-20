@@ -12,7 +12,8 @@ requirejs.config({
         'q': '../node_modules/q/q',
         'knockout.validation': '../node_modules/knockout.validation/dist/knockout.validation.min',
         'Sortable': '../node_modules/sortablejs/Sortable.min',
-        'ko_sortable': '../node_modules/knockout-sortablejs/knockout-sortable'
+        'ko_sortable': '../node_modules/knockout-sortablejs/knockout-sortable',
+        'knockstrap': '../node_modules/knockstrap/build/knockstrap',
     },
   shim: {
     bootstrap: {
@@ -26,10 +27,10 @@ requirejs.config({
 
 });
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator',  'q', 'bootstrap', 'bootstrap-datepicker', 'Sortable', 'ko_sortable'],
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator',  'q', 'bootstrap', 'knockstrap', 'bootstrap-datepicker', 'Sortable', 'ko_sortable'],
     function (system, app, viewLocator, Q) {
 
-    system.debug(true);
+    system.debug(false);
     system.defer = function (action) {
         var deferred = Q.defer();
         action.call(deferred, deferred);

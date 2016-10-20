@@ -2,12 +2,8 @@ import * as ko from 'knockout';
 import * as system from 'durandal/system';
 import * as app from 'durandal/app';
 import {IHomeMessage} from 'homeInterfaces';
-import {getMeInfo} from '../services/userServices';
-import {IUser} from 'userInterfaces';
-import {setApiUrls} from '../services/urlServices';
-import {Constant} from '../constants/enviroment';
 import BaseView = require('./baseView');
-import {getUserFullName, getUserEmail} from "../singletons/userSession";
+import {getUserFullName, getUserEmail} from '../singletons/userSession';
 
 
 class Home extends BaseView {
@@ -18,7 +14,6 @@ class Home extends BaseView {
     private full_name: any = ko.observable();
 
     public activate() {
-        this.showMessage();
         this.isLoading(true);
         this.full_name(getUserFullName());
         this.messages(this.loadMessages());
