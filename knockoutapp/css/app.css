@@ -60,3 +60,8 @@ body {
 .badge {
   background-color: #ff2944;
 }
+
+.sortable-chosen {
+  color: #fff;
+  background-color: #3f51b5;
+}
