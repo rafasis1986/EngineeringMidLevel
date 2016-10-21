@@ -17,7 +17,10 @@ class RequestUpdateModal extends CustomModal {
     protected details: any = ko.observable().extend({required: true});
     protected product_area: any = ko.observable().extend({required: true});
     protected request_title: any = ko.observable().extend({required: true});
-    private ticket_url: any = ko.observable().extend({required: true});
+    private ticket_url: any = ko.observable().extend({required: true}).extend({ pattern: {
+        message: 'This url doesnt match with a format like http://asdf.com',
+        params: '^http://[a-zA-Z0-9]{1,30}.[a-zA-Z0-9]{2,5}$'
+    }});
     protected areas: string[];
     private errors: any = validation.group(this);
     protected canSubmit: any = ko.observable(true);
