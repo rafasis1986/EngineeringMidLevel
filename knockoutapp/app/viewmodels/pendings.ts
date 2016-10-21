@@ -32,10 +32,10 @@ class Pendings extends BaseView {
     private isLoading: any = ko.observable();
     private isClient: any = ko.observable(false);
     private dialog: any = null;
+    private canSubmit: any = ko.observable(false);
 
     public activate() {
         this.isLoading(true);
-
         if (userSession.getUserRoles().search(Constant.ROLE_CLIENT) != -1) {
             this.isClient(true);
         }
@@ -44,7 +44,7 @@ class Pendings extends BaseView {
                 this.pendingsLegacy(data);
                 this.pendings(data);
                 this.isLoading(false);
-                this.showMessage();
+                this.canSubmit(true);
             })
             .catch((err: Error) => {
                 window.location.assign('#');
@@ -71,8 +71,8 @@ class Pendings extends BaseView {
                 this.dialog = new CustomModal(request.title, new RequestDetails(request));
                 this.dialog.show();
             }).catch((error: Error) => {
-            console.log(error.toString());
-        });
+                console.log(error.toString());
+            });
     }
 
     public reset() {
@@ -80,15 +80,21 @@ class Pendings extends BaseView {
     }
 
     public  submit() {
+        this.canSubmit(false);
         let orderIds: number[];
         orderIds = this.pendings().map((request: IRequestBase) => {
            return request.id;
         });
-        updateRequestPriorityList(orderIds).then((resp:any) => {
-            makeMessage(MessageTypes.SUCCESS, 'Updated Priority List');
-            this.activate();
-
-        });
+        updateRequestPriorityList(orderIds)
+            .then((resp:any) => {
+                makeMessage(MessageTypes.SUCCESS, 'Updated Priority List');
+                this.showMessage();
+                this.activate();
+            }).catch((error: Error) => {
+                makeMessage(MessageTypes.WARNING, 'We have a trouble updating the list');
+                this.showMessage();
+            });
+        this.canSubmit(true);
     }
 }
 

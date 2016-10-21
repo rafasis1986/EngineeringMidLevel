@@ -20,9 +20,11 @@ class RequestUpdateModal extends CustomModal {
     private ticket_url: any = ko.observable().extend({required: true});
     protected areas: string[];
     private errors: any = validation.group(this);
+    protected canSubmit: any = ko.observable(true);
 
 
     public activate() {
+        this.canSubmit(true);
         this.priority(this.model.request.client_priority);
         this.target_date(this.model.request.target_date);
         this.details(this.model.request.description);
@@ -37,9 +39,8 @@ class RequestUpdateModal extends CustomModal {
     }
 
     public submit(): void {
-        let value: any;
-        value = this.request_title() && this.details() && this.ticket_url() &&  this.target_date();
-        if (! value) {
+        this.canSubmit(false);
+        if (this.errors().length > 0) {
             this.errors.showAllMessages();
         } else {
             let request: any = {
@@ -60,6 +61,7 @@ class RequestUpdateModal extends CustomModal {
                 });
             this.close();
         }
+        this.canSubmit(true);
     }
 }
 

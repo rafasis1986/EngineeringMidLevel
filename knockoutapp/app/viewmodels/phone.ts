@@ -19,48 +19,51 @@ class Tickets extends BaseView {
         message: 'This phone number doesnt match with E.164 format +582742214598',
         params: '^[+][0-9]{10,15}$'
     }});
-    protected code: any = ko.observable().extend({required: true});
+    protected code: any = ko.observable();
+    protected canSubmit: any = ko.observable(true);
     protected errors: any = validation.group(this);
     protected showConfirmation: any = ko.observable(false);
 
     public activate(){
         this.isLoading(true);
+        this.canSubmit(true);
         this.isLoading(false);
     }
 
     public update(): void {
-        if (! this.phone()){
-            makeMessage(MessageTypes.WARNING, 'Please check the form');
-            this.showMessage();
+        this.canSubmit(false);
+        if (this.errors().length > 0){
             this.errors.showAllMessages();
         } else {
             updateUser(this.phone()).then((resp: string) => {
                 makeMessage(MessageTypes.SUCCESS, 'We sent your code confirmation ');
                 this.showMessage();
+                this.code.extend({required: true});
+                this.phone.extend({validatable: false});
                 this.displayMessage(true);
                 this.showConfirmation(true);
             }).catch((err: Error) => {
-                makeMessage(MessageTypes.DANGER, err.toString());
+                makeMessage(MessageTypes.DANGER, 'Check your phone number');
             });
         }
+        this.canSubmit(true);
     }
 
     public confirm(): void {
-        if (! this.phone()){
-            makeMessage(MessageTypes.WARNING, 'Please check the form');
-            this.showMessage();
+        this.canSubmit(false);
+        if (this.errors().length > 0){
             this.errors.showAllMessages();
         } else {
             confirmUpdateUser(this.code()).then((resp: IUser) => {
-                makeMessage(MessageTypes.SUCCESS, 'We registered your new phone number ' + resp.phone_number);
+                makeMessage(MessageTypes.SUCCESS, 'We registered your new phone number ' + this.phone);
                 this.showConfirmation(false);
                 window.location.assign('#');
             }).catch((err: Error) => {
-                console.log(err);
-                console.log('err');
-                makeMessage(MessageTypes.DANGER, err.toString());
+                makeMessage(MessageTypes.DANGER, 'check your code');
+                this.showMessage();
             });
         }
+        this.canSubmit(true);
     }
 }
 

@@ -19,9 +19,9 @@
                         </div>
                     </fieldset>
                     <hr />
-                    <div class="form-group">
-                        <div class="col-md-10 col-md-offset-2">
-                            <a type="submit" class="btn btn-raised btn-success" data-bind="click: update">Update</a>
+                    <div class="col-md-10 col-md-offset-2">
+                        <div class="btn-group pull-right">
+                            <a type="submit" class="btn btn-raised btn-success" data-bind="click: update, enable: canSubmit">Update</a>
                             <a href="#" class="btn btn-raised btn-warning">Cancel</a>
                         </div>
                     </div>
@@ -40,9 +40,9 @@
                         </div>
                     </fieldset>
                     <hr />
-                    <div class="form-group">
-                        <div class="col-md-10 col-md-offset-2">
-                            <a href="#"  type="submit" class="btn btn-raised btn-success" data-bind="click: confirm">Confirm</a>
+                    <div class="col-md-10 col-md-offset-2">
+                        <div class="btn-group pull-right">
+                            <button type="submit" class="btn btn-raised btn-success" data-bind="click: confirm, enable: canSubmit">Confirm</button>
                             <a href="#" class="btn btn-raised btn-warning">Cancel</a>
                         </div>
                     </div>
