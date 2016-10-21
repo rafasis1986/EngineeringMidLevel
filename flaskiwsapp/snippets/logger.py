@@ -7,6 +7,9 @@ import logging
 import logging.config
 import loggly.handlers
 
+MSG_ERROR = 'Error %s, Message: %s'
+MSG_TASK = 'Task: %s, id: %s'
+
 logging.config.fileConfig('loggly.conf')
 
 iws_logger = logging.getLogger('myLogger')

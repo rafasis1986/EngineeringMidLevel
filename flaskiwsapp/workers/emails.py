@@ -10,9 +10,10 @@ from sendgrid.sendgrid import SendGridAPIClient
 
 from flaskiwsapp.extensions import celery
 from flaskiwsapp.projects.controllers.ticketControllers import get_ticket_by_id
-from flaskiwsapp.snippets.logger import iws_logger
+from flaskiwsapp.snippets.logger import iws_logger, MSG_ERROR
 from flaskiwsapp.users.controllers.userControllers import get_user_by_id
-from flaskiwsapp.workers.constants import MSG_ERROR
+from flaskiwsapp.users.controllers.clientControllers import get_client_by_id
+from flaskiwsapp.snippets.exceptions.clientExceptions import ClientDoesnotExistsException
 
 
 @celery.task
@@ -48,4 +49,25 @@ def welcome_user_email(user_id):
     except Exception as e:
         iws_logger.error(MSG_ERROR % (type(e), e.args[0]))
     if response and response.status:
+        iws_logger.info('Send email status: %s' % response.status)
+
+
+@celery.task
+def create_confirm_email(client_id, key):
+    try:
+        token = current_app.config['SENDGRID_TOKEN']
+        subject = "Confirmation code [IWS]"
+        client = get_client_by_id(client_id)
+        from_email = Email(current_app.config['SENDGRID_EMAIL'])
+        to_email = Email(client.email)
+        content = Content("text/plain", 'Confirmation message sent from IWS-Test, your code is: %s' % key)
+        sg = SendGridAPIClient(apikey=token)
+        mail = Mail(from_email, subject, to_email, content)
+        response = sg.client.mail.send.post(request_body=mail.get())
+    except ClientDoesnotExistsException as e:
+        iws_logger.error(MSG_ERROR % (type(e), e.message))
+    except Exception as e:
+        iws_logger.error(MSG_ERROR % (type(e), e.args[0]))
+    if response and response.status:
+        iws_logger.info('key' % key)
         iws_logger.info('Send email status: %s' % response.status)

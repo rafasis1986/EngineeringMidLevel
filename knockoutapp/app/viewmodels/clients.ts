@@ -22,24 +22,30 @@ class Clients extends BaseView {
 
     public activate(){
         this.isLoading(true);
-        return  this.loadClients().then((data) => {
+        return  this.loadClients()
+            .then((data) => {
                 this.clients(data);
                 this.gridViewModel = new SimpleGridClient(data, columns);
                 this.isLoading(false);
-        });
+                this.showMessage();
+            })
+            .catch((err: Error) => {
+                window.location.assign('#');
+            });
     }
 
-    public loadClients(): JQueryDeferred<IClient[]> {
-        return system.defer((dfd) => {
-            setTimeout( () => {
-                getClients().then((clients: IClient[]) => {
-                    dfd.resolve(clients); })
-                    .catch((err: Error) => {
-                        console.log(err.toString());
-                        window.location.assign('#');
-                    });
-            }, 500);
-        });
+    public loadClients(): Promise<IClient[]> {
+        let deferred: Deferred<IClient[]> = Q.defer<IClient[]>();
+
+        getClients()
+            .then((clients: IClient[]) => {
+                deferred.resolve(clients);
+            })
+            .catch((err: Error) => {
+                console.log(err.toString());
+                deferred.reject(err);
+            });
+        return deferred.promise;
     }
 
 }

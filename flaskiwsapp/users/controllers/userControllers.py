@@ -2,9 +2,12 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from flaskiwsapp.users.models.user import User
 from flaskiwsapp.snippets.exceptions.userExceptions import UserDoesNotExistsException,\
-    UserExistsException
+    UserExistsException, EmployeeDoesNotExistsException
 from sqlalchemy.exc import IntegrityError
 from flaskiwsapp.snippets.exceptions.baseExceptions import BaseIWSExceptions
+from flaskiwsapp.users.controllers.roleControllers import get_role_by_name
+from flaskiwsapp.snippets.constants import ROLE_EMPLOYEE
+from flaskiwsapp.users.models.role import Role
 
 
 def is_an_available_email(email):
@@ -16,6 +19,16 @@ def is_an_available_email(email):
 
     """
     return False if User.query.filter(User.email == email).count() else True
+
+
+def is_an_available_phone(phone):
+    """
+    Verify if a phone is available.
+
+    :email: a phone string in e164 format
+    :returns: True or False
+    """
+    return False if User.query.filter(User.phone_number == phone).count() else True
 
 
 def get_all_users():
@@ -55,6 +68,20 @@ def get_user_by_id(user_id=None):
     except NoResultFound:
         raise UserDoesNotExistsException(user_id)
     return user
+
+
+def get_employee_by_email(email=None):
+    """
+    Get employee info by email
+
+    :email: a string object
+    :returns: a client object
+    """
+    try:
+        employee = User.query.filter(User.email == email, User.roles.any(Role.name == ROLE_EMPLOYEE)).one()
+    except NoResultFound:
+        raise EmployeeDoesNotExistsException(email)
+    return employee
 
 
 def create_user(email, password=None):
@@ -104,6 +131,49 @@ def update_user_password(user_id, password):
     try:
         user = User.query.get(user_id)
         user.set_password(password)
+        user.save()
+    except NoResultFound:
+        raise UserDoesNotExistsException(user_id)
+    except Exception as e:
+        raise BaseIWSExceptions()
+    return user
+
+
+def update_user_phone(user_id, phone):
+    """
+    Update the user phone for a user.
+
+    :user_id: a integer object. Indicates an update.
+    :phone: a string object. Indicates the phone number.
+    :kwargs: dictionary with the fields keys and values
+    :returns: user updated
+
+    """
+    try:
+        user = User.query.get(user_id)
+        user.phone_number = phone
+        user.save()
+    except NoResultFound:
+        raise UserDoesNotExistsException(user_id)
+    except Exception as e:
+        raise BaseIWSExceptions(arg=e.arg[0])
+    return user
+
+
+def append_user_role(user_id, role_name):
+    """
+    Creates an user.
+
+    :user_id: a integer object. Indicates an update.
+    :role_name: a string object
+    :password: string object
+    :returns: user updated
+
+    """
+    try:
+        user = User.query.get(user_id)
+        role = get_role_by_name(role_name)
+        user.roles.append(role)
         user.save()
     except NoResultFound:
         raise UserDoesNotExistsException(user_id)

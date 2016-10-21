@@ -25,3 +25,5 @@ class BaseConfig(object):
     API_VERSION = 'v1.0'
     CELERY_BROKER_URL = 'amqp://oghhwozm:E50Pt5-Qua-k_uIestJZ0_wylZVmGzYF@wildboar.rmq.cloudamqp.com/oghhwozm'
     CELERY_IMPORTS = ()
+    CACHE_DEFAULT_TIMEOUT = 120
+    CACHE_TYPE = 'simple'

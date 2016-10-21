@@ -20,7 +20,7 @@ def load_user(user_id):
     return get_user_by_id(int(user_id))
 
 
-@main_blueprint.route('/')
+@main_blueprint.route('/', endpoint='login')
 def index():
     """Renders the main page page."""
     return redirect(current_app.config['APP_URL'], code=302)

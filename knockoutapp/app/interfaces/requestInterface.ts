@@ -20,17 +20,21 @@ declare module 'requestInterface' {
         created_at: string,
         description: string,
         ticket_url:  string,
+        link: string;
     }
 
-    export interface ICreateRequest{
-        id?: number,
-        client: string,
+    export interface IUpdateRequest{
         client_priority: string,
         details: string,
         product_area: string,
         target_date: string,
         ticket_url: string,
         title: string
+    }
+
+    export interface ICreateRequest extends IUpdateRequest{
+        id?: number,
+        client: string
     }
 
 }

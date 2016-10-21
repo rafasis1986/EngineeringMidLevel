@@ -1,0 +1,63 @@
+<div class="modal-content" >
+    <div class="modal-content" >
+        <div class="modal-header">
+            <button type="button" class="close" data-bind="click: close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h3 data-bind="text: title" class="text-center"></h3>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal" role="form">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-2 control-label">Title</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" placeholder="client priority" data-bind="value: request_title">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-2 control-label">Client Priority</label>
+                        <div class="col-md-8">
+                            <input type="number" class="form-control" placeholder="client priority" data-bind="value: priority" step="1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-2 control-label">Description</label>
+                        <div class="col-md-8">
+                            <textarea rows="3" type="text" class="form-control" placeholder="description" data-bind="value: details"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-2 control-label">Product Area</label>
+                        <div class="col-md-8">
+                            <select class="form-control" type="select" data-bind="options: areas, value: product_area"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-2 control-label">Ticket Url</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" placeholder="ticket url" data-bind="value: ticket_url">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 col-md-offset-2 control-label">Target Date</label>
+                        <div class="col-md-8">
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" placeholder="target date" data-bind="value: target_date">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    <div class="modal-footer">
+        <div class="btn-group pull-right">
+            <button class="btn btn-raised btn-primary" type="button" data-bind="click: submit"  data-dismiss="modal">Update</button>
+            <button class="btn btn-raised btn-warning" type="button" data-bind="click: close"  data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

@@ -10,12 +10,11 @@ import TicketDetails = require('../viewmodels/ticketDetails');
 class SimpleGridTicket extends SimpleGrid {
 
     public showCustomModal(ticket: ITicketBase) {
+        console.log('ticket');
+        console.log(ticket);
         this.dialog = new CustomDialog('Ticket Details', new TicketDetails(ticket));
         this.dialog.show();
     }
 }
 
 export = SimpleGridTicket;
-
-
-

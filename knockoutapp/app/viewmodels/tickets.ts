@@ -7,6 +7,7 @@ import {getTickets} from '../services/ticketServices';
 import {ITicketBase} from 'ticketInterface';
 import SimpleGridTicket = require('../widgets/simpleGridTicket');
 import BaseView = require('./baseView');
+import defer = Q.defer;
 
 
 const columns = [{ headerText: 'Id', rowText: 'id' },
@@ -23,24 +24,30 @@ class Tickets extends BaseView {
 
     public activate(){
         this.isLoading(true);
-        return  this.loadTickets().then((data) => {
+        this.showMessage();
+        return this.loadTickets()
+            .then((data) => {
                 this.clients(data);
                 this.gridViewModel = new SimpleGridTicket(data, columns);
                 this.isLoading(false);
-        });
+            })
+            .catch((err: Error) => {
+                console.log(err.toString());
+                window.location.assign('#');
+            });
     }
 
-    public loadTickets(): JQueryDeferred<ITicketBase[]> {
-        return system.defer((dfd) => {
-            setTimeout( () => {
-                getTickets().then((tickets: ITicketBase[]) => {
-                    dfd.resolve(tickets); })
-                    .catch((err: Error) => {
-                        console.log(err.toString());
-                        window.location.assign('#');
-                    });
-            }, 500);
-        });
+    public loadTickets(): Promise<ITicketBase[]> {
+        let deffered: Deferred<ITicketBase[]> = Q.defer<ITicketBase[]>();
+        getTickets()
+            .then((tickets: ITicketBase[]) => {
+                deffered.resolve(tickets);
+            })
+            .catch((err: Error) => {
+                deffered.reject(err);
+            });
+
+        return deffered.promise;
     }
 
 }
