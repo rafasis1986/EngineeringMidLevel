@@ -29,12 +29,14 @@ class RequestCreate extends BaseView{
     }});
     private target_date: any = ko.observable().extend({required: true});
     private isLoading: any = ko.observable().extend({required: true});
+    protected canSubmit: any = ko.observable(true);
     private areas: string[];
     private errors: any = validation.group(this);
 
 
     public activate(){
         this.isLoading(true);
+        this.canSubmit(true);
         this.client(userSession.getUserEmail());
         return getAreas().then((resp: IArea[]) => {
             this.areas = resp.map((area: IArea) => {
@@ -45,11 +47,8 @@ class RequestCreate extends BaseView{
     }
 
     public submit(): void {
-        let value: any;
-        value = this.title() && this.details() && this.ticket_url() &&  this.target_date();
-        if (! value){
-            makeMessage(MessageTypes.WARNING, 'Please check the form');
-            this.showMessage();
+        this.canSubmit(false);
+        if (this.errors().length > 0){
             this.errors.showAllMessages();
         } else {
 
@@ -68,9 +67,11 @@ class RequestCreate extends BaseView{
                     navigate('#requests');
                 })
                 .catch((err: any) => {
-                    makeMessage(MessageTypes.DANGER, err.toString());
+                    makeMessage(MessageTypes.DANGER, 'check your form');
+                    this.showMessage();
                 });
         }
+        this.canSubmit(true);
     }
 
 }

@@ -13,7 +13,7 @@ requirejs.config({
         'knockout.validation': '../node_modules/knockout.validation/dist/knockout.validation.min',
         'Sortable': '../node_modules/sortablejs/Sortable.min',
         'ko_sortable': '../node_modules/knockout-sortablejs/knockout-sortable',
-        'knockstrap': '../node_modules/knockstrap/build/knockstrap',
+        'knockstrap': '../node_modules/knockstrap/build/knockstrap'
     },
   shim: {
     bootstrap: {

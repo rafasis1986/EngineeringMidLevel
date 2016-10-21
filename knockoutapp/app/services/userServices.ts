@@ -72,7 +72,6 @@ export function confirmUpdateUser(code: string):  Promise<IUser> {
     };
     $.ajax(ajaxSettings)
         .then((response: any) => {
-            console.log(response);
             user.email = response.data.attributes.email;
             user.phone_number = response.data.attributes.phone_number;
             user.first_name = response.data.attributes.first_name;

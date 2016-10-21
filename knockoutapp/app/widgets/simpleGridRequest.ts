@@ -101,8 +101,8 @@ class SimpleGridRequest extends SimpleGrid {
                     navigate('#');
                 });
             }).catch((error: Error) => {
-            console.log(error.toString());
-        });
+                console.log(error.toString());
+            });
     }
 
     public filter() {
