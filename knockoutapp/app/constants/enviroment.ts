@@ -26,6 +26,7 @@ export class Constant {
     public static get ROLE_EMPLOYEE(): string { return 'employee'; };
     public static get SESSION_FULL_NAME(): string { return 'full_name'; };
     public static get SESSION_EMAIL(): string { return 'email'; };
+    public static get SESSION_PROFILE_PICTURE(): string { return 'profile_picture'; };
     public static get SESSION_ROLES(): string { return 'roles'; };
     public static get USERS_API(): string { return 'user_list'; };
     public static get USERS_API_ME(): string { return 'me'; };

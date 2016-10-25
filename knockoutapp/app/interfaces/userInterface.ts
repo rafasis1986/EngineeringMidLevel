@@ -9,6 +9,7 @@ declare module 'userInterfaces' {
         full_name?: string,
         roles?: string[],
         phone_number?: string,
-        id: string
+        id: string,
+        profile_picture?: string
     }
 }

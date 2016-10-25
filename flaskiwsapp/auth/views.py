@@ -47,6 +47,8 @@ def call_back():
     else:
         social = user_info['identities'][0]['connection']
         social_id = user_info['identities'][0]['user_id']
+        if user_info.get('picture'):
+            picture = user_info.get('picture')
         if 'google' in social:
             first_name = user_info['given_name']
             last_name = user_info['family_name']
@@ -55,7 +57,8 @@ def call_back():
         user = update_user(user.id, {'social': social,
                                      'social_id': social_id,
                                      'first_name': first_name,
-                                     'last_name': last_name})
+                                     'last_name': last_name,
+                                     'picture': picture})
         token = _default_jwt_encode_handler(user)
         response_url = current_app.config['APP_URL']
         response = redirect(response_url, code=302)
@@ -88,6 +91,9 @@ def call_back_employee():
         iws_logger.info('Employee %s login success' % user_info.get('email'))
         social = user_info['identities'][0]['connection']
         social_id = user_info['identities'][0]['user_id']
+        picture = None
+        if user_info.get('picture'):
+            picture = user_info.get('picture')
         if 'google' in social:
             first_name = user_info['given_name']
             last_name = user_info['family_name']
@@ -96,7 +102,8 @@ def call_back_employee():
         user = update_user(user.id, {'social': social,
                                      'social_id': social_id,
                                      'first_name': first_name,
-                                     'last_name': last_name})
+                                     'last_name': last_name,
+                                     'picture': picture})
         token = _default_jwt_encode_handler(user)
         response_url = current_app.config['APP_URL']
         response = redirect(response_url, code=302)

@@ -3,7 +3,7 @@ import * as system from 'durandal/system';
 import * as app from 'durandal/app';
 import {IHomeMessage} from 'homeInterfaces';
 import BaseView = require('./baseView');
-import {getUserFullName, getUserEmail} from '../singletons/userSession';
+import {getUserFullName, getUserEmail, getUserPicture} from '../singletons/userSession';
 
 
 class Home extends BaseView {
@@ -11,11 +11,15 @@ class Home extends BaseView {
     private messages: any = ko.observableArray();
     private isLoading: any = ko.observable();
     private email: any = ko.observable();
-    private full_name: any = ko.observable();
+    private fullName: any = ko.observable();
+    private profilePicture: any = ko.observable();
 
     public activate() {
         this.isLoading(true);
-        this.full_name(getUserFullName());
+        this.fullName(getUserFullName());
+        if (getUserPicture() != 'null') {
+            this.profilePicture(getUserPicture());
+        }
         this.messages(this.loadMessages());
         this.email(getUserEmail());
         this.isLoading(false);
