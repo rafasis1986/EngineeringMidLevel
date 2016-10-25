@@ -22,6 +22,7 @@ export function getMeInfo():  Promise<IUser> {
             user.first_name = response.data.attributes.first_name;
             user.last_name = response.data.attributes.last_name;
             user.full_name = response.data.attributes.full_name;
+            user.profile_picture = response.data.attributes.picture;
             user.roles = response.data.relationships.roles.data.map( (role: any) => {
                 return role.id;
             });

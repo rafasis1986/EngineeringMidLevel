@@ -17,6 +17,7 @@ class User(UserCustomMixion, SurrogatePK, Model):
     admin = Column(db.Boolean(), default=False)
     social = Column(db.String(80), default=BaseConfig.APP_NAME)
     social_id = Column(db.String(80), default=BaseConfig.APP_NAME)
+    picture = Column(db.String(255))
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'))
 
     def __init__(self, email="", password=None, **kwargs):
