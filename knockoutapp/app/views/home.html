@@ -6,9 +6,18 @@
         <h1>Home</h1>
     </div>
 
-    <h2>Mr. <span data-bind="text: full_name"></span></h2>
-    <h4><span data-bind="text: email"></span></h4>
-    <br>
+    <div class="container">
+    <div class="fb-profile">
+        <!-- ko if: profilePicture -->
+        <img align="left" class="fb-image-profile thumbnail img-responsive"
+             data-bind="attr:{src: profilePicture}" alt="No Profile Image" width="160" height="160"/>
+        <!-- /ko -->
+        <div class="fb-profile-text">
+            <h1 data-bind="text: fullName"></h1>
+            <p data-bind="text: email"></p>
+        </div>
+    </div>
+        </div>
     <div class="container">
         <!-- Example row of columns -->
 

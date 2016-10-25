@@ -1,87 +1,235 @@
-# Engineering Project
-This is a project that we use for testing potential team members on their technical skills.
+# Requirements
 
-## Feature Request App
-Build a web application that allows the user to create "feature requests".
+- Ubuntu 16.04
+- Python 3.5
+- Flask  0.11.1
+- SqlAlchemy 1.0.15
+- Postgres 9.4
+- Knockout 3.4
+- Durandal 2.1
+- Bootstrap 3.3.7
+- Typescript 2.0.3
+- Docker 1.12.1
+- Docker-Compose 1.8.1
+- Travis
+- Sphinix
+- Auth0
+- Twilio
+- Sendgrid
+- Celery
 
-A "feature request" is a request for a new feature that will be added onto an existing piece of
-software. Assume that the user is an employee at IWS who would be entering this information after
-having some correspondence with the client that is requesting the feature.  The necessary fields
-are:
+## Origins
 
-* **Title:** A short, descriptive name of the feature request.
-* **Description:** A long description of the feature request.
-* **Client:** A selection list of clients (use "Client A", "Client B", "Client C")
-* **Client Priority:** A numbered priority according to the client (1...n). Client Priority numbers
-should not repeat for the given client, so if a priority is set on a new feature as "1", then all
-other feature requests for that client should be reordered.
-* **Target Date:** The date that the client is hoping to have the feature.
-* **Ticket URL:** A field for storing any URL
-* **Product Area:** A selection list of product areas (use 'Policies', 'Billing', 'Claims',
-'Reports')
+Originally i started developing from two templates
 
-## Tech Stack Suggestions
-The following are recommendations on tech stack. You can build a project outside of this framework,
-but this stack demonstrates mastery of  tools our team favors.
+```
+1 - cookiecutter https://github.com/on3iro/cookiecutter-flask.git
 
-* OS: Ubunutu
-* Server Side Scripting: Python 2.7+ or 3.5+
-* Server Framework: Flask
-* ORM: Sql-Alchemy
-* MVVM: Knockout.js
-* CSS: Bootstrap 4 or similar
+2 - yo durandal2
+```
 
-Make sure that your instructions for accessing or otherwise running your code are extremely clear.
+## Download
 
-## Guidelines
+Clone the repo:
 
-Build your own public repo on github, and call it whatever you like. Build your solution in your
-repo, and include a README.md file that contains the detailed instructions for running your web app.
-Email the URL for your github repo to phil@britecore.com once you begin the project so we can review 
-your progress. Prior to submission, please bring up a live hosted example. AWS has a free tier if you 
-aren't certain where to host.
+```
+git clone https://github.com/rafasis1986/EngineeringMidLevel.git
+```
 
-One of the major goals in this project is to see how you fill in ambiguities in your own creative
-way. There is no such thing as a perfect project here, just interpretations of the instructions
-above, so be creative in your approach. While we want to see an expression of your style and problem
-solving, we also want to keep you moving, so please feel free to email phil@britecore.com with questions
-if you get stuck or have questions.
 
-We want to be respectful of your time and set realistic expectations for submission. To help guide you, we 
-have included the list below which details common in the best projects we receive. It is rare for 
-a project to match every item in this list, but the candidates we hire typically showcase several of 
-these features in their work.
+## Setting BE application
 
---
+Make the enviroment file in the main path:
 
-TECHNOLOGY
+```
+$ vim .env 
 
-1. *Open Source*. We have a strong affinity for open source technology. If your go-to technology stack includes
-proprietary software, you won't be helping yourself to use it in this project.
 
-2. *Decoupled Backend*. We are looking for candidates with a strong understanding of the entire web application stack. Move beyond a stock template or the admin page from a CMS. Show off your understanding of how frameworks are put together and create at least a couple of methods that flex your intellectual muscle. The best projects will completely decouple the backend and the front end and communciate via API.
+And add the fields:
 
-3. *Test Suites with Continuous Integration*. Enterprise production requires rock solid stability. All code submitted into BriteCore repos must contain unit and regressions tests, so we favor candidates with experience writing quality tests. The best projects include a test suite hooked into a Continuous Integration platform like Jenkins or Travis CI.
+# PostgreSQL
+POSTGRES_PASSWORD=your_postgres_password
+POSTGRES_USER=your_postgres_user
 
-4. *Automated Deployment*. Speaking of deployment, the most valuable engineers understand how their code is deployed and utilize provisioners such as Salt Stack, Puppet, or Chef. The best projects integrated CI with a fully automated deployment to AWS, Digital Ocean, or similar.
+# Flask app
+IWS_BE=prod
+FLASK_APP=manage
+```
 
-5. *Usable, Responsive Interface*. There are many accessible CSS frameworks out there such as Bootstrap. All modern web applications should be responsive and these frameworks make it very easy to create a modern interface that adheres to established design principles and formats well on all devices.
+Later settings with your values into Back-End application:
 
-6. *MVVM Frontend*. The modern web is highly interactive. Projects like Knockout.js and Angular make it very easy to deploy HTML bindings that interact with interface elements dependably and efficiently.
+```
+$ vim flaskiwsapp/settings/productionConfig.py
 
---
+...
+    ENV = 'prod'
+    DEBUG = False
+    SQLALCHEMY_DATABASE_URI = 'postgresql://POSTGRES_USER:test@POSTGRES_PASSWORD:5432/POSTGRES_USER'
+    SERVER_NAME= 'your_domain'
+    AUTH0_CALLBACK_URL = 'http://%s/auth/callback' % (SERVER_NAME)
+    AUTH0_CALLBACK_EMP_URL = 'http://%s/auth/callback' % (SERVER_NAME)
+    AUTH0_CLIENT_ID = 'your_auth0_client_id'
+    AUTH0_CLIENT_SECRET = 'your_auth0_client_secret'
+    AUTH0_DOMAIN = 'your_auth0_domain'
+    APP_URL = 'http://web.your_domain'
+    TWILIO_SID = 'your_twilio_sid'
+    TWILIO_TOKEN = 'your_twilio_token'
+    TWILIO_PHONE = 'your_twilio_phone_number'
+    SENDGRID_EMAIL = 'your_email'
+    SENDGRID_TOKEN = 'sendgrid_email_token'
+    CACHE_DEFAULT_TIMEOUT = 120
+    CACHE_TYPE = 'simple'
 
-PROJECT FEATURES
+```
 
-1. *User Management*. A system that holds client feature requests benefits greatly from user management. Some projects include admin controlled user accounts. Better projects included self enrollment via email. The best projects used a SSO solution like OAuth or SAML.
+Remember setting the auth0 callback urls on https://auth0.com/
 
-2. *Client / Project Management*. As a base requirement, you had a fixed list of clients and projects, but the best projects included a simple admin interface associated with the admin login that gives users a basic CRUD interface for these entities.
+Twilio is a SMS provider, I use this provider because this let me create a free account, 
+to send emails i used sendgrid service go to https://sendgrid.com , 
+in other hand i used a external queue service from https://www.cloudamqp.com and 
+finally to watch the logs you can move to https://rdtr.loggly.com/login and login with 
+login **admin** and password **Admin123**
 
-3. *Filter by Client*. If multiple clients are submitting feature requests, it is important to be able to view the total task list as well as a list filtered by client.
 
-4. *Sorting*. This one is very important if you've ever worked on a real project and managed client priorities. Decent projects deploy unique sort rank per client. Better projects include sorting per client AND whole all client sorting. The best projects do all of this utilizing a drag and drop component bound to the MVVM framework.
+## Setting FE application
 
-5. *Discussion Threads*. A few projects go far enough to include discussion threads within each feature request and one has even included push notifications utilizing SMS.
+Open the environment file and customize with your settings
 
-Thank you for your time. We are excited to review your project!
+```
+$ vim knockoutapp/app/constants/enviroment.ts
+
+... 
+export class Constant {
+    public static get AUTH_LABEL(): string { return 'Authorization'; };
+    public static get AUTH_PATH(): string { return '/auth'; };
+    public static get CHARACTER_PARTITION(): string { return '\\073'; };
+    public static get CLIENTS_API(): string { return 'client_list'; };
+    public static get DEFAULT_AUTH_URL(): string { return 'http://your_domain/auth'; };
+    public static get DEVELOPMENT_ENV(): string { return 'dev'; };
+    public static get DEVELOPMENT_BE_URL(): string { return 'http://localhost:5000'; };
+    public static get ENV_LABEL(): string { return 'Env'; };
+    public static get PAGINATE_LIMIT(): number { return 10; };
+    public static get PRODUCTION_ENV(): string { return 'prod'; };
+    public static get PRODUCTION_BE_URL(): string { return 'http://your_domain'; };
+    public static get REQUESTS_API(): string { return 'request_list'; };
+    public static get TICKETS_API(): string { return 'tickets_list'; };
+    public static get TYPE_TOKEN(): string { return 'Bearer'; };
+    public static get ROLE_CLIENT(): string { return 'client'; };
+    public static get ROLE_EMPLOYEE(): string { return 'employee'; };
+    public static get SESSION_FULL_NAME(): string { return 'full_name'; };
+    public static get SESSION_EMAIL(): string { return 'email'; };
+    public static get SESSION_ROLES(): string { return 'roles'; };
+    public static get USERS_API(): string { return 'user_list'; };
+    public static get USERS_API_ME(): string { return 'me'; };
+    public static get URLS_LABEL(): string { return 'urls'; };
+}
+
+
+```
+
+It is important that both applications share the same web domain, 
+because when you login a cookie is sent from the BE.
+
+Note: To the current test I used the subdomain **"web"** for the Front-End application, 
+personally i wanted add "api" subdomain for the Back-End application, however some 
+Flask packages do not let me assign the subdomain
+
+## Deploying with docker-compose
+
+you need install docker and docker-compose
+
+https://docs.docker.com/engine/installation/linux/ubuntulinux/
+
+https://docs.docker.com/compose/install/
+
+When you have the previous pre-requirements, from the main folder project
+build your containers with
+
+```
+$ docker-compose build
+```
+
+Later you can deploy the application with:
+
+```
+$ docker-compose up
+```
+
+If you want that the containers run as daemon add **-d** to previous sentence 
+
+To show the states from your containers use
+
+```
+$ docker-compose ps
+```
+
+finally to stop and restart your containers
+
+```
+$ docker-compose stop
+
+$ docker-compose start
+
+```
+
+
+## Starting database
+
+Rename the folder with verions file
+
+```
+$ cp -r migrations/versions_ migrations/versions
+```
+
+Later use the flask container to migrate the models
+
+```
+$ docker-compose run flask ./manage.py db upgrade
+```
+
+
+Finally initialize the database with:
+
+```
+$ docker-compose run flask ./manage.py create_admin
+
+$ docker-compose run flask ./manage.py init_roles
+```
+
+You can watch all manage comands using
+
+```
+$ docker-compose run --help
+```
+
+
+## Starting with the application
+
+To Access at the admin application, go for the url **htpp://your_domain/admin**,
+by default the acces protocols are:
+
+**Login:** *admin@example.com*
+
+**Password:** *admin*
+
+With Admin application you can create users, clients, requests and tickets
+
+**User** is the main role in the system, he need be activated and only the 
+admin users can access to admin application.
+ 
+**Client** is the person that sends requests to the Users.
+
+**Request** are the main model of the system, they have target_date, 
+ticket_url and more information provided by the clients.
+
+**Ticket** is a record to track the user actions, when they checked a request
+
+
+Now you can acces to the application from
+
+```
+http://your_domain
+```
+
+You can acces with your *github* or *gmail* account or with a email and password
 

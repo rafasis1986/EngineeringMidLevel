@@ -29,6 +29,7 @@ class UserDetailJsonSchema(BaseUserJsonSchema):
     first_name = fields.Str()
     last_name = fields.Str()
     created_at = fields.DateTime()
+    picture = fields.Str()
     roles = fields.Relationship(
         '/users/{role_id}/roles',
         related_url_kwargs={'role_id': '<id>'},

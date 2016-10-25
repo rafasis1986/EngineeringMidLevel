@@ -25,3 +25,11 @@ export function getUserRoles(): string{
 export function setUserRoles(value: string): void{
     setSession(Constant.SESSION_ROLES, value);
 }
+
+export function getUserPicture(): string{
+    return getSession(Constant.SESSION_PROFILE_PICTURE);
+}
+
+export function setUserPicture(value: string): void{
+    setSession(Constant.SESSION_PROFILE_PICTURE, value);
+}

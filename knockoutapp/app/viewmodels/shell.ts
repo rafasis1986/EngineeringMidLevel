@@ -19,6 +19,7 @@ let activate = function() {
         userSession.setUserEmail(user.email);
         userSession.setUserFullName(user.full_name);
         userSession.setUserRoles(user.roles.join());
+        userSession.setUserPicture(user.profile_picture);
         nav = nav.concat({ route: '', moduleId: 'viewmodels/home', title: 'Home', nav: true });
         if ( userSession.getUserRoles().search(Constant.ROLE_EMPLOYEE) != -1) {
             nav = nav.concat({ route: 'clients', moduleId: 'viewmodels/clients', title: 'Clients', nav: true });
